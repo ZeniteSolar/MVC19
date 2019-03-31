@@ -195,13 +195,15 @@ inline void check_can(void)
         set_state_error();
     }
 #endif
+
     if(can_check_message()){
-        cpl_led(LED2);    // Incluido para sinalizar entrada na função
+        cpl_led(LED1);    // Incluido para sinalizar entrada na função
         VERBOSE_MSG_DISPLAY_TEST(usart_send_string("\nchecking can"));
         can_t msg;
         if(can_get_message(&msg)){
             can_app_msg_extractors_switch(&msg);
         }
     }
+
 }
 

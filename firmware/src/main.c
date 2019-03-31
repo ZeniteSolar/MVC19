@@ -111,10 +111,10 @@ int main(void)
 	#ifdef WATCHDOG_ON
             wdt_reset();
 	#endif
-   // check_can();
-        #ifdef MACHINE_ON
-            machine_run();
-        #endif
+
+    #ifdef MACHINE_ON
+        machine_run();
+    #endif
 
 	#ifdef SLEEP_ON
             sleep_mode();    // Desativado para teste...
