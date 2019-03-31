@@ -35,20 +35,7 @@ void machine_init(void)
     OCR2A = MACHINE_TIMER_TOP;                       // OCR2A = TOP = fcpu/(N*2*f) -1
 
     TIMSK2 |=   (1 << OCIE2A);                      // Activates interruption
-   // firmware original MSC19...
- /*
-    // FIRMWARE 2017 
-    TCCR2A  =   (1 << WGM21) | (0 << WGM20)         // Timer 2 in Mode 2 = CTC (clear on compar  e)
-            | (0 << COM2A1) | (0 << COM2A0)         // do nothing with OC2A
-            | (0 << COM2B1) | (0 << COM2B0);        // do nothing with OC2B
-    TCCR2B  =   (0 << WGM22)                        // Timer 0 in Mode 2 = CTC (clear on compar  e)
-            | (0 << FOC0A) | (0 << FOC0B)           // dont force outputs
-            | (1 << CS22)                           // clock enabled, prescaller = 1024
-            | (1 << CS21)
-            | (1 << CS20);
-    OCR2A   =   80;                                // Valor para igualdade de comparacao A par  a frequencia de 150 Hz
-    TIMSK2 |= (1 << OCIE2A); // Ativa a interrupcao na igualdade de comp  aração do TC2 com OCR2A
- */   
+ 
     set_machine_initial_state();
     set_state_initializing();
 } 
@@ -163,7 +150,7 @@ inline void task_initializing(void)
 inline void task_idle(void)
 {
 #ifdef LED_ON
-    if(led_clk_div++ >= 30){
+    if(led_clk_div++ >= 60){
         cpl_led(LED2);
         led_clk_div = 0;
     }        
@@ -180,7 +167,7 @@ inline void task_idle(void)
 inline void task_running(void)
 {
 #ifdef LED_ON
-    if(led_clk_div++ >= 10){
+    if(led_clk_div++ >= 40){
         cpl_led(LED2);
         led_clk_div = 0;
     }
@@ -283,8 +270,8 @@ inline void machine_run(void)
 
     if(machine_clk){
         machine_clk = 0;
-    #ifdef ADC_ON
-        if(adc.ready){
+ //   #ifdef ADC_ON
+   /*     if(adc.ready){
             adc.ready = 0;
 
             measurements.adc0_avg = ADC0_AVG;
@@ -305,7 +292,7 @@ inline void machine_run(void)
                 print_infos();
                 set_state_error();
             }
-         
+         */
     
             switch(state_machine){
                 case STATE_INITIALIZING:
@@ -332,8 +319,8 @@ inline void machine_run(void)
                     break;
             }
         }
-    } 
-   #endif /* ADC_ON */
+   // } 
+  // #endif /* ADC_ON */
     
 }     
 

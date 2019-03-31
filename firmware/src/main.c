@@ -47,7 +47,7 @@ void init(void)
     #ifdef WATCHDOG_ON
         wdt_reset();
     #endif
-
+/*
     #ifdef ADC_ON
         VERBOSE_MSG_INIT(usart_send_string("ADC..."));
         adc_init();
@@ -55,14 +55,14 @@ void init(void)
     #else
         VERBOSE_MSG_INIT(usart_send_string("ADC... OFF!\n"));
     #endif
-
+*/
     #ifdef WATCHDOG_ON
         wdt_reset();
     #endif
 
     #ifdef SLEEP_ON 
         VERBOSE_MSG_INIT(usart_send_string("SLEEP..."));
-        sleep_init();     // Desativado para teste...
+        sleep_init(); 
         VERBOSE_MSG_INIT(usart_send_string(" OK!\n"));
     #else
         VERBOSE_MSG_INIT(usart_send_string("SLEEP... OFF!\n"));
@@ -109,7 +109,7 @@ int main(void)
    
 	for(;;){
 	#ifdef WATCHDOG_ON
-            wdt_reset();
+        wdt_reset();
 	#endif
 
     #ifdef MACHINE_ON
@@ -117,7 +117,7 @@ int main(void)
     #endif
 
 	#ifdef SLEEP_ON
-            sleep_mode();    // Desativado para teste...
+        sleep_mode();   
 	#endif
 	}
 }

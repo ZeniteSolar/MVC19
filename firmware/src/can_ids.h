@@ -30,12 +30,15 @@
 #define CAN_SIGNATURE_MCC17_4           224
 #define CAN_SIGNATURE_MAB17             230
 #define CAN_SIGNATURE_MIC17             240
+
+#define CAN_SIGNATURE_MVC19             249
+
 #define CAN_SIGNATURE_MSC19_1           251
 #define CAN_SIGNATURE_MSC19_2           252
 #define CAN_SIGNATURE_MSC19_3           253
 #define CAN_SIGNATURE_MSC19_4           254
 
-#define CAN_SIGNATURE_SELF              CAN_SIGNATURE_MSC19_4
+#define CAN_SIGNATURE_SELF              CAN_SIGNATURE_MVC19
 
 //------------------------------------------------------------------------------
 

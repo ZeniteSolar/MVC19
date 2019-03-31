@@ -30,10 +30,10 @@ inline void can_app_print_msg(can_t *msg)
 inline void can_app_task(void)
 {
     check_can();
-                                            
+ /*                                           
     if(can_app_send_state_clk_div++ >= CAN_APP_SEND_STATE_CLK_DIV){
 #ifdef USART_ON
-     //   VERBOSE_MSG_CAN_APP(usart_send_string("state msg was sent.\n"));
+        VERBOSE_MSG_CAN_APP(usart_send_string("state msg was sent.\n"));
 #endif
         can_app_send_state();
         can_app_send_state_clk_div = 0;
@@ -41,12 +41,12 @@ inline void can_app_task(void)
 
     if(can_app_send_adc_clk_div++ >= CAN_APP_SEND_ADC_CLK_DIV){
 #ifdef USART_ON
-    //    VERBOSE_MSG_CAN_APP(usart_send_string("adc msg was sent.\n"));
+        VERBOSE_MSG_CAN_APP(usart_send_string("adc msg was sent.\n"));
 #endif
         can_app_send_adc();
         can_app_send_adc_clk_div = 0;
     }
-  
+*/  
 }
 
 inline void can_app_send_state(void)
@@ -62,10 +62,11 @@ inline void can_app_send_state(void)
 
     can_send_message(&msg);
 #ifdef VERBOSE_MSG_CAN_APP
-   // VERBOSE_MSG_CAN_APP(can_app_print_msg(&msg));
+    VERBOSE_MSG_CAN_APP(can_app_print_msg(&msg));
 #endif
 }
 
+/*
 inline void can_app_send_adc(void)
 {
     can_t msg;
@@ -86,11 +87,11 @@ inline void can_app_send_adc(void)
 
     can_send_message(&msg); 
 #ifdef VERBOSE_MSG_CAN_APP
-   // VERBOSE_MSG_CAN_APP(can_app_print_msg(&msg));
+    VERBOSE_MSG_CAN_APP(can_app_print_msg(&msg));
 #endif
 
     reset_measurements();
-}
+} */
 
 void can_app_extractor_msc19_1_state(can_t *msg)
 {
@@ -102,21 +103,47 @@ void can_app_extractor_msc19_1_state(can_t *msg)
 
 }
 
+void can_app_extractor_msc19_2_state(can_t *msg)
+{
+    if(msg->data[CAN_SIGNATURE_BYTE] == CAN_SIGNATURE_MSC19_2){
+        if(msg->data[CAN_STATE_MSG_ERROR_BYTE]){
+            //ERROR!!!
+        }
+    }
+
+}
+
 void can_app_extractor_msc19_1_voltage(can_t *msg)
 {
-    VERBOSE_MSG_DISPLAY_TEST(usart_send_string("\nrcv"));
     if(msg->data[CAN_SIGNATURE_BYTE] == CAN_SIGNATURE_MSC19_1){
         #ifdef CAN_DEPENDENT
         can_app_checks_without_msc19_1_msg = 0;
         #endif
          
-        HIGH_LOW(control.Vaux, msg->data[
+        HIGH_LOW(voltage.main, msg->data[
+            CAN_MSG_MSC19_ADC_AVG_BYTE_H], msg->data[
+            CAN_MSG_MSC19_ADC_AVG_BYTE_L] );
+
+        // testing...
+        VERBOSE_MSG_DISPLAY_TEST(usart_send_string("\nV_main: "));
+        VERBOSE_MSG_DISPLAY_TEST(usart_send_uint16(voltage.main));   
+    }
+}
+
+void can_app_extractor_msc19_2_voltage(can_t *msg)
+{
+    if(msg->data[CAN_SIGNATURE_BYTE] == CAN_SIGNATURE_MSC19_2){
+        #ifdef CAN_DEPENDENT
+        can_app_checks_without_msc19_2_msg = 0;
+        #endif
+         
+        HIGH_LOW(voltage.aux, msg->data[
             CAN_MSG_MSC19_ADC_AVG_BYTE_H], msg->data[
             CAN_MSG_MSC19_ADC_AVG_BYTE_L] );
 
         // testing...
         VERBOSE_MSG_DISPLAY_TEST(usart_send_string("\nVaux: "));
-        VERBOSE_MSG_DISPLAY_TEST(usart_send_uint16(control.Vaux));   
+        VERBOSE_MSG_DISPLAY_TEST(usart_send_uint16(voltage.aux));   
     }
 }
 
@@ -146,34 +173,63 @@ inline void can_app_extractor_mic17_state(can_t *msg)
 inline void can_app_msg_extractors_switch(can_t *msg)
 {
     VERBOSE_MSG_DISPLAY_TEST(usart_send_string("\nextractor"));
+    
     if(msg->data[CAN_SIGNATURE_BYTE] == CAN_SIGNATURE_MSC19_1){
         switch(msg->id){
             case CAN_FILTER_MSG_MSC19_STATE:
-#ifdef USART_ON
-                VERBOSE_MSG_DISPLAY_TEST(usart_send_string("state msg"));
-                VERBOSE_MSG_CAN_APP(usart_send_string(" got a state msg: "));
-#endif
+            #ifdef USART_ON
+                VERBOSE_MSG_CAN_APP(usart_send_string(" got a state msg from MSC19_1: "));
+            #endif
                 VERBOSE_MSG_CAN_APP(can_app_print_msg(msg));
                 can_app_extractor_msc19_1_state(msg);
                 break;
 
             case CAN_FILTER_MSG_MSC19_ADC:
-#ifdef USART_ON
-                VERBOSE_MSG_DISPLAY_TEST(usart_send_string("adc msg"));
-                VERBOSE_MSG_CAN_APP(usart_send_string(" got a adc msg: "));
-#endif
+            #ifdef USART_ON
+                VERBOSE_MSG_CAN_APP(usart_send_string(" got a adc msg from MSC19_1: "));
+            #endif
                 VERBOSE_MSG_CAN_APP(can_app_print_msg(msg));
                 can_app_extractor_msc19_1_voltage(msg);
                 break;
 
             default:
-#ifdef USART_ON
+            #ifdef USART_ON
                 VERBOSE_MSG_CAN_APP(usart_send_string(" got a unknown msg: "));
-#endif
+            #endif
                 VERBOSE_MSG_CAN_APP(can_app_print_msg(msg));
                 break;
         }
-    }    
+    } // CAN_SIGNATURE_MSC19_1
+    
+    if(msg->data[CAN_SIGNATURE_BYTE] == CAN_SIGNATURE_MSC19_2){
+        switch(msg->id){
+            case CAN_FILTER_MSG_MSC19_STATE:
+            #ifdef USART_ON
+                VERBOSE_MSG_CAN_APP(usart_send_string(" got a state msg from MSC19_2: "));
+            #endif
+                VERBOSE_MSG_CAN_APP(can_app_print_msg(msg));
+                can_app_extractor_msc19_2_state(msg);
+                break;
+
+            case CAN_FILTER_MSG_MSC19_ADC:
+            #ifdef USART_ON
+                VERBOSE_MSG_CAN_APP(usart_send_string(" got a adc msg from MSC19_2: "));
+            #endif
+                VERBOSE_MSG_CAN_APP(can_app_print_msg(msg));
+                can_app_extractor_msc19_2_voltage(msg);
+                break;
+
+            default:
+            #ifdef USART_ON
+                VERBOSE_MSG_CAN_APP(usart_send_string(" got a unknown msg: "));
+            #endif
+                VERBOSE_MSG_CAN_APP(can_app_print_msg(msg));
+                break;
+        }
+    } // CAN_SIGNATURE_MSC19_2
+    
+    
+    
 }
 
 /**
@@ -197,7 +253,9 @@ inline void check_can(void)
 #endif
 
     if(can_check_message()){
+    #ifdef LED_ON
         cpl_led(LED1);    // Incluido para sinalizar entrada na função
+    #endif
         VERBOSE_MSG_DISPLAY_TEST(usart_send_string("\nchecking can"));
         can_t msg;
         if(can_get_message(&msg)){

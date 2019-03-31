@@ -63,10 +63,12 @@ typedef struct measurements{
     uint16_t    adc0_max;       // period maximum value of ADC0
 }measurements_t;
 
-typedef struct control
+typedef struct voltage
 {
-    uint16_t Vaux;
-}control_t;
+    uint16_t main;
+    uint16_t aux;
+    uint16_t dir;
+}voltage_t;
 
 // machine checks
 void check_buffers(void);
@@ -99,7 +101,7 @@ volatile state_machine_t state_machine;
 volatile system_flags_t system_flags;
 volatile error_flags_t error_flags;
 volatile measurements_t measurements;
-volatile control_t control;
+volatile voltage_t voltage;
 volatile uint8_t machine_clk;
 volatile uint8_t machine_clk_divider;
 volatile uint8_t total_errors;           // Contagem de ERROS

@@ -29,14 +29,14 @@
 #define USART_ON
 #define CAN_ON
 //#define CAN_DEPENDENT
-#define ADC_ON
+//#define ADC_ON
 #define MACHINE_ON
 #define LED_ON
 #define WATCHDOG_ON
 #define SLEEP_ON
 
 
-#ifdef ADC_ON
+//#ifdef ADC_ON
 // ADC CONFIGURATION
 // note that changing ADC_FREQUENCY may cause problems with avg_sum_samples
 #define ADC_FREQUENCY                       10000 // 20000
@@ -52,7 +52,7 @@
 #define FAKE_ADC                            1
 #endif // FAKE_ADC_ON
 
-#endif //ADC_ON
+//#endif //ADC_ON
 
 
 #ifdef MACHINE_ON
