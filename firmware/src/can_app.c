@@ -227,9 +227,7 @@ inline void can_app_msg_extractors_switch(can_t *msg)
                 break;
         }
     } // CAN_SIGNATURE_MSC19_2
-    
-    
-    
+        
 }
 
 /**
@@ -241,7 +239,7 @@ inline void check_can(void)
     // CAN_APP_CHECKS_WITHOUT_MIC17_MSG cycles, than it go to a specific error state. 
     //VERBOSE_MSG_CAN_APP(usart_send_string("checks: "));
     //VERBOSE_MSG_CAN_APP(usart_send_uint16(can_app_checks_without_mic17_msg));
-#ifdef CAN_DEPENDENT
+/*#ifdef CAN_DEPENDENT
     if(can_app_checks_without_mic17_msg++ >= CAN_APP_CHECKS_WITHOUT_MIC17_MSG){
 #ifdef USART_ON
         VERBOSE_MSG_CAN_APP(usart_send_string("Error: too many cycles withtou message.\n"));
@@ -249,6 +247,30 @@ inline void check_can(void)
         can_app_checks_without_mic17_msg = 0;
         error_flags.no_canbus = 1;
         set_state_error();
+    }
+#endif */
+
+#ifdef CAN_DEPENDENT
+    if(can_app_checks_without_msc19_1_msg++ >= CAN_APP_CHECKS_WITHOUT_MSC19_MSG)
+    {
+#ifdef USART_ON
+        VERBOSE_MSG_CAN_APP(usart_send_string("too many cycles without MSC19_1 message.\n"));
+#endif
+        can_app_checks_without_msc19_1_msg = 0;
+        voltmeter_errors.no_message_from_MSC19_1 = 1;
+        VERBOSE_MSG_DISPLAY_TEST(usart_send_string("\nV_main: NO MESSAGE"));
+    }
+#endif
+
+#ifdef CAN_DEPENDENT
+    if(can_app_checks_without_msc19_2_msg++ >= CAN_APP_CHECKS_WITHOUT_MSC19_MSG)
+    {
+#ifdef USART_ON
+        VERBOSE_MSG_CAN_APP(usart_send_string("too many cycles without MSC19_2 message.\n"));
+#endif
+        can_app_checks_without_msc19_2_msg = 0;
+        voltmeter_errors.no_message_from_MSC19_2 = 1;
+        VERBOSE_MSG_DISPLAY_TEST(usart_send_string("\nV_aux: NO MESSAGE"));
     }
 #endif
 

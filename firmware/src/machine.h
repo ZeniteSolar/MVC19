@@ -70,6 +70,12 @@ typedef struct voltage
     uint16_t dir;
 }voltage_t;
 
+typedef struct voltmeter_errors
+{
+    uint8_t no_message_from_MSC19_1;
+    uint8_t no_message_from_MSC19_2;
+}voltmeter_errors_t;
+
 // machine checks
 void check_buffers(void);
 void reset_measurements(void);
@@ -102,6 +108,7 @@ volatile system_flags_t system_flags;
 volatile error_flags_t error_flags;
 volatile measurements_t measurements;
 volatile voltage_t voltage;
+volatile voltmeter_errors_t voltmeter_errors;
 volatile uint8_t machine_clk;
 volatile uint8_t machine_clk_divider;
 volatile uint8_t total_errors;           // Contagem de ERROS
