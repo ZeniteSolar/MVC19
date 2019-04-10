@@ -12,11 +12,11 @@
 
 #include <avr/io.h>
 //#include "../lib/bit_utils.h"
-//#include "conf.h"
-//#include "../lib/avr-ssd1306/fonts/Font_9_Mono.h"
-//#include "../lib/avr-ssd1306/fonts/Font_8_Myke.h"
-#include "../lib/avr-ssd1306/fonts/Font_3_PicoPixel.h"
-#include "../lib/avr-ssd1306/ssd1306.h"
+#include "conf.h"
+#include "../lib/DISPLAYS/SSD1306_AVR/ssd1306.h"
+//#include "../lib/DISPLAYS/SSD1306_AVR/fonts/Font_9_Mono.h"
+//#include "../lib/DISPLAYS/SSD1306_AVR/fonts/Font_8_Myke.h"
+#include "../lib/DISPLAYS/SSD1306_AVR/fonts/Font_3_Picopixel.h"
 
 void display_init();
 
