@@ -4,4 +4,7 @@ git submodule update
 cd src/
 make clean
 make lib
-cd ../../
+cd ../../../
+cd lib/DISPLAYS/SSD1306_AVR
+make clean
+make
