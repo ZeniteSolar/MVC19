@@ -21,6 +21,7 @@
 #define normal_font _9_Mono
 
 void display_init(void);
+void test_display(void);
 void display_clear(void);
 void display_update(void);
 
