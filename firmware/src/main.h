@@ -45,12 +45,14 @@
 #pragma message "CAN: OFF!"
 #endif /*ifdef CAN_ON*/
 
-#ifdef ADC_ON 
-#include "adc.h"
-#pragma message "ADC: ON!"
-#else
-#pragma message "ADC: OFF!"
-#endif  /*ifdef ADC_ON*/
+
+//#ifdef ADC_ON 
+//#include "adc.h"
+//#pragma message "ADC: ON!"
+//#else
+//#pragma message "ADC: OFF!"
+//#endif  /*ifdef ADC_ON*/
+
 
 #ifdef MACHINE_ON
 #include "machine.h"
