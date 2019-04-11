@@ -10,7 +10,7 @@ void display_init(void)
 
 void display_clear(void)
 {
-    LCD_Fill(1);
+    LCD_Fill(0);
 }
 
 void display_update(void)
