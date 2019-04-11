@@ -10,7 +10,7 @@ void init(void)
     #endif
 
     #ifdef UI_ON
-        VERBOSE_MSG_INIT(usart_send_string("UI..."))
+        VERBOSE_MSG_INIT(usart_send_string("UI..."));
         ui_init();
         VERBOSE_MSG_INIT(usart_send_string(" OK!\n"));
     #else
