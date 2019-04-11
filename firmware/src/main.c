@@ -4,10 +4,17 @@
 
 void init(void)
 {
-
     #ifdef USART_ON
         usart_init(MYUBRR,1,1);                         // inicializa a usart
         VERBOSE_MSG_INIT(usart_send_string("\n\n\nUSART... OK!\n"));
+    #endif
+
+    #ifdef UI_ON
+        VERBOSE_MSG_INIT(usart_send_string("UI..."))
+        ui_init();
+        VERBOSE_MSG_INIT(usart_send_string(" OK!\n"));
+    #else
+        VERBOSE_MSG_INIT(usart_send_string("UI... OFF!\n"));
     #endif
 
     _delay_ms(200);
