@@ -6,7 +6,6 @@
 void display_init()
 {
     SSD1306_Init();
-
 }
 
 /**
@@ -14,7 +13,20 @@ void display_init()
  */
 void test_display()
 {
+    LCD_Fill(1);
+    LCD_UpdateScreen();
+    _delay_ms(250);
+
+    LCD_Fill(0);
+    LCD_Font(15, 27, "Zenite", normal_font, 1, 1);
+    LCD_Font(45, 42, "Solar", normal_font, 1, 1);
+    LCD_Font(75, 57, "2019", normal_font, 1, 1);
+    LCD_UpdateScreen();
+    _delay_ms(250);
     
+    LCD_ToggleInvert();
+    LCD_UpdateScreen();
+    _delay_ms(250);
 }
 
 /**

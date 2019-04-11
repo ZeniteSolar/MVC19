@@ -18,9 +18,11 @@
 //#include "../lib/DISPLAYS/SSD1306_AVR/fonts/Font_8_Myke.h"
 //#include "../lib/DISPLAYS/SSD1306_AVR/fonts/Font_3_Picopixel.h"
 
+#define normal_font _9_Mono
+
 void display_init();
 
-/*void display_goto(uint8_t x, uint8_t y);
+void display_goto(uint8_t x, uint8_t y);
 void display_gotox(uint8_t x);
 void display_gotoy(uint8_t y);
 void display_movex(int8_t x);
@@ -38,5 +40,8 @@ void display_send_uint16(uint16_t num);
 
 void display_send_int32(int32_t num);
 void display_send_uint32(uint32_t num);
-*/
+
+void display_send_float(float num);
+void display_send_double(double num);
+
 #endif
