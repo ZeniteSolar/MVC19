@@ -25,6 +25,7 @@
 
 void ui_init(void);
 void ui_clear(void);
+void ui_update(void);
 void ui_draw_layout(void);
 
 void update_battery_voltage_main(const char *s);

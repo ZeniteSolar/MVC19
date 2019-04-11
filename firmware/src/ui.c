@@ -17,7 +17,13 @@ void ui_clear(void)
     display_clear();
 }
 
+void ui_update(void)
+{
+    display_update();
+}
+
 void ui_draw_layout(void)
 {
+    
 
 }
