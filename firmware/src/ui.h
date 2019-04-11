@@ -21,6 +21,7 @@
 #include "conf.h"
 #include "dbg_vrb.h"
 #include "usart.h"
+#include "display.h"
 
 void ui_init(void);
 
