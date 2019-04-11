@@ -3,34 +3,39 @@
 /**
  * @brief starts the display.
  */
-void display_init()
+void display_init(void)
 {
     SSD1306_Init();
 }
 
-void display_clear()
+void display_clear(void)
 {
     LCD_Fill(1);
+}
+
+void display_update(void)
+{
+    LCD_UpdateScreen();
 }
 
 /**
  * @brief test the display
  */
-void test_display()
+void test_display(void)
 {
     LCD_Fill(1);
-    LCD_UpdateScreen();
+    display_update();
     _delay_ms(250);
 
-    LCD_Fill(0);
+    display_clear();
     LCD_Font(15, 27, "Zenite", normal_font, 1, 1);
     LCD_Font(45, 42, "Solar", normal_font, 1, 1);
     LCD_Font(75, 57, "2019", normal_font, 1, 1);
-    LCD_UpdateScreen();
+    display_update();
     _delay_ms(250);
     
     LCD_ToggleInvert();
-    LCD_UpdateScreen();
+    display_update();
     _delay_ms(250);
 }
 

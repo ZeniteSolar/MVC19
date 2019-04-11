@@ -22,6 +22,7 @@
 
 void display_init(void);
 void display_clear(void);
+void display_update(void);
 
 void display_goto(uint8_t x, uint8_t y);
 void display_gotox(uint8_t x);
