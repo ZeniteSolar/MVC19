@@ -8,6 +8,11 @@ void display_init()
     SSD1306_Init();
 }
 
+void display_clear()
+{
+    LCD_Fill(1);
+}
+
 /**
  * @brief test the display
  */
