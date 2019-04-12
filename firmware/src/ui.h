@@ -5,13 +5,13 @@
  *
  * @brief This module implements a simple UI
  *
- *  ________________
- * | BAT.  | CURR.  |
- * |________________|
- * |M:36.1V|I:042.2A|
- * |A:11.2V|O:100.2A|
- * |S:13.0V|        |
- * |________________|
+ *  _________________
+ * |  BAT.  |  CURR. |
+ * |_________________|
+ * |M 43218 |> 03972 |
+ * |A 12657 |< 10421 |
+ * |S:13014 |        |
+ * |_________________|
  *
  */
 
@@ -28,10 +28,10 @@ void ui_clear(void);
 void ui_update(void);
 void ui_draw_layout(void);
 
-void update_battery_voltage_main(const char *s);
-void update_battery_voltage_auxiliary(const char *s);
-void update_battery_voltage_security(const char *s);
-void update_battery_current_input(const char *s);
-void update_battery_current_output(const char *s);
+void update_battery_voltage_main(uint16_t num);
+void update_battery_voltage_auxiliary(uint16_t num);
+void update_battery_voltage_security(uint16_t num);
+void update_battery_current_input(uint16_t num);
+void update_battery_current_output(uint16_t num);
 
 #endif /* ifndef _UI_H_ */
