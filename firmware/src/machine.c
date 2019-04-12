@@ -252,13 +252,14 @@ void print_infos(void)
     }
 }
 
+/*
 inline void reset_measurements(void)
 {
     measurements.adc0_avg_sum_count = 0;
     measurements.adc0_avg_sum = 0;
     measurements.adc0_max = 0;
     measurements.adc0_min = 1023;
-}
+}*/
 
 /**
  * @brief this is the machine state itself.
@@ -271,29 +272,6 @@ inline void machine_run(void)
     if(machine_clk){
         machine_clk = 0;
  //   #ifdef ADC_ON
-   /*     if(adc.ready){
-            adc.ready = 0;
-
-            measurements.adc0_avg = ADC0_AVG;
-                // * ADC0_ANGULAR_COEF
-                // + ADC0_LINEAR_COEF;
-            
-            if(measurements.adc0_avg < measurements.adc0_min) 
-                measurements.adc0_min = measurements.adc0_avg;
-            if(measurements.adc0_avg > measurements.adc0_max) 
-                measurements.adc0_max = measurements.adc0_avg;
-
-            measurements.adc0_avg_sum_count++;
-            measurements.adc0_avg_sum += measurements.adc0_avg;
-
-            if(error_flags.all){
-                print_system_flags();
-                print_error_flags();
-                print_infos();
-                set_state_error();
-            }
-         */
-    
             switch(state_machine){
                 case STATE_INITIALIZING:
                     task_initializing();
