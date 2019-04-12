@@ -19,6 +19,19 @@
 #include "../lib/bit_utils.h"
 #include "../lib/log2.h"
 
+#ifndef ADC_FREQUENCY           
+#define ADC_FREQUENCY   1000
+#endif // ADC_FREQUENCY
+#ifndef ADC_TIMER_PRESCALER     
+#define ADC_TIMER_PRESCALER     64
+#endif // ADC_TIMER_PRESCALER
+#ifndef ADC_AVG_SIZE_10
+#define ADC_AVG_SIZE_10 4
+#endif
+#ifndef ADC_AVG_SIZE_2
+#define ADC_AVG_SIZE_2 2
+#endif
+
 // Equations for mode 2 (CTC with TOP OCR2A)
 // Note the resolution. For example.. at 150hz, ICR1 = PWM_TOP = 159, so it
 //#define QUOTIENT  (((uint32_t)MACHINE_TIMER_PRESCALER)*((uint32_t)MACHINE_TIMER_FREQUENCY))
