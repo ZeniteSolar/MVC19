@@ -101,10 +101,13 @@ inline void print_configurations(void)
 {    
     VERBOSE_MSG_MACHINE(usart_send_string("CONFIGURATIONS:\n"));
     
-//    VERBOSE_MSG_MACHINE(usart_send_string("\nadc_f: "));
-//    VERBOSE_MSG_MACHINE(usart_send_uint16( ADC_FREQUENCY ));
-//    VERBOSE_MSG_MACHINE(usart_send_char(','));
-//    VERBOSE_MSG_MACHINE(usart_send_uint16( ADC_AVG_SIZE_10 ));
+#ifdef ADC_ON
+    VERBOSE_MSG_MACHINE(usart_send_string("\nadc_f: "));
+    VERBOSE_MSG_MACHINE(usart_send_uint16( ADC_FREQUENCY ));
+    VERBOSE_MSG_MACHINE(usart_send_char(','));
+    VERBOSE_MSG_MACHINE(usart_send_uint16( ADC_AVG_SIZE_10 ));
+#endif // ADC_ON
+
     VERBOSE_MSG_MACHINE(usart_send_string("\nmachine_f: "));
     VERBOSE_MSG_MACHINE(usart_send_uint16( MACHINE_FREQUENCY ));
 
@@ -172,6 +175,31 @@ inline void task_running(void)
         led_clk_div = 0;
     }
 #endif // LED_ON
+        
+    
+#ifdef UI_ON
+    if(ui_clk_div++ >= UI_CLK_DIVIDER_VALUE){        
+        ui_clear();
+        ui_draw_layout();
+
+#ifdef UI_FAKE_DATA
+    static uint16_t fake_data = 0;
+    ui_update_battery_voltage_main(fake_data++);
+    ui_update_battery_voltage_auxiliary(fake_data++);
+    ui_update_battery_voltage_extra(fake_data++);
+    ui_update_battery_current_input(fake_data++);
+    ui_update_battery_current_output(fake_data++);
+#else
+    ui_update_battery_voltage_main(battery_voltage.main);
+    ui_update_battery_voltage_auxiliary(battery_voltage.aux);
+    ui_update_battery_voltage_extra(battery_voltage.dir);
+    ui_update_battery_current_input(battery_current.in);
+    ui_update_battery_current_output(battery_current.out);
+#endif
+        ui_update();
+        ui_clk_div = 0;
+    }
+#endif // UI_ON
 }
 
 
@@ -187,7 +215,6 @@ inline void task_error(void)
         led_clk_div = 0;
     }
 #endif
-
 
     total_errors++;         // incrementa a contagem de erros
     VERBOSE_MSG_ERROR(usart_send_string("The error code is: "));
@@ -271,7 +298,7 @@ inline void machine_run(void)
 
     if(machine_clk){
         machine_clk = 0;
- //   #ifdef ADC_ON
+//   #ifdef ADC_ON
             switch(state_machine){
                 case STATE_INITIALIZING:
                     task_initializing();

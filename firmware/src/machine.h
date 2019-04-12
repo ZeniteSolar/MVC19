@@ -21,17 +21,20 @@
 #define MACHINE_TIMER_TOP ((F_CPU/(2*MACHINE_TIMER_PRESCALER))/(MACHINE_TIMER_FREQUENCY) -1)
 
 #ifdef ADC_ON
-//#include "adc.h"
-#endif
+#include "adc.h"
+#endif // ADC_ON
 #ifdef USART_ON
 #include "usart.h"
-#endif
+#endif //USART_ON
 #include "dbg_vrb.h"
 #ifdef CAN_ON
 #include "can.h"
 #include "can_app.h"
 extern const uint8_t can_filter[];
-#endif
+#endif // CAN_ON
+#ifdef UI_ON
+#include "ui.h"
+#endif // UI_ON
 
 typedef enum state_machine{
     STATE_INITIALIZING,
@@ -71,6 +74,13 @@ typedef struct battery_voltage
     uint16_t aux;
     uint16_t dir;
 }battery_voltage_t;
+
+typedef struct battery_current
+{
+    uint16_t in;
+    uint16_t out;
+}battery_current_t;
+ 
 
 typedef struct voltmeter_errors
 {
@@ -113,6 +123,7 @@ volatile error_flags_t error_flags;
 //volatile measurements_t measurements;
 
 volatile battery_voltage_t battery_voltage;
+volatile battery_current_t battery_current;
 volatile voltmeter_errors_t voltmeter_errors;
 volatile uint8_t machine_clk;
 volatile uint8_t machine_clk_divider;
@@ -120,6 +131,7 @@ volatile uint8_t total_errors;           // Contagem de ERROS
 
 // other variables
 volatile uint8_t led_clk_div;
+volatile uint8_t ui_clk_div;
 
 // ISRs
 ISR(TIMER2_COMPA_vect);

@@ -36,8 +36,7 @@
 #define SLEEP_ON
 #define UI_ON
 
-
-//#ifdef ADC_ON
+#ifdef ADC_ON
 // ADC CONFIGURATION
 // note that changing ADC_FREQUENCY may cause problems with avg_sum_samples
 #define ADC_FREQUENCY                       10000 // 20000
@@ -53,14 +52,22 @@
 #define FAKE_ADC                            1
 #endif // FAKE_ADC_ON
 
-//#endif //ADC_ON
+#endif //ADC_ON
 
+#define UI_FAKE_DATA
+#ifdef UI_ON
+#define UI_CLK_DIVIDER_VALUE  50
+#endif // UI_ON
 
 #ifdef MACHINE_ON
 // The machine frequency may not be superior of ADC_FREQUENCY/ADC_AVG_SIZE_10
 #define MACHINE_TIMER_FREQUENCY             120           //<! machine timer frequency in Hz
 #define MACHINE_TIMER_PRESCALER             1024          //<! machine timer prescaler
+#ifdef ADC_ON
 #define MACHINE_CLK_DIVIDER_VALUE           ((uint64_t)(uint32_t)MACHINE_TIMER_FREQUENCY*(uint32_t)ADC_AVG_SIZE_10)/(ADC_FREQUENCY)           //<! machine_run clock divider
+#else
+#define MACHINE_CLK_DIVIDER_VALUE           1
+#endif // ADC_ON 
 #define MACHINE_FREQUENCY                   (MACHINE_TIMER_FREQUENCY)/(MACHINE_CLK_DIVIDER_VALUE)
 
 // SCALE TO CONVERT ADC DEFINITIONS

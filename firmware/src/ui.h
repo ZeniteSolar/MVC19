@@ -28,10 +28,10 @@ void ui_clear(void);
 void ui_update(void);
 void ui_draw_layout(void);
 
-void update_battery_voltage_main(uint16_t num);
-void update_battery_voltage_auxiliary(uint16_t num);
-void update_battery_voltage_security(uint16_t num);
-void update_battery_current_input(uint16_t num);
-void update_battery_current_output(uint16_t num);
+void ui_update_battery_voltage_main(uint16_t num);
+void ui_update_battery_voltage_auxiliary(uint16_t num);
+void ui_update_battery_voltage_extra(uint16_t num);
+void ui_update_battery_current_input(uint16_t num);
+void ui_update_battery_current_output(uint16_t num);
 
 #endif /* ifndef _UI_H_ */
