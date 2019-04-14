@@ -23,11 +23,11 @@
 //#define VERBOSE_ON_ADC
 #define VERBOSE_ON_INIT
 #define VERBOSE_ON_ERROR
-#define VERBOSE_ON_DISPLAY
+//#define VERBOSE_ON_DISPLAY
 
 // MODULES ACTIVATION
 #define USART_ON
-//#define CAN_ON
+#define CAN_ON
 //#define CAN_DEPENDENT
 //#define ADC_ON
 #define MACHINE_ON
