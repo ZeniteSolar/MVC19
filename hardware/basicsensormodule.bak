@@ -1,5 +1,5 @@
 EESchema Schematic File Version 4
-LIBS:basicsensormodule-cache
+LIBS:_saved_basicsensormodule-cache
 EELAYER 26 0
 EELAYER END
 $Descr A4 11693 8268
@@ -131,7 +131,7 @@ F 3 "~" H 3525 3925 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L basicsensormodule-rescue:MountingHole-Mechanical H104
+L Mechanical:MountingHole H104
 U 1 1 5BE9AF15
 P 2950 5650
 F 0 "H104" H 3050 5700 50  0000 L CNN
@@ -142,7 +142,7 @@ F 3 "~" H 2950 5650 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L basicsensormodule-rescue:MountingHole-Mechanical H103
+L Mechanical:MountingHole H103
 U 1 1 5BE9BC53
 P 2950 5450
 F 0 "H103" H 3050 5500 50  0000 L CNN
@@ -153,7 +153,7 @@ F 3 "~" H 2950 5450 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L basicsensormodule-rescue:MountingHole-Mechanical H102
+L Mechanical:MountingHole H102
 U 1 1 5BE9BC79
 P 2950 5250
 F 0 "H102" H 3050 5300 50  0000 L CNN
@@ -164,7 +164,7 @@ F 3 "~" H 2950 5250 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L basicsensormodule-rescue:MountingHole-Mechanical H101
+L Mechanical:MountingHole H101
 U 1 1 5BE9BC9F
 P 2950 5050
 F 0 "H101" H 3050 5100 50  0000 L CNN

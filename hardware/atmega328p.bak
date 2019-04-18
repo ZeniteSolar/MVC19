@@ -1,5 +1,4 @@
 EESchema Schematic File Version 4
-LIBS:basicsensormodule-cache
 EELAYER 26 0
 EELAYER END
 $Descr A4 11693 8268
@@ -518,7 +517,7 @@ $EndComp
 Wire Wire Line
 	4550 2250 4550 2150
 $Comp
-L basicsensormodule-rescue:ATmega328P-PU-MCU_Microchip_ATmega U401
+L MCU_Microchip_ATmega:ATmega328P-PU U401
 U 1 1 59FE3414
 P 4350 3950
 F 0 "U401" H 3850 5400 50  0000 L BNN
