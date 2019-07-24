@@ -89,20 +89,26 @@ void can_app_extractor_msc19_3_state(can_t *msg)
     }
 }
 
+void can_app_extractor_msc19_4_state(can_t *msg)
+{
+    if(msg->data[CAN_SIGNATURE_BYTE] == CAN_SIGNATURE_MSC19_4){
+        if(msg->data[CAN_STATE_MSG_ERROR_BYTE]){
+            //ERROR!!!
+        }
+    }
+}
+
 void can_app_extractor_msc19_1_voltage(can_t *msg)
 {
     if(msg->data[CAN_SIGNATURE_BYTE] == CAN_SIGNATURE_MSC19_1){
         #ifdef CAN_DEPENDENT
+        voltmeter_errors.no_message_from_MSC19_1 = 0;
         can_app_checks_without_msc19_1_msg = 0;
         #endif
          
         HIGH_LOW(battery_voltage.main, msg->data[
             CAN_MSG_MSC19_ADC_AVG_BYTE_H], msg->data[
-            CAN_MSG_MSC19_ADC_AVG_BYTE_L] );
-
-        // testing...
-        VERBOSE_MSG_DISPLAY_TEST(usart_send_string("\nVmain: "));
-        VERBOSE_MSG_DISPLAY_TEST(usart_send_uint16(battery_voltage.main));   
+            CAN_MSG_MSC19_ADC_AVG_BYTE_L] ); 
     }
 }
 
@@ -111,15 +117,12 @@ void can_app_extractor_msc19_2_voltage(can_t *msg)
     if(msg->data[CAN_SIGNATURE_BYTE] == CAN_SIGNATURE_MSC19_2){
         #ifdef CAN_DEPENDENT
         can_app_checks_without_msc19_2_msg = 0;
+        voltmeter_errors.no_message_from_MSC19_2 = 0;
         #endif
          
         HIGH_LOW(battery_voltage.aux, msg->data[
             CAN_MSG_MSC19_ADC_AVG_BYTE_H], msg->data[
-            CAN_MSG_MSC19_ADC_AVG_BYTE_L] );
-
-        // testing...
-        VERBOSE_MSG_DISPLAY_TEST(usart_send_string("\nVaux: "));
-        VERBOSE_MSG_DISPLAY_TEST(usart_send_uint16(battery_voltage.aux));   
+            CAN_MSG_MSC19_ADC_AVG_BYTE_L] );  
     }
 }
 
@@ -129,36 +132,30 @@ void can_app_extractor_msc19_3_voltage(can_t *msg)
     {
         #ifdef CAN_DEPENDENT
         can_app_checks_without_msc19_3_msg = 0;
+        voltmeter_errors.no_message_from_MSC19_3 = 0;
         #endif
 
-        HIGH_LOW(battery_voltage.dir, msg->data[
+        HIGH_LOW(battery_voltage.extra, msg->data[
             CAN_MSG_MSC19_ADC_AVG_BYTE_H], msg->data[
             CAN_MSG_MSC19_ADC_AVG_BYTE_L] );
-
-        VERBOSE_MSG_DISPLAY_TEST(usart_send_string("\nVdir: "));
-        VERBOSE_MSG_DISPLAY_TEST(usart_send_uint16(battery_voltage.dir));
     }
 }
 
-/**
- * @brief extracts the specific MIC17 STATE message
- * @param *msg pointer to the message to be extracted
- */
-inline void can_app_extractor_mic17_state(can_t *msg)
+void can_app_extractor_msc19_4_data(can_t *msg)
 {
-    // TODO:
-    //  - se tiver em erro, desligar acionamento
-    if(msg->data[CAN_SIGNATURE_BYTE] == CAN_SIGNATURE_MIC17){
-        // zerar contador
-        if(msg->data[CAN_STATE_MSG_ERROR_BYTE]){
-            //ERROR!!!
-        }
-        /*if(contador == maximo)*/{
-            //ERROR!!!
-        }
+    if(msg->data[CAN_SIGNATURE_BYTE] == CAN_SIGNATURE_MSC19_4)
+    {
+        #ifdef CAN_DEPENDENT
+        can_app_checks_without_msc19_4_msg = 0;
+        voltmeter_errors.no_message_from_MSC19_4 = 0;
+        #endif
+
+        HIGH_LOW(battery_current.in, msg->data[
+            CAN_MSG_MSC19_ADC_AVG_BYTE_H], msg->data[
+            CAN_MSG_MSC19_ADC_AVG_BYTE_L] );
     }
 }
- 
+
 /**
  * @brief redirects a specific message extractor to a given message
  * @param *msg pointer to the message to be extracted
@@ -249,6 +246,33 @@ inline void can_app_msg_extractors_switch(can_t *msg)
         }
     } // CAN_SIGNATURE_MSC19_3
         
+    if(msg->data[CAN_SIGNATURE_BYTE] == CAN_SIGNATURE_MSC19_4){
+        switch(msg->id)
+        {
+            case CAN_FILTER_MSG_MSC19_STATE:
+            #ifdef USART_ON
+                VERBOSE_MSG_CAN_APP(usart_send_string(" got a state msg from MSC19_4: "));
+            #endif
+                VERBOSE_MSG_CAN_APP(can_app_print_msg(msg));
+                can_app_extractor_msc19_4_state(msg);
+                break;
+
+            case CAN_FILTER_MSG_MSC19_ADC:
+            #ifdef USART_ON
+                VERBOSE_MSG_CAN_APP(usart_send_string(" got a adc msg from MSC19_4"));
+            #endif
+                VERBOSE_MSG_CAN_APP(can_app_print_msg(msg));
+                can_app_extractor_msc19_4_data(msg);
+                break;
+
+            default:
+            #ifdef USART_ON
+                VERBOSE_MSG_CAN_APP(usart_send_string(" got a unknown msg from MSC19_4"));
+            #endif
+                VERBOSE_MSG_CAN_APP(can_app_print_msg(msg));
+                break;
+        }
+    } // CAN_SIGNATURE_MSC19_3
 }
 
 /**
@@ -270,7 +294,6 @@ inline void check_can(void)
 #endif
         can_app_checks_without_msc19_1_msg = 0;
         voltmeter_errors.no_message_from_MSC19_1 = 1;
-        VERBOSE_MSG_DISPLAY_TEST(usart_send_string("\nVmain: NO MESSAGE"));
     }
 
     if(can_app_checks_without_msc19_2_msg++ >= CAN_APP_CHECKS_WITHOUT_MSC19_MSG)
@@ -280,7 +303,6 @@ inline void check_can(void)
 #endif
         can_app_checks_without_msc19_2_msg = 0;
         voltmeter_errors.no_message_from_MSC19_2 = 1;
-        VERBOSE_MSG_DISPLAY_TEST(usart_send_string("\nVaux: NO MESSAGE"));
     }
 
     if(can_app_checks_without_msc19_3_msg++ >= CAN_APP_CHECKS_WITHOUT_MSC19_MSG)
@@ -289,22 +311,36 @@ inline void check_can(void)
         VERBOSE_MSG_CAN_APP(usart_send_string("too many cycles without MSC19_3 message.\n"));
 #endif
         can_app_checks_without_msc19_3_msg = 0;
-        voltmeter_errors.no_message_from_MSC19_2 = 1;
-        VERBOSE_MSG_DISPLAY_TEST(usart_send_string("\nVdir: NO MESSAGE"));
+        voltmeter_errors.no_message_from_MSC19_3 = 1;
     }
+    
+    if(can_app_checks_without_msc19_4_msg++ >= CAN_APP_CHECKS_WITHOUT_MSC19_MSG)
+    {
+#ifdef USART_ON
+        VERBOSE_MSG_CAN_APP(usart_send_string("too many cycles without MSC19_4 message.\n"));
 #endif
+        can_app_checks_without_msc19_4_msg = 0;
+        voltmeter_errors.no_message_from_MSC19_4 = 1;
+    }
 
+    if(can_app_checks_without_msc19_5_msg++ >= CAN_APP_CHECKS_WITHOUT_MSC19_MSG)
+    {
+#ifdef USART_ON
+        VERBOSE_MSG_CAN_APP(usart_send_string("too many cycles without MSC19_5 message.\n"));
+#endif
+        can_app_checks_without_msc19_5_msg = 0;
+        voltmeter_errors.no_message_from_MSC19_5 = 1;
+    }
+
+#endif
 
     if(can_check_message()){
     #ifdef LED_ON
-        cpl_led(LED1);    // Incluido para sinalizar entrada na função
+       // cpl_led(LED1);
     #endif
-        VERBOSE_MSG_DISPLAY_TEST(usart_send_string("\nchecking can"));
         can_t msg;
         if(can_get_message(&msg)){
             can_app_msg_extractors_switch(&msg);
         }
     }
-
 }
-

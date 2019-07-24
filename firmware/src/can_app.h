@@ -29,10 +29,18 @@ void can_app_extractor_mic17_msc(can_t *msg);
 
 void can_app_extractor_msc19_1_state(can_t *msg);
 void can_app_extractor_msc19_1_voltage(can_t *msg);
+
 void can_app_extractor_msc19_2_state(can_t *msg);
 void can_app_extractor_msc19_2_voltage(can_t *msg);
+
 void can_app_extractor_msc19_3_state(can_t *msg);
 void can_app_extractor_msc19_3_voltage(can_t *msg);
+
+void can_app_extractor_msc19_4_state(can_t *msg);
+void can_app_extractor_msc19_4_data(can_t *msg);
+
+void can_app_extractor_msc19_5_state(can_t *msg);
+void can_app_extractor_msc19_5_data(can_t *msg);
 
 void check_can(void);
 
@@ -44,10 +52,10 @@ void check_can(void);
 #define CAN_APP_SEND_ADC_CLK_DIV    1
 #endif
 
-uint32_t can_app_send_state_clk_div;
-
 uint8_t can_app_checks_without_msc19_1_msg;
 uint8_t can_app_checks_without_msc19_2_msg;
 uint8_t can_app_checks_without_msc19_3_msg;
+uint8_t can_app_checks_without_msc19_4_msg;
+uint8_t can_app_checks_without_msc19_5_msg;
 
 #endif /* ifndef CAN_APP_H */

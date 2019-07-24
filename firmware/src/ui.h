@@ -34,4 +34,10 @@ void ui_update_battery_voltage_extra(uint16_t num);
 void ui_update_battery_current_input(uint16_t num);
 void ui_update_battery_current_output(uint16_t num);
 
+void ui_update_no_communication_from_battery_main(void);
+void ui_update_no_communication_from_battery_auxiliary(void);
+void ui_update_no_communication_from_battery_extra(void);
+void ui_update_no_communication_from_current_input(void);
+void ui_update_no_communication_from_current_output(void);
+
 #endif /* ifndef _UI_H_ */

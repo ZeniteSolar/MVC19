@@ -72,7 +72,7 @@ typedef struct battery_voltage
 {
     uint16_t main;
     uint16_t aux;
-    uint16_t dir;
+    uint16_t extra;
 }battery_voltage_t;
 
 typedef struct battery_current
@@ -87,6 +87,8 @@ typedef struct voltmeter_errors
     uint8_t no_message_from_MSC19_1;
     uint8_t no_message_from_MSC19_2;
     uint8_t no_message_from_MSC19_3;
+    uint8_t no_message_from_MSC19_4;
+    uint8_t no_message_from_MSC19_5;
 }voltmeter_errors_t;
 
 // machine checks
@@ -127,7 +129,7 @@ volatile battery_current_t battery_current;
 volatile voltmeter_errors_t voltmeter_errors;
 volatile uint8_t machine_clk;
 volatile uint8_t machine_clk_divider;
-volatile uint8_t total_errors;           // Contagem de ERROS
+//volatile uint8_t total_errors;           // Contagem de ERROS
 
 // other variables
 volatile uint8_t led_clk_div;
