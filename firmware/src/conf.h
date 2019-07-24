@@ -54,7 +54,7 @@
 
 #endif //ADC_ON
 
-#define UI_FAKE_DATA
+//#define UI_FAKE_DATA
 #ifdef UI_ON
 #define UI_CLK_DIVIDER_VALUE  50
 #endif // UI_ON

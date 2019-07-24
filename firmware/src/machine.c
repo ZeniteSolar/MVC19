@@ -215,7 +215,7 @@ inline void task_error(void)
         led_clk_div = 0;
     }
 #endif
-
+/*
     total_errors++;         // incrementa a contagem de erros
     VERBOSE_MSG_ERROR(usart_send_string("The error code is: "));
     VERBOSE_MSG_ERROR(usart_send_uint16(error_flags.all));
@@ -237,12 +237,14 @@ inline void task_error(void)
         VERBOSE_MSG_ERROR(usart_send_string("The watchdog will reset the whole system.\n"));
         set_state_reset();
     }
-    
+    *
 #ifdef LED_ON
     cpl_led(LED2);
 #endif
     set_state_initializing();
+    
 }
+
                     
 /**
  * @brief reset error task just freezes the processor and waits for watchdog
@@ -295,10 +297,8 @@ inline void machine_run(void)
 {
     //print_infos();
     
-
     if(machine_clk){
         machine_clk = 0;
-//   #ifdef ADC_ON
             switch(state_machine){
                 case STATE_INITIALIZING:
                     task_initializing();
@@ -323,9 +323,7 @@ inline void machine_run(void)
                     task_reset();
                     break;
             }
-        }
-   // } 
-  // #endif /* ADC_ON */
+        } 
     
 }     
 
