@@ -38,8 +38,6 @@ void machine_init(void)
  
     set_machine_initial_state();
     set_state_initializing();
-    
-    set_led(LED1);
 } 
 
 /**
@@ -353,7 +351,7 @@ ISR(TIMER2_COMPA_vect)
         cpl_led(LED2);
         led_clk_div = 0;
     }
-#endif // LED_ON
+    #endif // LED_ON
 
     if(machine_clk_divider++ == MACHINE_CLK_DIVIDER_VALUE){
        /* if(machine_clk){

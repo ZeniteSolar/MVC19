@@ -39,7 +39,7 @@ void init(void)
     #ifdef CAN_ON
         VERBOSE_MSG_INIT(usart_send_string("CAN (500kbps)..."));
         #ifdef LED_ON
-            //set_led(LED2);
+        set_led(LED1);
         #endif  
         can_init(BITRATE_500_KBPS);
         //can_set_mode(LOOPBACK_MODE);

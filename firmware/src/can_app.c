@@ -98,6 +98,15 @@ void can_app_extractor_msc19_4_state(can_t *msg)
     }
 }
 
+void can_app_extractor_msc19_5_state(can_t *msg)
+{
+    if(msg->data[CAN_SIGNATURE_BYTE] == CAN_SIGNATURE_MSC19_5){
+        if(msg->data[CAN_STATE_MSG_ERROR_BYTE]){
+            //ERROR!!!
+        }
+    }
+}
+
 void can_app_extractor_msc19_1_voltage(can_t *msg)
 {
     if(msg->data[CAN_SIGNATURE_BYTE] == CAN_SIGNATURE_MSC19_1){
@@ -151,6 +160,21 @@ void can_app_extractor_msc19_4_data(can_t *msg)
         #endif
 
         HIGH_LOW(battery_current.in, msg->data[
+            CAN_MSG_MSC19_ADC_AVG_BYTE_H], msg->data[
+            CAN_MSG_MSC19_ADC_AVG_BYTE_L] );
+    }
+}
+
+void can_app_extractor_msc19_5_data(can_t *msg)
+{
+    if(msg->data[CAN_SIGNATURE_BYTE] == CAN_SIGNATURE_MSC19_5)
+    {
+        #ifdef CAN_DEPENDENT
+        can_app_checks_without_msc19_5_msg = 0;
+        voltmeter_errors.no_message_from_MSC19_5 = 0;
+        #endif
+
+        HIGH_LOW(battery_current.out, msg->data[
             CAN_MSG_MSC19_ADC_AVG_BYTE_H], msg->data[
             CAN_MSG_MSC19_ADC_AVG_BYTE_L] );
     }
@@ -272,7 +296,35 @@ inline void can_app_msg_extractors_switch(can_t *msg)
                 VERBOSE_MSG_CAN_APP(can_app_print_msg(msg));
                 break;
         }
-    } // CAN_SIGNATURE_MSC19_3
+    } // CAN_SIGNATURE_MSC19_4
+    
+    f(msg->data[CAN_SIGNATURE_BYTE] == CAN_SIGNATURE_MSC19_5){
+        switch(msg->id)
+        {
+            case CAN_FILTER_MSG_MSC19_STATE:
+            #ifdef USART_ON
+                VERBOSE_MSG_CAN_APP(usart_send_string(" got a state msg from MSC19_5: "));
+            #endif
+                VERBOSE_MSG_CAN_APP(can_app_print_msg(msg));
+                can_app_extractor_msc19_5_state(msg);
+                break;
+
+            case CAN_FILTER_MSG_MSC19_ADC:
+            #ifdef USART_ON
+                VERBOSE_MSG_CAN_APP(usart_send_string(" got a adc msg from MSC19_5"));
+            #endif
+                VERBOSE_MSG_CAN_APP(can_app_print_msg(msg));
+                can_app_extractor_msc19_5_data(msg);
+                break;
+
+            default:
+            #ifdef USART_ON
+                VERBOSE_MSG_CAN_APP(usart_send_string(" got a unknown msg from MSC19_5"));
+            #endif
+                VERBOSE_MSG_CAN_APP(can_app_print_msg(msg));
+                break;
+        }
+    } // CAN_SIGNATURE_MSC19_5
 }
 
 /**
@@ -335,9 +387,6 @@ inline void check_can(void)
 #endif
 
     if(can_check_message()){
-    #ifdef LED_ON
-       // cpl_led(LED1);
-    #endif
         can_t msg;
         if(can_get_message(&msg)){
             can_app_msg_extractors_switch(&msg);
