@@ -8,7 +8,7 @@
  */
 
 #ifndef CAN_IDS_H
-#define CAN_IDS_H 
+#define CAN_IDS_H
 
 //------------------------------------------------------------------------------
 
@@ -33,10 +33,11 @@
 
 #define CAN_SIGNATURE_MVC19             249
 
-#define CAN_SIGNATURE_MSC19_1           251
-#define CAN_SIGNATURE_MSC19_2           252
-#define CAN_SIGNATURE_MSC19_3           253
-#define CAN_SIGNATURE_MSC19_4           254
+#define CAN_SIGNATURE_MSC19_1           250
+#define CAN_SIGNATURE_MSC19_2           251
+#define CAN_SIGNATURE_MSC19_3           252
+#define CAN_SIGNATURE_MSC19_4           253
+#define CAN_SIGNATURE_MSC19_5           254
 
 #define CAN_SIGNATURE_SELF              CAN_SIGNATURE_MVC19
 
@@ -128,7 +129,7 @@
 
 // FILTERS FOR MESSAGES FROM MAD17:
 #define CAN_FILTER_MSG_MAD17_STATE      0b10000000000   //<! Informs about state and errors
- 
+
 //------------------------------------------------------------------------------
 
 // FILTERS FOR MESSAGES FROM MCC17:
@@ -141,7 +142,7 @@
 #define CAN_MSG_MCC17_MPPT_IPANEL_BYTE  2
 #define CAN_MSG_MCC17_MPPT_VPANEL_BYTE  3
 #define CAN_MSG_MCC17_MPPT_VBAT_BYTE    4
- 
+
 //------------------------------------------------------------------------------
 
 // FILTERS FOR MESSAGES FROM MSC19:
@@ -156,8 +157,8 @@
 #define CAN_MSG_MSC19_ADC_MIN_BYTE_H    4
 #define CAN_MSG_MSC19_ADC_MAX_BYTE_L    5
 #define CAN_MSG_MSC19_ADC_MAX_BYTE_H    6
- 
+
 //------------------------------------------------------------------------------
- 
+
 
 #endif /* ifndef CAN_IDS_H */

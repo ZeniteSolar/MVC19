@@ -31,7 +31,7 @@ void display_layout(void)
 {
     LCD_Line(0, 13, LCD_WIDTH, 13, 1);
     LCD_Line(LCD_WIDTH/2, 0, LCD_WIDTH/2, LCD_HEIGHT, 1);
-    
+
     display_send_string("BAT.", col2, line1);
     display_send_string("M", col1, line2);
     display_send_string("A", col1, line3);
@@ -66,7 +66,7 @@ void test_display(void)
     LCD_Font(75, 57, "2019", normal_font, 2, 1);
     display_update();
     _delay_ms(250);
-    
+
     LCD_ToggleInvert();
     display_update();
     _delay_ms(250);
@@ -86,7 +86,7 @@ void display_send_string(char *s, uint8_t x, uint8_t y)
 
 /**
 * @brief sends a number in ascii.
-* The number could be represent with left-filled with a defined FILL char in 
+* The number could be represent with left-filled with a defined FILL char in
 * a defined BASE. Note that the LEN is 6 because 2^16 have its maximum ascii
 * size represented with 5 chars + '\0' in the end.
 */
@@ -95,7 +95,7 @@ void display_send_uint8(uint8_t num, uint8_t x, uint8_t y)
     #define LEN      4              // length of the string w/ null terminator
     #define BASE    10              // string as a decimal base
     #define FILL    '0'             // character to fill non-used algarisms.
-    
+
     uint8_t i = LEN -1;             // index for each char of the string
     char str[LEN] = {FILL};         // ascii zero filled array
     str[i] = '\0';                  // adds string null terminator
@@ -104,7 +104,7 @@ void display_send_uint8(uint8_t num, uint8_t x, uint8_t y)
         num /= BASE;                // prepare the next
     }
     display_send_string(str, x, y);       // sends the string
-    
+
     #undef LEN
     #undef BASE
     #undef FILL
@@ -115,7 +115,7 @@ void display_send_int8(int8_t num, uint8_t x, uint8_t y)
     #define LEN     4              // length of the string w/ null terminator
     #define BASE    10              // string as a decimal base
     #define FILL    '0'             // character to fill non-used algarisms.
-    
+
     uint8_t i = LEN -1;             // index for each char of the string
     char str[LEN] = {FILL};         // ascii zero filled array
 
@@ -132,15 +132,15 @@ void display_send_int8(int8_t num, uint8_t x, uint8_t y)
         num /= BASE;                // prepare the next
     }
     display_send_string(str, x, y);         // sends the string
-    
+
     #undef LEN
     #undef BASE
-    #undef FILL    
+    #undef FILL
 }
 
 /**
  * @brief sends a number in ascii.
- * The number could be represent with left-filled with a defined FILL char in 
+ * The number could be represent with left-filled with a defined FILL char in
  * a defined BASE. Note that the LEN is 6 because 2^16 have its maximum ascii
  * size represented with 5 chars + '\0' in the end.
  */
@@ -149,7 +149,7 @@ void display_send_uint16(uint16_t num, uint8_t x, uint8_t y)
     #define LEN      6              // length of the string w/ null terminator
     #define BASE    10              // string as a decimal base
     #define FILL    '0'             // character to fill non-used algarisms.
-    
+
     uint8_t i = LEN -1;             // index for each char of the string
     char str[LEN] = {FILL};         // ascii zero filled array
     str[i] = '\0';                  // adds string null terminator
@@ -158,7 +158,7 @@ void display_send_uint16(uint16_t num, uint8_t x, uint8_t y)
         num /= BASE;                // prepare the next
     }
     display_send_string(str, x, y);       // sends the string
-    
+
     #undef LEN
     #undef BASE
     #undef FILL
@@ -169,7 +169,7 @@ void display_send_int16(int16_t num, uint8_t x, uint8_t y)
     #define LEN     7              // length of the string w/ null terminator
     #define BASE    10              // string as a decimal base
     #define FILL    '0'             // character to fill non-used algarisms.
-    
+
     uint8_t i = LEN -1;             // index for each char of the string
     char str[LEN] = {FILL};         // ascii zero filled array
 
@@ -186,15 +186,15 @@ void display_send_int16(int16_t num, uint8_t x, uint8_t y)
         num /= BASE;                // prepare the next
     }
     display_send_string(str, x, y);         // sends the string
-    
+
     #undef LEN
     #undef BASE
-    #undef FILL    
+    #undef FILL
 }
 
 /**
  * @brief sends a number in ascii.
- * The number could be represent with left-filled with a defined FILL char in 
+ * The number could be represent with left-filled with a defined FILL char in
  * a defined BASE. Note that the LEN is 11 because 2^32 have its maximum ascii
  * size represented with 10 chars + '\0' in the end.
  */
@@ -203,7 +203,7 @@ void display_send_uint32(uint32_t num, uint8_t x, uint8_t y)
     #define LEN     11              // length of the string w/ null terminator
     #define BASE    10              // string as a decimal base
     #define FILL    '0'             // character to fill non-used algarisms.
-    
+
     uint8_t i = LEN -1;             // index for each char of the string
     char str[LEN] = {FILL};         // ascii zero filled array
     str[i] = '\0';                  // adds string null terminator
@@ -212,7 +212,7 @@ void display_send_uint32(uint32_t num, uint8_t x, uint8_t y)
         num /= BASE;                // prepare the next
     }
     display_send_string(str, x, y);       // sends the string
-    
+
     #undef LEN
     #undef BASE
     #undef FILL
@@ -223,7 +223,7 @@ void display_send_int32(int32_t num, uint8_t x, uint8_t y)
     #define LEN     12              // length of the string w/ null terminator
     #define BASE    10              // string as a decimal base
     #define FILL    '0'             // character to fill non-used algarisms.
-    
+
     uint8_t i = LEN -1;             // index for each char of the string
     char str[LEN] = {FILL};         // ascii zero filled array
     char sign = ' ';
@@ -242,10 +242,8 @@ void display_send_int32(int32_t num, uint8_t x, uint8_t y)
     str[0] = sign;
 
     display_send_string(str, x, y);         // sends the string
-    
+
     #undef LEN
     #undef BASE
-    #undef FILL    
+    #undef FILL
 }
- 
-

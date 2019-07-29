@@ -8,7 +8,7 @@
  */
 
 #ifndef MACHINE_H
-#define MACHINE_H 
+#define MACHINE_H
 
 #include <avr/io.h>
 #include <avr/wdt.h>
@@ -80,7 +80,7 @@ typedef struct battery_current
     uint16_t in;
     uint16_t out;
 }battery_current_t;
- 
+
 
 typedef struct voltmeter_errors
 {
@@ -137,6 +137,5 @@ volatile uint8_t ui_clk_div;
 
 // ISRs
 ISR(TIMER2_COMPA_vect);
-ISR(PCINT2_vect);
 
 #endif /* ifndef MACHINE_H */

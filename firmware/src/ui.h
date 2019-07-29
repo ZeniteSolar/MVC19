@@ -40,4 +40,6 @@ void ui_update_no_communication_from_battery_extra(void);
 void ui_update_no_communication_from_current_input(void);
 void ui_update_no_communication_from_current_output(void);
 
+void ui_no_communication_with_mic();
+
 #endif /* ifndef _UI_H_ */

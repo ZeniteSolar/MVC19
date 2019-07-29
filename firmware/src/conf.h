@@ -1,7 +1,7 @@
 /**
  * @file conf.h
  *
- * @defgroup CONF Configurations 
+ * @defgroup CONF Configurations
  *
  * @brief General configuration of the system.
  *
@@ -27,7 +27,7 @@
 // MODULES ACTIVATION
 #define USART_ON
 #define CAN_ON
-#define CAN_DEPENDENT
+//#define CAN_DEPENDENT
 //#define ADC_ON
 #define MACHINE_ON
 #define LED_ON
@@ -66,7 +66,7 @@
 #define MACHINE_CLK_DIVIDER_VALUE           ((uint64_t)(uint32_t)MACHINE_TIMER_FREQUENCY*(uint32_t)ADC_AVG_SIZE_10)/(ADC_FREQUENCY)           //<! machine_run clock divider
 #else
 #define MACHINE_CLK_DIVIDER_VALUE           1
-#endif // ADC_ON 
+#endif // ADC_ON
 #define MACHINE_FREQUENCY                   (MACHINE_TIMER_FREQUENCY)/(MACHINE_CLK_DIVIDER_VALUE)
 
 // SCALE TO CONVERT ADC DEFINITIONS
@@ -84,9 +84,9 @@
 #define     set_led(y)              set_bit(LED_PORT, y)
 #define     clr_led(y)              clr_bit(LED_PORT, y)
 #else
-#define     cpl_led()               
-#define     set_led()               
-#define     clr_led()               
+#define     cpl_led()
+#define     set_led()
+#define     clr_led()
 #endif // LED_ON
 
 
@@ -94,7 +94,6 @@
 #define SPI_ON
 #define CAN_APP_SEND_STATE_FREQ     40//36000     //<! state msg frequency in Hz
 #define CAN_APP_SEND_ADC_FREQ       4//6000      //<! adc msg frequency in Hz
-#define CAN_APP_CHECKS_WITHOUT_MSC19_MSG  100
 
 
 // CANBUS DEFINITONS

@@ -10,7 +10,7 @@ void ui_init(void)
 
     ui_clear();
     ui_draw_layout();
-    ui_update();   
+    ui_update();
 }
 
 void ui_clear(void)
@@ -76,4 +76,12 @@ void ui_update_no_communication_from_current_input()
 void ui_update_no_communication_from_current_output()
 {
     display_send_string(" N.C.", col4, line3);
+}
+
+void ui_no_communication_with_mic()
+{
+  display_clear();
+  display_send_string("No communication", col1, line2);
+  display_send_string("   with MIC!", col2, line3);
+  display_update();
 }

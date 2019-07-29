@@ -1,7 +1,7 @@
 #include "machine.h"
 
 /**
- * @brief 
+ * @brief
  */
 void machine_init(void)
 {
@@ -35,10 +35,10 @@ void machine_init(void)
     OCR2A = MACHINE_TIMER_TOP;                       // OCR2A = TOP = fcpu/(N*2*f) -1
 
     TIMSK2 |=   (1 << OCIE2A);                      // Activates interruption
- 
+
     set_machine_initial_state();
     set_state_initializing();
-} 
+}
 
 /**
  * @brief set machine initial state
@@ -60,7 +60,7 @@ inline void set_state_error(void)
 
 /**
 * @brief set initializing state
-*/ 
+*/
 inline void set_state_initializing(void)
 {
     VERBOSE_MSG_MACHINE(usart_send_string("\n>>>INITIALIZING STATE\n"));
@@ -69,7 +69,7 @@ inline void set_state_initializing(void)
 
 /**
 * @brief set idle state
-*/ 
+*/
 inline void set_state_idle(void)
 {
     VERBOSE_MSG_MACHINE(usart_send_string("\n>>>IDLE STATE\n"));
@@ -78,7 +78,7 @@ inline void set_state_idle(void)
 
 /**
 * @brief set running state
-*/ 
+*/
 inline void set_state_running(void)
 {
     VERBOSE_MSG_MACHINE(usart_send_string("\n>>>RUNNING STATE\n"));
@@ -98,9 +98,9 @@ inline void set_state_reset(void)
  * @breif prints the configurations and definitions
  */
 inline void print_configurations(void)
-{    
+{
     VERBOSE_MSG_MACHINE(usart_send_string("CONFIGURATIONS:\n"));
-    
+
 #ifdef ADC_ON
     VERBOSE_MSG_MACHINE(usart_send_string("\nadc_f: "));
     VERBOSE_MSG_MACHINE(usart_send_uint16( ADC_FREQUENCY ));
@@ -131,7 +131,7 @@ inline void print_error_flags(void)
     //VERBOSE_MSG_MACHINE(usart_send_string(" errFl: "));
     //VERBOSE_MSG_MACHINE(usart_send_char(48+error_flags.no_canbus));
 }
- 
+
 /**
  * @brief Checks if the system is OK to run
  */
@@ -156,7 +156,7 @@ inline void task_idle(void)
     if(led_clk_div++ >= 60){
         cpl_led(LED2);
         led_clk_div = 0;
-    }        
+    }
 #endif
 
     set_state_running();
@@ -169,10 +169,8 @@ inline void task_idle(void)
 inline void task_running(void)
 {
 
-        
-    
 #ifdef UI_ON
-    if(ui_clk_div++ >= UI_CLK_DIVIDER_VALUE){        
+    if(ui_clk_div++ >= UI_CLK_DIVIDER_VALUE){
         ui_clear();
         ui_draw_layout();
 
@@ -188,7 +186,7 @@ inline void task_running(void)
         ui_update_no_communication_from_battery_main();
     else
         ui_update_battery_voltage_main(battery_voltage.main);
-    
+
     if(voltmeter_errors.no_message_from_MSC19_2 == 1)
         ui_update_no_communication_from_battery_auxiliary();
     else
@@ -197,12 +195,12 @@ inline void task_running(void)
         ui_update_no_communication_from_battery_extra();
     else
         ui_update_battery_voltage_extra(battery_voltage.extra);
-    
+
     if(voltmeter_errors.no_message_from_MSC19_4 == 1)
         ui_update_no_communication_from_current_input();
     else
         ui_update_battery_current_input(battery_current.in);
-    
+
     if(voltmeter_errors.no_message_from_MSC19_5 == 1)
         ui_update_no_communication_from_current_output();
     else
@@ -238,11 +236,11 @@ inline void task_error(void)
         VERBOSE_MSG_ERROR(usart_send_string("\t - No canbus communication with MIC17!\n"));
     if(!error_flags.all)
         VERBOSE_MSG_ERROR(usart_send_string("\t - Oh no, it was some unknown error.\n"));
- 
+
     VERBOSE_MSG_ERROR(usart_send_string("The error level is: "));
     VERBOSE_MSG_ERROR(usart_send_uint16(total_errors));
     VERBOSE_MSG_ERROR(usart_send_char('\n'));
-    
+
     if(total_errors < 2){
         VERBOSE_MSG_ERROR(usart_send_string("I will reset the machine state.\n"));
     }
@@ -255,15 +253,15 @@ inline void task_error(void)
     cpl_led(LED2);
 #endif
     set_state_initializing();
-    
+
 }
 
-                    
+
 /**
  * @brief reset error task just freezes the processor and waits for watchdog
  */
 inline void task_reset(void)
-{   
+{
 #ifndef WATCHDOG_ON
     //wdt_init();
 #endif
@@ -271,7 +269,12 @@ inline void task_reset(void)
     cli();  // disable interrupts
 
     VERBOSE_MSG_ERROR(usart_send_string("WAITING FOR A RESET!\n"));
-    for(;;);
+    for(;;)
+    {
+      clr_led(LED2);
+      cpl_led(LED1);
+      _delay_ms(100);
+    }
 }
 
 void print_infos(void)
@@ -286,7 +289,7 @@ void print_infos(void)
             //print_error_flags();
             break;
         case 2:
-            //print_control_others(); 
+            //print_control_others();
         default:
             //VERBOSE_MSG_MACHINE(usart_send_char('\n'));
             i = 0;
@@ -309,7 +312,7 @@ inline void reset_measurements(void)
 inline void machine_run(void)
 {
     //print_infos();
-    
+
     if(machine_clk){
         machine_clk = 0;
             switch(state_machine){
@@ -325,8 +328,8 @@ inline void machine_run(void)
                     task_running();
                     #ifdef CAN_ON
                         can_app_task();
-                    #endif /* CAN_ON */   
-                    
+                    #endif /* CAN_ON */
+
                     break;
                 case STATE_ERROR:
                     task_error();
@@ -336,23 +339,21 @@ inline void machine_run(void)
                     task_reset();
                     break;
             }
-        } 
-    
-}     
+        }
+
+}
 
 /**
 * @brief ISR para ações de controle
 */
 ISR(TIMER2_COMPA_vect)
 {
-
-    #ifdef LED_ON
-    if(led_clk_div++ >= 100){
+#ifdef LED_ON
+    if(led_clk_div++ >= 50){
         cpl_led(LED2);
         led_clk_div = 0;
     }
-    #endif // LED_ON
-
+#endif // LED_ON
     if(machine_clk_divider++ == MACHINE_CLK_DIVIDER_VALUE){
        /* if(machine_clk){
             for(;;){
@@ -364,4 +365,3 @@ ISR(TIMER2_COMPA_vect)
         machine_clk_divider = 0;
     }
 }
-
