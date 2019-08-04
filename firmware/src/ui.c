@@ -78,6 +78,34 @@ void ui_update_no_communication_from_current_output()
     display_send_string(" N.C.", col4, line3);
 }
 
+void ui_cap_charging()
+{
+    display_clear();
+    display_send_string("  CAP ", col2, line3);
+    display_send_string("CHARGING", col2, line4);
+    display_update();
+}
+
+void ui_boat_on()
+{
+    display_clear();
+    display_send_string("   BOAT ON!", col2, line2);
+    display_update();
+    _delay_ms(500);
+    LCD_Fill(1);
+    display_update();
+    display_layout();
+    display_update();
+}
+
+void ui_boat_off()
+{
+    display_clear();
+    display_send_string("   BOAT OFF!", col2, line2);
+    display_update();
+    _delay_ms(250);
+}
+
 void ui_no_communication_with_mic()
 {
   display_clear();

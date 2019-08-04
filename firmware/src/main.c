@@ -9,6 +9,15 @@ void init(void)
         VERBOSE_MSG_INIT(usart_send_string("\n\n\nUSART... OK!\n"));
     #endif
 
+    #ifdef LED_ON
+        set_bit(LED_DDR, LED1);                      // LED como saída
+        set_bit(LED_DDR, LED2);                      // LED como saída
+        set_led(LED1);
+        VERBOSE_MSG_INIT(usart_send_string("LED... OK!\n"));
+    #else
+        VERBOSE_MSG_INIT(usart_send_string("LED... OFF!\n"));
+    #endif
+
     #ifdef UI_ON
         VERBOSE_MSG_INIT(usart_send_string("UI..."));
         ui_init();
@@ -38,9 +47,6 @@ void init(void)
 
     #ifdef CAN_ON
         VERBOSE_MSG_INIT(usart_send_string("CAN (500kbps)..."));
-        #ifdef LED_ON
-        set_led(LED1);
-        #endif  
         can_init(BITRATE_500_KBPS);
         //can_set_mode(LOOPBACK_MODE);
         VERBOSE_MSG_INIT(usart_send_string(" OK!\n"));
@@ -67,9 +73,9 @@ void init(void)
         wdt_reset();
     #endif
 
-    #ifdef SLEEP_ON 
+    #ifdef SLEEP_ON
         VERBOSE_MSG_INIT(usart_send_string("SLEEP..."));
-        sleep_init(); 
+        sleep_init();
         VERBOSE_MSG_INIT(usart_send_string(" OK!\n"));
     #else
         VERBOSE_MSG_INIT(usart_send_string("SLEEP... OFF!\n"));
@@ -90,22 +96,14 @@ void init(void)
     #ifdef WATCHDOG_ON
         wdt_reset();
     #endif
-	
-    #ifdef LED_ON
-        set_bit(LED_DDR, LED1);                      // LED como saída
-        set_bit(LED_DDR, LED2);                      // LED como saída
-        VERBOSE_MSG_INIT(usart_send_string("LED... OK!\n"));
-    #else
-        VERBOSE_MSG_INIT(usart_send_string("LED... OFF!\n"));
-    #endif
-
-    #ifdef WATCHDOG_ON
-        wdt_reset();
-    #endif
 
     #ifdef MACHINE_ON
         print_configurations();
     #endif // MACHINE_ON
+
+    #ifdef WATCHDOG_ON
+        wdt_reset();
+    #endif
 
     sei();
 }
@@ -113,23 +111,23 @@ void init(void)
 int main(void)
 {
     init();
-   
+
 	for(;;){
-	#ifdef WATCHDOG_ON
+	  #ifdef WATCHDOG_ON
         wdt_reset();
-	#endif
+	  #endif
 
     #ifdef MACHINE_ON
         machine_run();
     #endif
 
-	#ifdef SLEEP_ON
-        sleep_mode();   
-	#endif
+	  #ifdef SLEEP_ON
+        sleep_mode();
+   	#endif
 	}
 }
 
-         
+
 /**
  * @brief se em debug, fica chaveando os pinos de debugs até o reset do watchdog
  */
@@ -147,4 +145,3 @@ ISR(BADISR_vect)
         #endif
     }
 }
-

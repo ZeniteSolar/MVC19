@@ -13,6 +13,7 @@
 #include <avr/io.h>
 #include <avr/wdt.h>
 #include <avr/interrupt.h>
+#include <util/delay.h>
 
 #include "conf.h"
 
@@ -47,6 +48,8 @@ typedef enum state_machine{
 typedef union system_flags{
     struct{
         uint8_t     none          :1;
+        uint8_t     cap_charging  :1;
+        uint8_t     boat_on       :1;
     };
     uint8_t   all;
 } system_flags_t;
@@ -129,7 +132,7 @@ volatile battery_current_t battery_current;
 volatile voltmeter_errors_t voltmeter_errors;
 volatile uint8_t machine_clk;
 volatile uint8_t machine_clk_divider;
-//volatile uint8_t total_errors;           // Contagem de ERROS
+volatile uint8_t total_errors;           // Contagem de ERROS
 
 // other variables
 volatile uint8_t led_clk_div;

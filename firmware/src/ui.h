@@ -22,6 +22,7 @@
 #include "dbg_vrb.h"
 #include "usart.h"
 #include "display.h"
+#include <util/delay.h>
 
 void ui_init(void);
 void ui_clear(void);
@@ -40,6 +41,9 @@ void ui_update_no_communication_from_battery_extra(void);
 void ui_update_no_communication_from_current_input(void);
 void ui_update_no_communication_from_current_output(void);
 
+void ui_cap_charging();
+void ui_boat_on();
+void ui_boat_off();
 void ui_no_communication_with_mic();
 
 #endif /* ifndef _UI_H_ */

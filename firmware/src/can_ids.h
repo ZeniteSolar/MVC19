@@ -1,11 +1,11 @@
 /**
- * @file can_ids.h
- *
- * @defgroup CANAPP    Ids for can application
- *
- * @brief Ids for canbus application
- *
- */
+* @file can_ids.h
+*
+* @defgroup CANAPP    Ids for can application
+*
+* @brief Ids for canbus application
+*
+*/
 
 #ifndef CAN_IDS_H
 #define CAN_IDS_H
@@ -52,16 +52,14 @@
 #define CAN_MASK_MCC17                  0b11111111111   //<! Mask for MCC17
 #define CAN_MASK_MSC19                  0b11111111111   //<! Mask for MSC19
 
-//------------------------------------------------------------------------------
-
 // FILTERS FOR MESSAGES FROM MIC17 :
 #define CAN_FILTER_MSG_MIC17_STATE      0b00000001000   //<! Informs about state and errors
 #define CAN_FILTER_MSG_MIC17_MOTOR      0b00000001001   //<! Informs about motor controls.
 #define CAN_FILTER_MSG_MIC17_PUMPS      0b00000001010   //<! Informs about pumps controls.
-#define CAN_FILTER_MSG_MIC17_MPPTS      0b00000001011   //<! Informs about mppts controls.
+#define CAN_FILTER_MSG_MIC17_MPPTS    	0b00000001011   //<! Informs about mppts controls.
 #define CAN_FILTER_MSG_MIC17_MCS        0b00000001100   //<! Informs about boat_on to mcs.
 
-// MESSAGES FROM MIC17 TO MAM17:
+// MESSAGES FROM MIC17 TO MAM17:4
 #define CAN_LENGTH_MSG_MIC17_MOTOR          4
 #define CAN_MSG_MIC17_MOTOR_MOTOR_ON_BYTE   1
 #define CAN_MSG_MIC17_MOTOR_MOTOR_ON_BIT    0
@@ -115,15 +113,41 @@
 //------------------------------------------------------------------------------
 
 // FILTERS FOR MESSAGES FROM MCS17:
-#define CAN_FILTER_MSG_MCS17_STATE      0b00100000000   //<! Informs about state and errors
-#define CAN_FILTER_MSG_MCS17_BOAT_ON    0b00100000001   //<! Informs about bat, cap and main relay
+#define CAN_FILTER_MSG_MCS19_STATE      0b00100000000   //<! Informs about state and errors and main relay
+// #define CAN_FILTER_MSG_MCS17_BOAT_ON    0b00100000001   //<! Informs about bat, cap and main relay
+#define CAN_FILTER_MSG_MCS19_BAT    0b00100000010   //<! Informs about bat
+#define CAN_FILTER_MSG_MCS19_CAP    0b00100000011   //<! Informs about cap
+#define CAN_FILTER_MSG_MCS19_RELAY  0b00100000100   //<! Informs about main relay and charging relay
 
 // MCS17 :
-#define CAN_LENGTH_MSG_MCS17_BOAT_ON    4
-#define CAN_MSG_MCS17_VBAT_BYTE         1
-#define CAN_MSG_MCS17_VCAP_BYTE         2
-#define CAN_MSG_MCS17_MAIN_RELAY_BYTE   3
-#define CAN_MSG_MCS17_MAIN_RELAY_BIT    0
+// #define CAN_LENGTH_MSG_MCS17_BOAT_ON    4
+// #define CAN_MSG_MCS17_VBAT_BYTE         1
+// #define CAN_MSG_MCS17_VCAP_BYTE         2
+// #define CAN_MSG_MCS17_MAIN_RELAY_BYTE   3
+// #define CAN_MSG_MCS17_MAIN_RELAY_BIT    0
+
+#define CAN_LENGTH_MSG_MCS19_RELAY		3
+#define CAN_MSG_MCS19_MAIN_RELAY_BYTE	1
+#define CAN_MSG_MCS19_MAIN_RELAY_BIT	0
+#define CAN_MSG_MCS19_CHARGE_RELAY_BYTE	2
+#define CAN_MSG_MCS19_CHARGE_RELAY_BIT	0
+
+#define CAN_LENGTH_MSG_MCS19_BAT        7
+#define CAN_MSG_MCS19_BAT_AVG_BYTE_L    1
+#define CAN_MSG_MCS19_BAT_AVG_BYTE_H    2
+#define CAN_MSG_MCS19_BAT_MIN_BYTE_L    3
+#define CAN_MSG_MCS19_BAT_MIN_BYTE_H    4
+#define CAN_MSG_MCS19_BAT_MAX_BYTE_L    5
+#define CAN_MSG_MCS19_BAT_MAX_BYTE_H    6
+
+#define CAN_LENGTH_MSG_MCS19_CAP        7
+#define CAN_MSG_MCS19_CAP_AVG_BYTE_L    1
+#define CAN_MSG_MCS19_CAP_AVG_BYTE_H    2
+#define CAN_MSG_MCS19_CAP_MIN_BYTE_L    3
+#define CAN_MSG_MCS19_CAP_MIN_BYTE_H    4
+#define CAN_MSG_MCS19_CAP_MAX_BYTE_L    5
+#define CAN_MSG_MCS19_CAP_MAX_BYTE_H    6
+
 
 //------------------------------------------------------------------------------
 
@@ -158,7 +182,6 @@
 #define CAN_MSG_MSC19_ADC_MAX_BYTE_L    5
 #define CAN_MSG_MSC19_ADC_MAX_BYTE_H    6
 
-//------------------------------------------------------------------------------
+//---------------------------------------
 
-
-#endif /* ifndef CAN_IDS_H */
+#endif

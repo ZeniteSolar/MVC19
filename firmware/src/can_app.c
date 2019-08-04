@@ -170,17 +170,58 @@ void can_app_extractor_msc19_5_data(can_t *msg)
     }
 }
 
+void can_app_extractor_mcs_state(can_t *msg)
+{
+
+}
+
+void can_app_extractor_mic17_mcs(can_t *msg)
+{
+    if(msg->data[CAN_SIGNATURE_BYTE] == CAN_SIGNATURE_MIC17)
+    {
+        if(msg->data[CAN_MSG_MIC17_MCS_BOAT_ON_BYTE] == 0xFF){
+            system_flags.boat_on = 1;
+        }else if(msg->data[CAN_MSG_MIC17_MCS_BOAT_ON_BYTE] == 0x00){
+            system_flags.boat_on = 0;
+        }
+    }
+}
+
 /**
  * @brief redirects a specific message extractor to a given message
  * @param *msg pointer to the message to be extracted
  */
 inline void can_app_msg_extractors_switch(can_t *msg)
 {
-    VERBOSE_MSG_DISPLAY_TEST(usart_send_string("\nextractor"));
 
     if(msg->data[CAN_SIGNATURE_BYTE] == CAN_SIGNATURE_MIC17){
-      can_app_checks_without_mic17_msg = 0;
-    }
+        can_app_checks_without_mic17_msg = 0;
+        switch(msg->id)
+        {
+            case CAN_FILTER_MSG_MIC17_STATE:
+            #ifdef USART_ON
+                VERBOSE_MSG_CAN_APP(usart_send_string(" got a state msg from MCS: "));
+            #endif
+                VERBOSE_MSG_CAN_APP(can_app_print_msg(msg));
+                can_app_extractor_mcs_state(msg);
+                break;
+
+            case CAN_FILTER_MSG_MIC17_MCS:
+            #ifdef USART_ON
+                VERBOSE_MSG_CAN_APP(usart_send_string(" got a boat msg from MCS: "));
+            #endif
+                VERBOSE_MSG_CAN_APP(can_app_print_msg(msg));
+                can_app_extractor_mic17_mcs(msg);
+                break;
+
+            default:
+            #ifdef USART_ON
+                VERBOSE_MSG_CAN_APP(usart_send_string(" got a unknown msg from MCS"));
+            #endif
+                VERBOSE_MSG_CAN_APP(can_app_print_msg(msg));
+                break;
+        }
+    } // CAN_SIGNATURE_MCS17
 
     if(msg->data[CAN_SIGNATURE_BYTE] == CAN_SIGNATURE_MSC19_1){
         switch(msg->id){

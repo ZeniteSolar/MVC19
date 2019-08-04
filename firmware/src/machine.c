@@ -133,6 +133,55 @@ inline void print_error_flags(void)
 }
 
 /**
+ * @brief Exibe no display as informaçoes da bateria
+ */
+void display_battery_info(void)
+{
+  #ifdef UI_ON
+      if(ui_clk_div++ >= UI_CLK_DIVIDER_VALUE){
+          ui_clear();
+          ui_draw_layout();
+
+  #ifdef UI_FAKE_DATA
+      static uint16_t fake_data = 0;
+      ui_update_battery_voltage_main(fake_data++);
+      ui_update_battery_voltage_auxiliary(fake_data++);
+      ui_update_battery_voltage_extra(fake_data++);
+      ui_update_battery_current_input(fake_data++);
+      ui_update_battery_current_output(fake_data++);
+  #else
+      if(voltmeter_errors.no_message_from_MSC19_1)
+          ui_update_no_communication_from_battery_main();
+      else
+          ui_update_battery_voltage_main(battery_voltage.main);
+
+      if(voltmeter_errors.no_message_from_MSC19_2)
+          ui_update_no_communication_from_battery_auxiliary();
+      else
+          ui_update_battery_voltage_auxiliary(battery_voltage.aux);
+      if(voltmeter_errors.no_message_from_MSC19_3)
+          ui_update_no_communication_from_battery_extra();
+      else
+          ui_update_battery_voltage_extra(battery_voltage.extra);
+
+      if(voltmeter_errors.no_message_from_MSC19_4)
+          ui_update_no_communication_from_current_input();
+      else
+          ui_update_battery_current_input(battery_current.in);
+
+      if(voltmeter_errors.no_message_from_MSC19_5)
+          ui_update_no_communication_from_current_output();
+      else
+          ui_update_battery_current_output(battery_current.out);
+
+  #endif
+          ui_update();
+          ui_clk_div = 0;
+      }
+  #endif // UI_ON
+}
+
+/**
  * @brief Checks if the system is OK to run
  */
 inline void task_initializing(void)
@@ -153,66 +202,41 @@ inline void task_initializing(void)
 inline void task_idle(void)
 {
 #ifdef LED_ON
-    if(led_clk_div++ >= 60){
-        cpl_led(LED2);
+    if(led_clk_div++ >= 100){
+        cpl_led(LED1);
         led_clk_div = 0;
     }
 #endif
 
-    set_state_running();
-}
+    if(system_flags.boat_on)
+    {
+      ui_boat_on();
+      set_state_running();
+    }
 
+    display_battery_info();
+}
 
 /**
  * @brief running task checks the system and apply the control action to pwm.
  */
 inline void task_running(void)
 {
-
-#ifdef UI_ON
-    if(ui_clk_div++ >= UI_CLK_DIVIDER_VALUE){
-        ui_clear();
-        ui_draw_layout();
-
-#ifdef UI_FAKE_DATA
-    static uint16_t fake_data = 0;
-    ui_update_battery_voltage_main(fake_data++);
-    ui_update_battery_voltage_auxiliary(fake_data++);
-    ui_update_battery_voltage_extra(fake_data++);
-    ui_update_battery_current_input(fake_data++);
-    ui_update_battery_current_output(fake_data++);
-#else
-    if(voltmeter_errors.no_message_from_MSC19_1 == 1)
-        ui_update_no_communication_from_battery_main();
-    else
-        ui_update_battery_voltage_main(battery_voltage.main);
-
-    if(voltmeter_errors.no_message_from_MSC19_2 == 1)
-        ui_update_no_communication_from_battery_auxiliary();
-    else
-        ui_update_battery_voltage_auxiliary(battery_voltage.aux);
-    if(voltmeter_errors.no_message_from_MSC19_3 == 1)
-        ui_update_no_communication_from_battery_extra();
-    else
-        ui_update_battery_voltage_extra(battery_voltage.extra);
-
-    if(voltmeter_errors.no_message_from_MSC19_4 == 1)
-        ui_update_no_communication_from_current_input();
-    else
-        ui_update_battery_current_input(battery_current.in);
-
-    if(voltmeter_errors.no_message_from_MSC19_5 == 1)
-        ui_update_no_communication_from_current_output();
-    else
-        ui_update_battery_current_output(battery_current.out);
-
-#endif
-        ui_update();
-        ui_clk_div = 0;
+#ifdef LED_ON
+    if(led_clk_div++ >= 50){
+        cpl_led(LED1);
+        led_clk_div = 0;
     }
-#endif // UI_ON
-}
+#endif
 
+    if(!system_flags.boat_on)
+    {
+        ui_boat_off();
+        set_state_idle();
+    }
+
+    display_battery_info();
+}
 
 /**
  * @brief error task checks the system and tries to medicine it.
@@ -248,9 +272,9 @@ inline void task_error(void)
         VERBOSE_MSG_ERROR(usart_send_string("The watchdog will reset the whole system.\n"));
         set_state_reset();
     }
-    */
+*/
 #ifdef LED_ON
-    cpl_led(LED2);
+    cpl_led(LED1);
 #endif
     set_state_initializing();
 
@@ -271,7 +295,7 @@ inline void task_reset(void)
     VERBOSE_MSG_ERROR(usart_send_string("WAITING FOR A RESET!\n"));
     for(;;)
     {
-      clr_led(LED2);
+      cpl_led(LED2);
       cpl_led(LED1);
       _delay_ms(100);
     }
@@ -297,15 +321,6 @@ void print_infos(void)
     }
 }
 
-/*
-inline void reset_measurements(void)
-{
-    measurements.adc0_avg_sum_count = 0;
-    measurements.adc0_avg_sum = 0;
-    measurements.adc0_max = 0;
-    measurements.adc0_min = 1023;
-}*/
-
 /**
  * @brief this is the machine state itself.
  */
@@ -322,6 +337,9 @@ inline void machine_run(void)
                     break;
                 case STATE_IDLE:
                     task_idle();
+                    #ifdef CAN_ON
+                        can_app_task();
+                    #endif /* CAN_ON */
 
                     break;
                 case STATE_RUNNING:
@@ -348,12 +366,6 @@ inline void machine_run(void)
 */
 ISR(TIMER2_COMPA_vect)
 {
-#ifdef LED_ON
-    if(led_clk_div++ >= 50){
-        cpl_led(LED2);
-        led_clk_div = 0;
-    }
-#endif // LED_ON
     if(machine_clk_divider++ == MACHINE_CLK_DIVIDER_VALUE){
        /* if(machine_clk){
             for(;;){

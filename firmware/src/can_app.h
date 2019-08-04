@@ -38,6 +38,9 @@ void can_app_extractor_msc19_4_data(can_t *msg);
 void can_app_extractor_msc19_5_state(can_t *msg);
 void can_app_extractor_msc19_5_data(can_t *msg);
 
+void can_app_extractor_mcs_state(can_t *msg);
+void can_app_extractor_mic17_mcs(can_t *msg);
+
 void check_can(void);
 
 #ifdef CAN_ON
