@@ -40,6 +40,7 @@ extern const uint8_t can_filter[];
 typedef enum state_machine{
     STATE_INITIALIZING,
     STATE_IDLE,
+    STATE_CAP_CHARGING,
     STATE_RUNNING,
     STATE_ERROR,
     STATE_RESET,
@@ -49,6 +50,7 @@ typedef union system_flags{
     struct{
         uint8_t     none          :1;
         uint8_t     cap_charging  :1;
+        uint8_t     charge_failed :1;
         uint8_t     boat_on       :1;
     };
     uint8_t   all;
@@ -106,6 +108,7 @@ void print_error_flags(void);
 // machine tasks
 void task_initializing(void);
 void task_idle(void);
+void task_cap_charging();
 void task_running(void);
 void task_error(void);
 void task_reset(void);
@@ -117,8 +120,11 @@ void machine_run(void);
 void set_state_error(void);
 void set_state_initializing(void);
 void set_state_idle(void);
+void set_state_cap_charging(void);
 void set_state_running(void);
 void set_state_reset(void);
+
+void ui_battery_info(void);
 
 // machine variables
 volatile state_machine_t state_machine;
@@ -137,6 +143,8 @@ volatile uint8_t total_errors;           // Contagem de ERROS
 // other variables
 volatile uint8_t led_clk_div;
 volatile uint8_t ui_clk_div;
+volatile uint8_t ui_clk_div_2;
+
 
 // ISRs
 ISR(TIMER2_COMPA_vect);

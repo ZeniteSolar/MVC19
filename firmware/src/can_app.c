@@ -38,7 +38,6 @@ inline void can_app_task(void)
         can_app_send_state();
         can_app_send_state_clk_div = 0;
     }
-
 */
 }
 
@@ -62,52 +61,52 @@ inline void can_app_send_state(void)
 
 void can_app_extractor_msc19_1_state(can_t *msg)
 {
-    if(msg->data[CAN_SIGNATURE_BYTE] == CAN_SIGNATURE_MSC19_1){
-        if(msg->data[CAN_STATE_MSG_ERROR_BYTE]){
-            //ERROR!!!
-        }
-    }
+    // if(msg->data[CAN_SIGNATURE_BYTE] == CAN_SIGNATURE_MSC19_1){
+    //     if(msg->data[CAN_STATE_MSG_ERROR_BYTE]){
+    //         //ERROR!!!
+    //     }
+    // }
 
 }
 
 void can_app_extractor_msc19_2_state(can_t *msg)
 {
-    if(msg->data[CAN_SIGNATURE_BYTE] == CAN_SIGNATURE_MSC19_2){
-        if(msg->data[CAN_STATE_MSG_ERROR_BYTE]){
-            //ERROR!!!
-        }
-    }
+    // if(msg->data[CAN_SIGNATURE_BYTE] == CAN_SIGNATURE_MSC19_2){
+    //     if(msg->data[CAN_STATE_MSG_ERROR_BYTE]){
+    //         //ERROR!!!
+    //     }
+    // }
 
 }
 
 void can_app_extractor_msc19_3_state(can_t *msg)
 {
-    if(msg->data[CAN_SIGNATURE_BYTE] == CAN_SIGNATURE_MSC19_3){
-        if(msg->data[CAN_STATE_MSG_ERROR_BYTE]){
-            //ERROR!!!
-        }
-    }
+    // if(msg->data[CAN_SIGNATURE_BYTE] == CAN_SIGNATURE_MSC19_3){
+    //     if(msg->data[CAN_STATE_MSG_ERROR_BYTE]){
+    //         //ERROR!!!
+    //     }
+    // }
 }
 
 void can_app_extractor_msc19_4_state(can_t *msg)
 {
-    if(msg->data[CAN_SIGNATURE_BYTE] == CAN_SIGNATURE_MSC19_4){
-        if(msg->data[CAN_STATE_MSG_ERROR_BYTE]){
-            //ERROR!!!
-        }
-    }
+//     if(msg->data[CAN_SIGNATURE_BYTE] == CAN_SIGNATURE_MSC19_4){
+//         if(msg->data[CAN_STATE_MSG_ERROR_BYTE]){
+//             //ERROR!!!
+//         }
+//     }
 }
 
 void can_app_extractor_msc19_5_state(can_t *msg)
 {
-    if(msg->data[CAN_SIGNATURE_BYTE] == CAN_SIGNATURE_MSC19_5){
-        if(msg->data[CAN_STATE_MSG_ERROR_BYTE]){
-            //ERROR!!!
-        }
-    }
+    // if(msg->data[CAN_SIGNATURE_BYTE] == CAN_SIGNATURE_MSC19_5){
+    //     if(msg->data[CAN_STATE_MSG_ERROR_BYTE]){
+    //         //ERROR!!!
+    //     }
+    // }
 }
 
-void can_app_extractor_msc19_1_voltage(can_t *msg)
+void can_app_extractor_msc19_1_adc(can_t *msg)
 {
     if(msg->data[CAN_SIGNATURE_BYTE] == CAN_SIGNATURE_MSC19_1){
         voltmeter_errors.no_message_from_MSC19_1 = 0;
@@ -119,7 +118,7 @@ void can_app_extractor_msc19_1_voltage(can_t *msg)
     }
 }
 
-void can_app_extractor_msc19_2_voltage(can_t *msg)
+void can_app_extractor_msc19_2_adc(can_t *msg)
 {
     if(msg->data[CAN_SIGNATURE_BYTE] == CAN_SIGNATURE_MSC19_2){
         can_app_checks_without_msc19_2_msg = 0;
@@ -131,7 +130,7 @@ void can_app_extractor_msc19_2_voltage(can_t *msg)
     }
 }
 
-void can_app_extractor_msc19_3_voltage(can_t *msg)
+void can_app_extractor_msc19_3_adc(can_t *msg)
 {
     if(msg->data[CAN_SIGNATURE_BYTE] == CAN_SIGNATURE_MSC19_3)
     {
@@ -144,7 +143,7 @@ void can_app_extractor_msc19_3_voltage(can_t *msg)
     }
 }
 
-void can_app_extractor_msc19_4_data(can_t *msg)
+void can_app_extractor_msc19_4_adc(can_t *msg)
 {
     if(msg->data[CAN_SIGNATURE_BYTE] == CAN_SIGNATURE_MSC19_4)
     {
@@ -157,7 +156,7 @@ void can_app_extractor_msc19_4_data(can_t *msg)
     }
 }
 
-void can_app_extractor_msc19_5_data(can_t *msg)
+void can_app_extractor_msc19_5_adc(can_t *msg)
 {
     if(msg->data[CAN_SIGNATURE_BYTE] == CAN_SIGNATURE_MSC19_5)
     {
@@ -172,18 +171,39 @@ void can_app_extractor_msc19_5_data(can_t *msg)
 
 void can_app_extractor_mcs_state(can_t *msg)
 {
-
+    // if(msg->data[CAN_SIGNATURE_BYTE] == CAN_SIGNATURE_MCS17){
+    //     if(msg->data[CAN_STATE_MSG_ERROR_BYTE] == 0xFF){
+    //       system_flags.charge_failed = 1;
+    //     }
+    //     else if(msg->data[CAN_STATE_MSG_ERROR_BYTE] == 0x00)
+    //     {
+    //       system_flags.charge_failed = 0;
+    //     }
+    // }
 }
 
-void can_app_extractor_mic17_mcs(can_t *msg)
+void can_app_extractor_mcs_relay(can_t *msg)
 {
-    if(msg->data[CAN_SIGNATURE_BYTE] == CAN_SIGNATURE_MIC17)
+    if(msg->data[CAN_SIGNATURE_BYTE] == CAN_SIGNATURE_MCS17)
     {
-        if(msg->data[CAN_MSG_MIC17_MCS_BOAT_ON_BYTE] == 0xFF){
-            system_flags.boat_on = 1;
-        }else if(msg->data[CAN_MSG_MIC17_MCS_BOAT_ON_BYTE] == 0x00){
-            system_flags.boat_on = 0;
-        }
+      if(msg->data[CAN_MSG_MCS19_CHARGE_RELAY_BYTE] == 0xFF)
+      {
+        system_flags.cap_charging = 1;
+
+      } else if(msg->data[CAN_MSG_MCS19_CHARGE_RELAY_BYTE] == 0x00)
+      {
+        system_flags.cap_charging = 0;
+
+      }
+
+      if(msg->data[CAN_MSG_MCS19_MAIN_RELAY_BYTE] == 0xFF)
+      {
+        system_flags.boat_on = 1;
+
+      } else if(msg->data[CAN_MSG_MCS19_MAIN_RELAY_BYTE] == 0x00)
+      {
+        system_flags.boat_on = 0;
+      }
     }
 }
 
@@ -193,12 +213,12 @@ void can_app_extractor_mic17_mcs(can_t *msg)
  */
 inline void can_app_msg_extractors_switch(can_t *msg)
 {
+    if(msg->data[CAN_SIGNATURE_BYTE] == CAN_SIGNATURE_MCS17){
+        // can_app_checks_without_mcs19_msg = 0;
 
-    if(msg->data[CAN_SIGNATURE_BYTE] == CAN_SIGNATURE_MIC17){
-        can_app_checks_without_mic17_msg = 0;
         switch(msg->id)
         {
-            case CAN_FILTER_MSG_MIC17_STATE:
+            case CAN_FILTER_MSG_MCS19_STATE:
             #ifdef USART_ON
                 VERBOSE_MSG_CAN_APP(usart_send_string(" got a state msg from MCS: "));
             #endif
@@ -206,12 +226,12 @@ inline void can_app_msg_extractors_switch(can_t *msg)
                 can_app_extractor_mcs_state(msg);
                 break;
 
-            case CAN_FILTER_MSG_MIC17_MCS:
+            case CAN_FILTER_MSG_MCS19_RELAY:
             #ifdef USART_ON
-                VERBOSE_MSG_CAN_APP(usart_send_string(" got a boat msg from MCS: "));
+                VERBOSE_MSG_CAN_APP(usart_send_string(" got a relay msg from MCS: "));
             #endif
                 VERBOSE_MSG_CAN_APP(can_app_print_msg(msg));
-                can_app_extractor_mic17_mcs(msg);
+                can_app_extractor_mcs_relay(msg);
                 break;
 
             default:
@@ -238,7 +258,7 @@ inline void can_app_msg_extractors_switch(can_t *msg)
                 VERBOSE_MSG_CAN_APP(usart_send_string(" got a adc msg from MSC19_1: "));
             #endif
                 VERBOSE_MSG_CAN_APP(can_app_print_msg(msg));
-                can_app_extractor_msc19_1_voltage(msg);
+                can_app_extractor_msc19_1_adc(msg);
                 break;
 
             default:
@@ -265,7 +285,7 @@ inline void can_app_msg_extractors_switch(can_t *msg)
                 VERBOSE_MSG_CAN_APP(usart_send_string(" got a adc msg from MSC19_2: "));
             #endif
                 VERBOSE_MSG_CAN_APP(can_app_print_msg(msg));
-                can_app_extractor_msc19_2_voltage(msg);
+                can_app_extractor_msc19_2_adc(msg);
                 break;
 
             default:
@@ -293,7 +313,7 @@ inline void can_app_msg_extractors_switch(can_t *msg)
                 VERBOSE_MSG_CAN_APP(usart_send_string(" got a adc msg from MSC19_3"));
             #endif
                 VERBOSE_MSG_CAN_APP(can_app_print_msg(msg));
-                can_app_extractor_msc19_3_voltage(msg);
+                can_app_extractor_msc19_3_adc(msg);
                 break;
 
             default:
@@ -321,7 +341,7 @@ inline void can_app_msg_extractors_switch(can_t *msg)
                 VERBOSE_MSG_CAN_APP(usart_send_string(" got a adc msg from MSC19_4"));
             #endif
                 VERBOSE_MSG_CAN_APP(can_app_print_msg(msg));
-                can_app_extractor_msc19_4_data(msg);
+                can_app_extractor_msc19_4_adc(msg);
                 break;
 
             default:
@@ -349,7 +369,7 @@ inline void can_app_msg_extractors_switch(can_t *msg)
                 VERBOSE_MSG_CAN_APP(usart_send_string(" got a adc msg from MSC19_5"));
             #endif
                 VERBOSE_MSG_CAN_APP(can_app_print_msg(msg));
-                can_app_extractor_msc19_5_data(msg);
+                can_app_extractor_msc19_5_adc(msg);
                 break;
 
             default:
@@ -360,6 +380,13 @@ inline void can_app_msg_extractors_switch(can_t *msg)
                 break;
         }
     } // CAN_SIGNATURE_MSC19_5
+
+    #ifdef CAN_DEPENDENT
+    if(msg->data[CAN_SIGNATURE_BYTE] == CAN_SIGNATURE_MIC17)
+    {
+        can_app_checks_without_mic17_msg = 0;
+    }
+    #endif
 }
 
 /**
@@ -379,8 +406,8 @@ inline void check_can(void)
         VERBOSE_MSG_CAN_APP(usart_send_string("Error: too many cycles without message.\n"));
 #endif
         can_app_checks_without_mic17_msg = 0;
-        error_flags.no_canbus = 1;
-        set_state_error();
+        // error_flags.no_canbus = 1;
+        // set_state_error();
         ui_no_communication_with_mic();
       }
 #endif
@@ -429,6 +456,15 @@ inline void check_can(void)
         can_app_checks_without_msc19_5_msg = 0;
         voltmeter_errors.no_message_from_MSC19_5 = 1;
     }
+
+    // if(can_app_checks_without_mcs19_msg++ >= CAN_APP_CHECKS_WITHOUT_MCS19_MSG)
+    // {
+    //     can_app_checks_without_mcs19_msg = 0;
+    //     #ifdef UI_ON
+    //     ui_no_communication_with_mcs();
+    //     #endif
+    //     set_machine_initial_state();
+    // }
 
     if(can_check_message()){
         can_t msg;

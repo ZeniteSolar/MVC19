@@ -72,6 +72,7 @@ void test_display(void)
     _delay_ms(250);
 
     LCD_ToggleInvert();
+    
 }
 
 /**
@@ -83,6 +84,10 @@ void display_send_string(char *s, uint8_t x, uint8_t y)
     LCD_Font(x, y, s, normal_font, 2, 1);
 }
 
+void display_send_string_big_font(char *s, uint8_t x, uint8_t y)
+{
+    LCD_Font(x, y, s, big_font, 2, 1);
+}
 
 /**
 * @brief sends a number in ascii.

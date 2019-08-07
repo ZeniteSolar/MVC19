@@ -1,11 +1,11 @@
 /**
-* @file can_ids.h
-*
-* @defgroup CANAPP    Ids for can application
-*
-* @brief Ids for canbus application
-*
-*/
+ * @file can_ids.h
+ *
+ * @defgroup CANAPP    Ids for can application
+ *
+ * @brief Ids for canbus application
+ *
+ */
 
 #ifndef CAN_IDS_H
 #define CAN_IDS_H
@@ -23,6 +23,7 @@
 // SIGNATURES
 #define CAN_SIGNATURE_MAM17             190
 #define CAN_SIGNATURE_MCS17             200
+#define CAN_SIGNATURE_MCS19             200
 #define CAN_SIGNATURE_MAD17             210
 #define CAN_SIGNATURE_MCC17_1           221
 #define CAN_SIGNATURE_MCC17_2           222
@@ -30,16 +31,14 @@
 #define CAN_SIGNATURE_MCC17_4           224
 #define CAN_SIGNATURE_MAB17             230
 #define CAN_SIGNATURE_MIC17             240
-
-#define CAN_SIGNATURE_MVC19             249
-
 #define CAN_SIGNATURE_MSC19_1           250
 #define CAN_SIGNATURE_MSC19_2           251
 #define CAN_SIGNATURE_MSC19_3           252
 #define CAN_SIGNATURE_MSC19_4           253
 #define CAN_SIGNATURE_MSC19_5           254
 
-#define CAN_SIGNATURE_SELF              CAN_SIGNATURE_MVC19
+
+#define CAN_SIGNATURE_SELF              CAN_SIGNATURE_MAD17
 
 //------------------------------------------------------------------------------
 
@@ -51,6 +50,8 @@
 #define CAN_MASK_MAD17                  0b11111111111   //<! Mask for MAD17
 #define CAN_MASK_MCC17                  0b11111111111   //<! Mask for MCC17
 #define CAN_MASK_MSC19                  0b11111111111   //<! Mask for MSC19
+
+//------------------------------------------------------------------------------
 
 // FILTERS FOR MESSAGES FROM MIC17 :
 #define CAN_FILTER_MSG_MIC17_STATE      0b00000001000   //<! Informs about state and errors
@@ -151,6 +152,8 @@
 
 //------------------------------------------------------------------------------
 
+
+
 // FILTERS FOR MESSAGES FROM MAD17:
 #define CAN_FILTER_MSG_MAD17_STATE      0b10000000000   //<! Informs about state and errors
 
@@ -182,6 +185,7 @@
 #define CAN_MSG_MSC19_ADC_MAX_BYTE_L    5
 #define CAN_MSG_MSC19_ADC_MAX_BYTE_H    6
 
-//---------------------------------------
+//------------------------------------------------------------------------------
 
-#endif
+
+#endif /* ifndef CAN_IDS_H */

@@ -47,6 +47,8 @@ inline void set_machine_initial_state(void)
 {
     error_flags.all = 0;
     machine_clk = machine_clk_divider = led_clk_div = 0;
+    system_flags.charge_failed = 0; // Não implementado ainda
+    system_flags.cap_charging = 0;
 }
 
 /**
@@ -74,6 +76,12 @@ inline void set_state_idle(void)
 {
     VERBOSE_MSG_MACHINE(usart_send_string("\n>>>IDLE STATE\n"));
     state_machine = STATE_IDLE;
+}
+
+inline void set_state_cap_charging(void)
+{
+    VERBOSE_MSG_MACHINE(usart_send_string("\n>>>CAP CHARGING STATE\n"));
+    state_machine = STATE_CAP_CHARGING;
 }
 
 /**
@@ -133,9 +141,9 @@ inline void print_error_flags(void)
 }
 
 /**
- * @brief Exibe no display as informaçoes da bateria
+ * @brief Exibe no display as informações da bateria
  */
-void display_battery_info(void)
+void ui_battery_info(void)
 {
   #ifdef UI_ON
       if(ui_clk_div++ >= UI_CLK_DIVIDER_VALUE){
@@ -208,13 +216,39 @@ inline void task_idle(void)
     }
 #endif
 
+    if(system_flags.cap_charging)
+    {
+      #ifdef UI_ON
+      ui_boat_charging();
+      #endif
+      set_state_cap_charging();
+    }
+
+    ui_battery_info();
+}
+
+void task_cap_charging(void)
+{
+#ifdef LED_ON
+    if(led_clk_div++ >= 10){
+        cpl_led(LED1);
+        led_clk_div = 0;
+    }
+#endif
+
     if(system_flags.boat_on)
     {
       ui_boat_on();
       set_state_running();
     }
+    if(!system_flags.cap_charging)
+    {
+      ui_boat_charge_failed();
+      _delay_ms(500);
+      ui_boat_off();
+      set_state_idle();
+    }
 
-    display_battery_info();
 }
 
 /**
@@ -231,11 +265,13 @@ inline void task_running(void)
 
     if(!system_flags.boat_on)
     {
+        #ifdef UI_ON
         ui_boat_off();
+        #endif
         set_state_idle();
     }
 
-    display_battery_info();
+    ui_battery_info();
 }
 
 /**
@@ -279,7 +315,6 @@ inline void task_error(void)
     set_state_initializing();
 
 }
-
 
 /**
  * @brief reset error task just freezes the processor and waits for watchdog
@@ -333,24 +368,32 @@ inline void machine_run(void)
             switch(state_machine){
                 case STATE_INITIALIZING:
                     task_initializing();
-
                     break;
+
                 case STATE_IDLE:
                     task_idle();
                     #ifdef CAN_ON
-                        can_app_task();
+                    can_app_task();
                     #endif /* CAN_ON */
-
                     break;
+
+                case STATE_CAP_CHARGING:
+                    task_cap_charging();
+                    #ifdef CAN_ON
+                    can_app_task();
+                    #endif
+                    break;
+
                 case STATE_RUNNING:
                     task_running();
                     #ifdef CAN_ON
-                        can_app_task();
+                    can_app_task();
                     #endif /* CAN_ON */
-
                     break;
+
                 case STATE_ERROR:
                     task_error();
+                    break;
 
                 case STATE_RESET:
                 default:

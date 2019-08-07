@@ -41,9 +41,13 @@ void ui_update_no_communication_from_battery_extra(void);
 void ui_update_no_communication_from_current_input(void);
 void ui_update_no_communication_from_current_output(void);
 
-void ui_cap_charging();
-void ui_boat_on();
-void ui_boat_off();
-void ui_no_communication_with_mic();
+// UI boat messages
+void ui_boat_charging(void);
+void ui_boat_on(void);
+void ui_boat_off(void);
+void ui_boat_charge_failed(void);
+
+void ui_no_communication_with_mic(void);
+void ui_no_communication_with_mcs(void);
 
 #endif /* ifndef _UI_H_ */

@@ -17,7 +17,7 @@
 //#include "../lib/DISPLAYS/SSD1306_AVR/fonts/Font_9_Mono.h"
 //#include "../lib/DISPLAYS/SSD1306_AVR/fonts/Font_8_Myke.h"
 //#include "../lib/DISPLAYS/SSD1306_AVR/fonts/Font_8_Retro.h"
-//#include "../lib/DISPLAYS/SSD1306_AVR/fonts/Font_8_Default.h"
+#include "../lib/DISPLAYS/SSD1306_AVR/fonts/Font_8_Default.h"
 #include "../lib/DISPLAYS/SSD1306_AVR/fonts/Font_3_Picopixel.h"
 
 #define normal_font _3_PicoPixel
@@ -25,6 +25,7 @@
 //#define normal_font _8_Retro
 //#define normal_font _8_Myke
 //#define normal_font _8_Default
+#define big_font    _8_Default
 
 #define line1   8
 #define line2   25
@@ -42,6 +43,7 @@ void display_update(void);
 void display_layout(void);
 
 void display_send_string(char *s, uint8_t x, uint8_t y);
+void display_send_string_big_font(char *s, uint8_t x, uint8_t y);
 
 void display_send_int8(int8_t num, uint8_t x, uint8_t y);
 void display_send_uint8(uint8_t num, uint8_t x, uint8_t y);

@@ -78,18 +78,19 @@ void ui_update_no_communication_from_current_output()
     display_send_string(" N.C.", col4, line3);
 }
 
-void ui_cap_charging()
+void ui_boat_charging(void)
 {
     display_clear();
-    display_send_string("  CAP ", col2, line3);
-    display_send_string("CHARGING", col2, line4);
+    display_send_string_big_font("  CAP ", col1, line3-2);
+    display_send_string_big_font("CHARGING", col1, line4+4);
     display_update();
 }
 
-void ui_boat_on()
+void ui_boat_on(void)
 {
     display_clear();
-    display_send_string("   BOAT ON!", col2, line2);
+    display_send_string_big_font(" BOAT", col2, line3-2);
+    display_send_string_big_font("  ON!", col2, line4+5);
     display_update();
     _delay_ms(500);
     LCD_Fill(1);
@@ -98,18 +99,37 @@ void ui_boat_on()
     display_update();
 }
 
-void ui_boat_off()
+void ui_boat_off(void)
 {
     display_clear();
-    display_send_string("   BOAT OFF!", col2, line2);
+    display_send_string_big_font(" BOAT", col2, line3-2);
+    display_send_string_big_font(" OFF!", col2, line4+5);
+    display_update();
+    _delay_ms(500);
+}
+
+void ui_boat_charge_failed(void)
+{
+    display_clear();
+    display_send_string_big_font(" CHARGE", col1, line3-2);
+    display_send_string_big_font(" FAILED", col1, line4+5);
+    display_update();
+}
+
+void ui_no_communication_with_mic(void)
+{
+    display_clear();
+    display_send_string_big_font(" MIC", col2, line3-2);
+    display_send_string_big_font("DISCON.", col1, line4+5);
     display_update();
     _delay_ms(250);
 }
 
-void ui_no_communication_with_mic()
+void ui_no_communication_with_mcs(void)
 {
-  display_clear();
-  display_send_string("No communication", col1, line2);
-  display_send_string("   with MIC!", col2, line3);
-  display_update();
+    display_clear();
+    display_send_string_big_font(" MCS", col2, line3-2);
+    display_send_string_big_font("DISCON.", col1, line4+5);
+    display_update();
+    _delay_ms(500);
 }

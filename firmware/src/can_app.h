@@ -24,22 +24,19 @@ void can_app_send_state(void);
 
 void can_app_msg_extractors_switch(can_t *msg);
 
-void can_app_extractor_mic17_state(can_t *msg);
-void can_app_extractor_mic17_msc(can_t *msg);
-
 void can_app_extractor_msc19_1_state(can_t *msg);
-void can_app_extractor_msc19_1_voltage(can_t *msg);
+void can_app_extractor_msc19_1_adc(can_t *msg);
 void can_app_extractor_msc19_2_state(can_t *msg);
-void can_app_extractor_msc19_2_voltage(can_t *msg);
+void can_app_extractor_msc19_2_adc(can_t *msg);
 void can_app_extractor_msc19_3_state(can_t *msg);
-void can_app_extractor_msc19_3_voltage(can_t *msg);
+void can_app_extractor_msc19_3_adc(can_t *msg);
 void can_app_extractor_msc19_4_state(can_t *msg);
-void can_app_extractor_msc19_4_data(can_t *msg);
+void can_app_extractor_msc19_4_adc(can_t *msg);
 void can_app_extractor_msc19_5_state(can_t *msg);
-void can_app_extractor_msc19_5_data(can_t *msg);
+void can_app_extractor_msc19_5_adc(can_t *msg);
 
 void can_app_extractor_mcs_state(can_t *msg);
-void can_app_extractor_mic17_mcs(can_t *msg);
+void can_app_extractor_mcs_relay(can_t *msg);
 
 void check_can(void);
 
@@ -53,9 +50,11 @@ void check_can(void);
 
 #define CAN_APP_CHECKS_WITHOUT_MSC19_MSG  100
 #define CAN_APP_CHECKS_WITHOUT_MIC17_MSG  200
+#define CAN_APP_CHECKS_WITHOUT_MCS19_MSG  250
 
 // can_app_checks
 uint8_t can_app_checks_without_mic17_msg;
+uint8_t can_app_checks_without_mcs19_msg;
 uint8_t can_app_checks_without_msc19_1_msg;
 uint8_t can_app_checks_without_msc19_2_msg;
 uint8_t can_app_checks_without_msc19_3_msg;

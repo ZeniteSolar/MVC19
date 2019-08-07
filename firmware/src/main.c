@@ -112,7 +112,7 @@ int main(void)
 {
     init();
 
-	for(;;){
+    for(;;){
 	  #ifdef WATCHDOG_ON
         wdt_reset();
 	  #endif
@@ -124,7 +124,7 @@ int main(void)
 	  #ifdef SLEEP_ON
         sleep_mode();
    	#endif
-	}
+	  }
 }
 
 
