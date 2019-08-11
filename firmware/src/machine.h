@@ -56,22 +56,22 @@ typedef union system_flags{
     uint8_t   all;
 } system_flags_t;
 
+typedef struct control{
+    uint16_t rpm;
+}control_t;
+
 typedef union error_flags{
     struct{
-        uint8_t     no_canbus     :1;
+        uint8_t no_communication_with_mcs :1;
+        uint8_t no_message_from_MSC19_1   :1;
+        uint8_t no_message_from_MSC19_2   :1;
+        uint8_t no_message_from_MSC19_3   :1;
+        uint8_t no_message_from_MSC19_4   :1;
+        uint8_t no_message_from_MSC19_5   :1;
+        uint8_t no_message_from_MT19      :1;
     };
     uint8_t   all;
 }error_flags_t;
-
-/*
-typedef struct measurements{
-    uint16_t    adc0_avg;       // average value of ADC0
-    uint16_t    adc0_avg_sum_count;
-    uint64_t    adc0_avg_sum;   // average value of ADC0
-    uint16_t    adc0_min;       // period minimum value of ADC0
-    uint16_t    adc0_max;       // period maximum value of ADC0
-}measurements_t;
-*/
 
 typedef struct battery_voltage
 {
@@ -85,20 +85,6 @@ typedef struct battery_current
     uint16_t in;
     uint16_t out;
 }battery_current_t;
-
-
-typedef struct voltmeter_errors
-{
-    uint8_t no_message_from_MSC19_1;
-    uint8_t no_message_from_MSC19_2;
-    uint8_t no_message_from_MSC19_3;
-    uint8_t no_message_from_MSC19_4;
-    uint8_t no_message_from_MSC19_5;
-}voltmeter_errors_t;
-
-// machine checks
-//void check_buffers(void);
-//void reset_measurements(void);
 
 // debug functions
 void print_configurations(void);
@@ -124,18 +110,16 @@ void set_state_cap_charging(void);
 void set_state_running(void);
 void set_state_reset(void);
 
-void ui_battery_info(void);
+void ui_boat_info(void);
 
 // machine variables
 volatile state_machine_t state_machine;
 volatile system_flags_t system_flags;
+volatile control_t control;
 volatile error_flags_t error_flags;
-
-//volatile measurements_t measurements;
 
 volatile battery_voltage_t battery_voltage;
 volatile battery_current_t battery_current;
-volatile voltmeter_errors_t voltmeter_errors;
 volatile uint8_t machine_clk;
 volatile uint8_t machine_clk_divider;
 volatile uint8_t total_errors;           // Contagem de ERROS
@@ -144,6 +128,7 @@ volatile uint8_t total_errors;           // Contagem de ERROS
 volatile uint8_t led_clk_div;
 volatile uint8_t ui_clk_div;
 volatile uint8_t ui_clk_div_2;
+volatile uint16_t ui_timeout_clk_div;
 
 
 // ISRs

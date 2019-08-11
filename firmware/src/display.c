@@ -40,6 +40,7 @@ void display_layout(void)
     display_send_string("CURR.", col4, line1);
     display_send_string(">", col3, line2);
     display_send_string("<", col3, line3);
+    display_send_string("T", col3, line4);
 
     /*
     display_send_uint16(43218, col2, line2);
@@ -72,7 +73,7 @@ void test_display(void)
     _delay_ms(250);
 
     LCD_ToggleInvert();
-    
+
 }
 
 /**

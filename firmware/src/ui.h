@@ -34,12 +34,13 @@ void ui_update_battery_voltage_auxiliary(uint16_t num);
 void ui_update_battery_voltage_extra(uint16_t num);
 void ui_update_battery_current_input(uint16_t num);
 void ui_update_battery_current_output(uint16_t num);
-
-void ui_update_no_communication_from_battery_main(void);
-void ui_update_no_communication_from_battery_auxiliary(void);
-void ui_update_no_communication_from_battery_extra(void);
-void ui_update_no_communication_from_current_input(void);
-void ui_update_no_communication_from_current_output(void);
+void ui_update_boat_rpm(uint16_t num);
+void ui_update_no_communication_with_battery_main(void);
+void ui_update_no_communication_with_battery_auxiliary(void);
+void ui_update_no_communication_with_battery_extra(void);
+void ui_update_no_communication_with_current_input(void);
+void ui_update_no_communication_with_current_output(void);
+void ui_update_no_communication_with_tachometer(void);
 
 // UI boat messages
 void ui_boat_charging(void);

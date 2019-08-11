@@ -47,8 +47,9 @@ inline void set_machine_initial_state(void)
 {
     error_flags.all = 0;
     machine_clk = machine_clk_divider = led_clk_div = 0;
-    system_flags.charge_failed = 0; // Não implementado ainda
-    system_flags.cap_charging = 0;
+    system_flags.charge_failed = 0;
+    system_flags.cap_charging  = 0;
+    system_flags.boat_on       = 0;
 }
 
 /**
@@ -141,9 +142,9 @@ inline void print_error_flags(void)
 }
 
 /**
- * @brief Exibe no display as informações da bateria
+ * @brief Exibe no display um resumo das informações do barco
  */
-void ui_battery_info(void)
+void ui_boat_info(void)
 {
   #ifdef UI_ON
       if(ui_clk_div++ >= UI_CLK_DIVIDER_VALUE){
@@ -157,30 +158,36 @@ void ui_battery_info(void)
       ui_update_battery_voltage_extra(fake_data++);
       ui_update_battery_current_input(fake_data++);
       ui_update_battery_current_output(fake_data++);
+      ui_update_boat_rpm(fake_data++);
   #else
-      if(voltmeter_errors.no_message_from_MSC19_1)
-          ui_update_no_communication_from_battery_main();
+      if(error_flags.no_message_from_MSC19_1)
+          ui_update_no_communication_with_battery_main();
       else
           ui_update_battery_voltage_main(battery_voltage.main);
 
-      if(voltmeter_errors.no_message_from_MSC19_2)
-          ui_update_no_communication_from_battery_auxiliary();
+      if(error_flags.no_message_from_MSC19_2)
+          ui_update_no_communication_with_battery_auxiliary();
       else
           ui_update_battery_voltage_auxiliary(battery_voltage.aux);
-      if(voltmeter_errors.no_message_from_MSC19_3)
-          ui_update_no_communication_from_battery_extra();
+      if(error_flags.no_message_from_MSC19_3)
+          ui_update_no_communication_with_battery_extra();
       else
           ui_update_battery_voltage_extra(battery_voltage.extra);
 
-      if(voltmeter_errors.no_message_from_MSC19_4)
-          ui_update_no_communication_from_current_input();
+      if(error_flags.no_message_from_MSC19_4)
+          ui_update_no_communication_with_current_input();
       else
           ui_update_battery_current_input(battery_current.in);
 
-      if(voltmeter_errors.no_message_from_MSC19_5)
-          ui_update_no_communication_from_current_output();
+      if(error_flags.no_message_from_MSC19_5)
+          ui_update_no_communication_with_current_output();
       else
           ui_update_battery_current_output(battery_current.out);
+
+      if(error_flags.no_message_from_MT19)
+          ui_update_no_communication_with_tachometer();
+      else
+          ui_update_boat_rpm(control.rpm);
 
   #endif
           ui_update();
@@ -199,7 +206,6 @@ inline void task_initializing(void)
 #endif
 
     set_machine_initial_state();
-
     VERBOSE_MSG_INIT(usart_send_string("System initialized without errors.\n"));
     set_state_idle();
 }
@@ -224,7 +230,7 @@ inline void task_idle(void)
       set_state_cap_charging();
     }
 
-    ui_battery_info();
+    ui_boat_info();
 }
 
 void task_cap_charging(void)
@@ -241,11 +247,19 @@ void task_cap_charging(void)
       ui_boat_on();
       set_state_running();
     }
+
     if(!system_flags.cap_charging)
     {
       ui_boat_charge_failed();
       _delay_ms(500);
       ui_boat_off();
+      set_state_idle();
+    }
+
+    if(ui_timeout_clk_div++ >= UI_TIMEOUT_CLK_DIV_VALUE)
+    {
+      ui_timeout_clk_div = 0;
+      set_state_initializing();
       set_state_idle();
     }
 
@@ -271,7 +285,7 @@ inline void task_running(void)
         set_state_idle();
     }
 
-    ui_battery_info();
+    ui_boat_info();
 }
 
 /**
@@ -288,18 +302,15 @@ inline void task_error(void)
 #endif
 /*
     total_errors++;         // incrementa a contagem de erros
-    VERBOSE_MSG_ERROR(usart_send_string("The error code is: "));
-    VERBOSE_MSG_ERROR(usart_send_uint16(error_flags.all));
-    VERBOSE_MSG_ERROR(usart_send_char('\n'));
 
-    if(error_flags.no_canbus)
-        VERBOSE_MSG_ERROR(usart_send_string("\t - No canbus communication with MIC17!\n"));
-    if(!error_flags.all)
-        VERBOSE_MSG_ERROR(usart_send_string("\t - Oh no, it was some unknown error.\n"));
+    if(error_flags.no_communication_with_mcs)
+    {
+        VERBOSE_MSG_ERROR(usart_send_string("\t - No canbus communication with MCS!\n"));
+        ui_no_communication_with_mcs()
+    }
 
-    VERBOSE_MSG_ERROR(usart_send_string("The error level is: "));
-    VERBOSE_MSG_ERROR(usart_send_uint16(total_errors));
-    VERBOSE_MSG_ERROR(usart_send_char('\n'));
+   if(error_flags.can_app_task)
+        VERBOSE_ON_ERROR(usart_send_string("\t - can_app_task failed"));
 
     if(total_errors < 2){
         VERBOSE_MSG_ERROR(usart_send_string("I will reset the machine state.\n"));
@@ -308,10 +319,11 @@ inline void task_error(void)
         VERBOSE_MSG_ERROR(usart_send_string("The watchdog will reset the whole system.\n"));
         set_state_reset();
     }
-*/
+
 #ifdef LED_ON
     cpl_led(LED1);
 #endif
+*/
     set_state_initializing();
 
 }
@@ -381,7 +393,7 @@ inline void machine_run(void)
                     task_cap_charging();
                     #ifdef CAN_ON
                     can_app_task();
-                    #endif
+                    #endif /* CAN_ON */
                     break;
 
                 case STATE_RUNNING:
@@ -401,7 +413,6 @@ inline void machine_run(void)
                     break;
             }
         }
-
 }
 
 /**

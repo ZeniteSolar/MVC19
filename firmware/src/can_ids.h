@@ -37,6 +37,8 @@
 #define CAN_SIGNATURE_MSC19_4           253
 #define CAN_SIGNATURE_MSC19_5           254
 
+#define CAN_SIGNATURE_MT19              255
+
 
 #define CAN_SIGNATURE_SELF              CAN_SIGNATURE_MAD17
 
@@ -187,5 +189,15 @@
 
 //------------------------------------------------------------------------------
 
+// FILTERS FOR MESSAGES FROM MT19:
+#define CAN_FILTER_MSG_MT19_STATE      0b00000100000   //<! Informs about state and errors
+#define CAN_FILTER_MSG_MT19_RPM        0b00000100001   //<! Informs about adc
+
+// MT19 RPM:
+#define CAN_LENGTH_MSG_MT19_RPM         3
+#define CAN_MSG_MT19_RPM_AVG_BYTE_L     1
+#define CAN_MSG_MT19_RPM_AVG_BYTE_H     2
+
+//------------------------------------------------------------------------------
 
 #endif /* ifndef CAN_IDS_H */

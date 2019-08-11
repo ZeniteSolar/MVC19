@@ -57,6 +57,8 @@
 #ifdef UI_ON
 #define UI_CLK_DIVIDER_VALUE  50
 #endif // UI_ON
+#define UI_TIMEOUT_CLK_DIV_VALUE  500
+
 
 #ifdef MACHINE_ON
 // The machine frequency may not be superior of ADC_FREQUENCY/ADC_AVG_SIZE_10

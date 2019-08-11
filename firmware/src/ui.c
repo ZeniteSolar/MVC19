@@ -53,27 +53,37 @@ void ui_update_battery_current_output(uint16_t num)
     display_send_uint16(num, col4, line3);
 }
 
-void ui_update_no_communication_from_battery_main()
+void ui_update_boat_rpm(uint16_t num)
+{
+    display_send_uint16(num, col4, line4);
+}
+
+void ui_update_no_communication_with_tachometer()
+{
+    display_send_string(" N.C.", col4, line4);
+}
+
+void ui_update_no_communication_with_battery_main()
 {
     display_send_string(" N.C.", col2, line2);
 }
 
-void ui_update_no_communication_from_battery_auxiliary()
+void ui_update_no_communication_with_battery_auxiliary()
 {
     display_send_string(" N.C.", col2, line3);
 }
 
-void ui_update_no_communication_from_battery_extra()
+void ui_update_no_communication_with_battery_extra()
 {
     display_send_string(" N.C.", col2, line4);
 }
 
-void ui_update_no_communication_from_current_input()
+void ui_update_no_communication_with_current_input()
 {
     display_send_string(" N.C.", col4, line2);
 }
 
-void ui_update_no_communication_from_current_output()
+void ui_update_no_communication_with_current_output()
 {
     display_send_string(" N.C.", col4, line3);
 }
