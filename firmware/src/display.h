@@ -11,6 +11,7 @@
 #define DISPLAY_H
 
 #include <avr/io.h>
+#include <stdlib.h>
 //#include "../lib/bit_utils.h"
 #include "conf.h"
 #include "../lib/DISPLAYS/SSD1306_AVR/ssd1306.h"
@@ -54,7 +55,7 @@ void display_send_uint16(uint16_t num, uint8_t x, uint8_t y);
 void display_send_int32(int32_t num, uint8_t x, uint8_t y);
 void display_send_uint32(uint32_t num, uint8_t x, uint8_t y);
 
-//void display_send_float(float num, uint8_t x, uint8_t y);
+void display_send_float(float num, uint8_t x, uint8_t y);
 //void display_send_double(double num, uint8_t x, uint8_t y);
 
 #endif

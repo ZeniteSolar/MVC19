@@ -253,3 +253,20 @@ void display_send_int32(int32_t num, uint8_t x, uint8_t y)
     #undef BASE
     #undef FILL
 }
+
+/**
+ * @brief sends a float number in ascii trough serial.
+ */
+inline void display_send_float(float num, uint8_t x, uint8_t y)
+{
+    #define LEN     7               // length of the string w/ sign, dot ('.') and null terminator
+    #define PREC    3               // precision: digits before dot. 
+
+    char str[LEN];
+
+    dtostrf(num, LEN, PREC, str);   // uses the avr-lib function (for doubles)
+
+    display_send_string(str, x, y); // sends the string
+}
+
+
