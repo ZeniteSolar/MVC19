@@ -190,11 +190,11 @@ CFLAGS += -fpack-struct
 CFLAGS += -fshort-enums
 CFLAGS += -Wall
 CFLAGS += -Wstrict-prototypes
-#CFLAGS += -mshort-calls
+CFLAGS += -mshort-calls
 #CFLAGS += -fno-unit-at-a-time
-#CFLAGS += -Wundef
-#CFLAGS += -Wunreachable-code
-#CFLAGS += -Wsign-compare
+CFLAGS += -Wundef
+CFLAGS += -Wunreachable-code
+CFLAGS += -Wsign-compare
 CFLAGS += -Wa,-adhlns=$(<:%.c=$(OBJDIR)/%.lst)
 CFLAGS += $(patsubst %,-I%,$(EXTRAINCDIRS))
 CFLAGS += $(CSTANDARD)
@@ -217,11 +217,11 @@ CPPFLAGS += -fshort-enums
 CPPFLAGS += -fno-exceptions
 CPPFLAGS += -Wall
 CFLAGS += -Wundef
-#CPPFLAGS += -mshort-calls
+CPPFLAGS += -mshort-calls
 #CPPFLAGS += -fno-unit-at-a-time
-#CPPFLAGS += -Wstrict-prototypes
-#CPPFLAGS += -Wunreachable-code
-#CPPFLAGS += -Wsign-compare
+CPPFLAGS += -Wstrict-prototypes
+CPPFLAGS += -Wunreachable-code
+CPPFLAGS += -Wsign-compare
 CPPFLAGS += -Wa,-adhlns=$(<:%.cpp=$(OBJDIR)/%.lst)
 CPPFLAGS += $(patsubst %,-I%,$(EXTRAINCDIRS))
 #CPPFLAGS += $(CSTANDARD)
@@ -241,10 +241,10 @@ ASFLAGS = $(ADEFS) -Wa,-adhlns=$(<:%.S=$(OBJDIR)/%.lst),-gstabs,--listing-cont-l
 
 #---------------- Library Options ----------------
 # Minimalistic printf version
-PRINTF_LIB_MIN = -Wl,-u,vfprintf -lprintf_min
+#PRINTF_LIB_MIN = -Wl,-u,vfprintf -lprintf_min
 
 # Floating point printf version (requires MATH_LIB = -lm below)
-PRINTF_LIB_FLOAT = -Wl,-u,vfprintf -lprintf_flt
+#PRINTF_LIB_FLOAT = -Wl,-u,vfprintf -lprintf_flt
 
 # If this is left blank, then it will use the Standard printf version.
 PRINTF_LIB = 
@@ -253,10 +253,10 @@ PRINTF_LIB =
 
 
 # Minimalistic scanf version
-SCANF_LIB_MIN = -Wl,-u,vfscanf -lscanf_min
+#SCANF_LIB_MIN = -Wl,-u,vfscanf -lscanf_min
 
 # Floating point + %[ scanf version (requires MATH_LIB = -lm below)
-SCANF_LIB_FLOAT = -Wl,-u,vfscanf -lscanf_flt
+#SCANF_LIB_FLOAT = -Wl,-u,vfscanf -lscanf_flt
 
 # If this is left blank, then it will use the Standard scanf version.
 SCANF_LIB = 
@@ -264,7 +264,7 @@ SCANF_LIB =
 #SCANF_LIB = $(SCANF_LIB_FLOAT)
 
 
-MATH_LIB = -lm
+#MATH_LIB = -lm
 
 
 # List any extra directories to look for libraries here.
