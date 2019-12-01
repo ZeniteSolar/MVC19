@@ -96,23 +96,23 @@ SRC += mcp2515_set_mode.c
 SRC += mcp2515_sleep.c
 SRC += spi.c
 
-SRC += at90can.c
-SRC += at90can_buffer.c
-SRC += at90can_disable_dyn_filter.c
-SRC += at90can_set_dyn_filter.c
-SRC += at90can_get_dyn_filter.c
-SRC += at90can_send_message.c
-SRC += at90can_send_buf_message.c
-SRC += at90can_get_message.c
-SRC += at90can_get_buf_message.c
-SRC += at90can_error_register.c
-SRC += at90can_set_mode.c
+#SRC += at90can.c
+#SRC += at90can_buffer.c
+#SRC += at90can_disable_dyn_filter.c
+#SRC += at90can_set_dyn_filter.c
+#SRC += at90can_get_dyn_filter.c
+#SRC += at90can_send_message.c
+#SRC += at90can_send_buf_message.c
+#SRC += at90can_get_message.c
+#SRC += at90can_get_buf_message.c
+#SRC += at90can_error_register.c
+#SRC += at90can_set_mode.c
 
-SRC += sja1000.c
-SRC += sja1000_buffer.c
-SRC += sja1000_send_message.c
-SRC += sja1000_get_message.c
-SRC += sja1000_error_register.c
+#SRC += sja1000.c
+#SRC += sja1000_buffer.c
+#SRC += sja1000_send_message.c
+#SRC += sja1000_get_message.c
+#SRC += sja1000_error_register.c
 
 SRC += can_buffer.c
 
@@ -191,10 +191,19 @@ CFLAGS += -fshort-enums
 CFLAGS += -Wall
 CFLAGS += -Wstrict-prototypes
 CFLAGS += -mshort-calls
+CFLAGS += -ffunction-sections
+CFLAGS += -fdata-sections
+CFLAGS += -ffreestanding
+CFLAGS += -mcall-prologues
+#CFLAGS += --param inline-call-cost=2
+#CFLAGS += -finline-limit=3
+#CFLAGS += -fno-inline-small-functions
 #CFLAGS += -fno-unit-at-a-time
 CFLAGS += -Wundef
 CFLAGS += -Wunreachable-code
 CFLAGS += -Wsign-compare
+CFLAGS += -Waddr-space-convert
+CFLAGS += -Wmisspelled-isr
 CFLAGS += -Wa,-adhlns=$(<:%.c=$(OBJDIR)/%.lst)
 CFLAGS += $(patsubst %,-I%,$(EXTRAINCDIRS))
 CFLAGS += $(CSTANDARD)
