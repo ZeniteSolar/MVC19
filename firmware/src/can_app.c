@@ -427,12 +427,34 @@ inline void can_app_msg_extractors_switch(can_t *msg)
         }
     } // CAN_SIGNATURE_MT19
 
-    #ifdef CAN_DEPENDENT
-    if(msg->data[CAN_SIGNATURE_BYTE] == CAN_SIGNATURE_MIC17)
-    {
-        can_app_checks_without_mic17_msg = 0;
-    }
-    #endif
+    if(msg->data[CAN_SIGNATURE_BYTE] == CAN_SIGNATURE_MAM17){
+        switch(msg->id)
+        {
+            case CAN_FILTER_MSG_MAM17_STATE:
+            #ifdef USART_ON
+                VERBOSE_MSG_CAN_APP(usart_send_string(" got a state msg from MAM17: "));
+            #endif
+                VERBOSE_MSG_CAN_APP(can_app_print_msg(msg));
+                // can_app_extractor_mam17_state(msg);
+                break;
+
+            case CAN_FILTER_MSG_MAM17_MOTOR:
+            #ifdef USART_ON
+                VERBOSE_MSG_CAN_APP(usart_send_string(" got a motor msg from MAM17: "));
+            #endif
+                VERBOSE_MSG_CAN_APP(can_app_print_msg(msg));
+                error_flags.no_communication_with_mam = 0;
+                break;
+
+            default:
+            #ifdef USART_ON
+                VERBOSE_MSG_CAN_APP(usart_send_string(" got a unknown msg from MAM17: "));
+            #endif
+                VERBOSE_MSG_CAN_APP(can_app_print_msg(msg));
+                break;
+        }
+    } // CAN_SIGNATURE_MAM17
+
 }
 
 /**
@@ -441,17 +463,12 @@ inline void can_app_msg_extractors_switch(can_t *msg)
 inline void check_can(void)
 {
 
-#ifdef CAN_DEPENDENT
-      if(can_app_checks_without_mic17_msg++ >= CAN_APP_CHECKS_WITHOUT_MIC17_MSG){
+    if(can_app_checks_without_mic17_msg++ >= CAN_APP_CHECKS_WITHOUT_MIC17_MSG){
 #ifdef USART_ON
-        VERBOSE_MSG_CAN_APP(usart_send_string("Error: too many cycles without message.\n"));
+        VERBOSE_MSG_CAN_APP(usart_send_string("too many cycles without MIC message.\n"));
 #endif
         can_app_checks_without_mic17_msg = 0;
-        // error_flags.no_canbus = 1;
-        // set_state_error();
-        ui_no_communication_with_mic();
-      }
-#endif
+    }
 
     if(can_app_checks_without_msc19_1_msg++ >= CAN_APP_CHECKS_WITHOUT_MSC19_MSG)
     {
@@ -504,17 +521,18 @@ inline void check_can(void)
         VERBOSE_MSG_CAN_APP(usart_send_string("too many cycles without MT19 message.\n"));
 #endif
         can_app_checks_without_mt19 = 0;
-        error_flags.no_message_from_MT19= 1;
+        error_flags.no_message_from_MT19 = 1;
     }
 
-    // if(can_app_checks_without_mcs19_msg++ >= CAN_APP_CHECKS_WITHOUT_MCS19_MSG)
-    // {
-    //     can_app_checks_without_mcs19_msg = 0;
-    //     #ifdef UI_ON
-    //     ui_no_communication_with_mcs();
-    //     #endif
-    //     set_machine_initial_state();
-    // }
+    if(can_app_checks_without_mam_msg++ >= CAN_APP_CHECKS_WITHOUT_MAM_MSG)
+    {
+#ifdef USART_ON
+        VERBOSE_MSG_CAN_APP(usart_send_string("too many cycles without MAM17 message.\n"));
+#endif
+        can_app_checks_without_mam_msg = 0;
+        error_flags.no_communication_with_mam = 1;
+    }
+
 
     if(can_check_message()){
         can_t msg;

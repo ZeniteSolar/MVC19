@@ -7,6 +7,17 @@ void ui_init(void)
 {
     display_init();
     display_test();
+    _delay_ms(500);
+    display_clear();
+    _delay_ms(100);
+#ifdef PRIMARY_DISPLAY
+    display_send_string("Display 1", 0, 0, font_small);
+#else
+    display_send_string("Display 2", 0, 0, font_small);
+#endif
+    _delay_ms(500);
+
+    update_display = 1;
 }
 
 /**
@@ -49,9 +60,11 @@ void ui_update_battery_current(void)
 /**
  * @brief
  */
-void ui_update_temperatures()
+void ui_update_temperatures(void)
 {
-    
+    display_send_string("  ----  ", COL1, LINE1, font_small);
+    display_send_string("  ----  ", COL1, LINE2, font_small);
+    display_send_string("  ----  ", COL1, LINE3, font_small);
 }
 
 /**
@@ -60,7 +73,7 @@ void ui_update_temperatures()
 void ui_update_rpm(void)
 {
     if(error_flags.no_message_from_MT19)
-        display_send_string("  N.C.  ", COL3, LINE3, font_small);
+        display_send_string("  N.C.  ", COL3, LINE1, font_small);
     else
-        display_send_uint16(control.rpm, COL3, LINE3, font_small);
+        display_send_uint16(boat_rpm, COL3, LINE1, font_small);
 }

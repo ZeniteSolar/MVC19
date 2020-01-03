@@ -166,7 +166,7 @@ inline void task_idle(void)
 }
 
 /**
- * @brief running task checks the system and apply the control action to pwm.
+ * @brief
  */
 inline void task_running(void)
 {
@@ -177,6 +177,8 @@ inline void task_running(void)
     }
 #endif
 
+
+#ifdef PRIMARY_DISPLAY
     if(++ui_update_clk_div == UI_UPDATE_CLK_DIV_VALUE)
     {
         ui_update_clk_div = 0;
@@ -184,6 +186,54 @@ inline void task_running(void)
         ui_update_battery_voltage();
         ui_update_battery_current();
     }
+
+#else
+    if(error_flags.all)
+      ui_state = STATE_ERROR;
+
+    // Display secundário
+    switch (ui_state) {
+      case STATE_RUNNING:
+        if(++ui_update_clk_div == UI_UPDATE_CLK_DIV_VALUE)
+        {
+            ui_update_clk_div = 0;
+            ui_update_temperatures();
+            ui_update_rpm();
+        }
+      break;
+
+      case STATE_ERROR:
+      if(error_flags.no_communication_with_mam && !display_freeze)
+      {
+          display_freeze = 1;
+          display_clear();
+          display_send_string("MAM", 6, 2, font_big);
+          display_send_string("DESCON.", 3, 5, font_big);
+      }
+      else if(error_flags.no_communication_with_mcs && !display_freeze)
+      {
+          display_freeze = 1;
+          display_clear();
+          display_send_string("MCS", 6, 2, font_big);
+          display_send_string("DESCON.", 3, 5, font_big);
+      }
+      else
+      {
+
+      }
+
+      if(!error_flags.all)
+      {
+        display_freeze = 0;
+        display_layout();
+        ui_state = STATE_RUNNING;
+      }
+      break;
+
+      default:
+      break;
+    }
+#endif
 }
 
 /**

@@ -37,6 +37,7 @@
 
 
 #define UI_UPDATE_CLK_DIV_VALUE             50
+#define PRIMARY_DISPLAY
 
 
 #ifdef ADC_ON

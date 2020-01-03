@@ -52,12 +52,14 @@ void check_can(void);
 #define CAN_APP_SEND_ADC_CLK_DIV    1
 #endif
 
+#define CAN_APP_CHECKS_WITHOUT_MAM_MSG    200
 #define CAN_APP_CHECKS_WITHOUT_MSC19_MSG  100
 #define CAN_APP_CHECKS_WITHOUT_MIC17_MSG  200
 #define CAN_APP_CHECKS_WITHOUT_MCS19_MSG  250
 #define CAN_APP_CHECKS_WITHOUT_MT19_MSG   200
 
 // can_app_checks
+uint8_t can_app_checks_without_mam_msg;
 uint8_t can_app_checks_without_mic17_msg;
 uint8_t can_app_checks_without_mcs19_msg;
 uint8_t can_app_checks_without_msc19_1_msg;

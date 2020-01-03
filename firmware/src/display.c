@@ -3,6 +3,9 @@
 void display_layout(void)
 {
     lcd_clrscr();
+
+#ifdef PRIMARY_DISPLAY
+    // Display primário
     display_send_string("VOLTAGE", COL1, LINE0, font_small);
     display_send_string("CURRENT", COL3, LINE0, font_small);
 
@@ -20,15 +23,17 @@ void display_layout(void)
 
     display_send_float(150.59, COL3, LINE1, font_small);
     display_send_float(143.74, COL3, LINE2, font_small);
-
-    _delay_ms(1000);
-
-    display_send_string("  ----- ", COL1, LINE2, font_small);
-    display_send_string("  N.C.  ", COL1, LINE3, font_small);
-
-    display_send_string("  ----- ", COL3, LINE1, font_small);
-    display_send_string("  ----- ", COL3, LINE2, font_small);
     #endif
+
+#else
+    // Display secundario
+    display_send_string(" TEMP.", COL1, LINE0, font_small);
+    display_send_string("RPM", 13, LINE0, font_small);
+
+    display_send_string("t1", COL0, LINE1, font_small);
+    display_send_string("t2", COL0, LINE2, font_small);
+    display_send_string("t3", COL0, LINE3, font_small);
+#endif
 }
 
 /**
@@ -36,7 +41,7 @@ void display_layout(void)
  */
 void display_init(void)
 {
-	lcd_init(LCD_DISP_ON);
+	  lcd_init(LCD_DISP_ON);
     lcd_set_contrast(0xFF);
 }
 

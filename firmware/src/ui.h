@@ -6,13 +6,20 @@
  * @brief This module implements a simple UI
  *
  *  _________________
- * |  BAT.  |  CURR. |
+ * |  BAT.  |  CURR. |    <! DISPLAY 1
  * |_________________|
- * |M 43218 |> 03972 |
- * |A 12657 |< 10421 |
- * |S:13014 |        |
+ * |M 43,22 |> 39,72 |
+ * |A 12,66 |< 104,21|
+ * |S:13,01 |        |
  * |_________________|
  *
+ *  _________________
+ * |  TEMP  |   RPM  |    <! DISPLAY 2
+ * |_________________|
+ * |T1 43,1 |  1200  |
+ * |T2 25,7 |        |
+ * |T3 39,0 |        |
+ * |_________________|
  */
 
 #ifndef _UI_H_
@@ -31,4 +38,7 @@ void ui_update_battery_current(void);
 void ui_update_temperatures(void);
 void ui_update_rpm(void);
 
+volatile uint8_t update_display;
+volatile uint8_t ui_state;
+volatile uint8_t display_freeze;
 #endif /* ifndef _UI_H_ */

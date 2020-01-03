@@ -61,6 +61,8 @@ typedef struct control{
 typedef union error_flags{
     struct{
         uint8_t no_communication_with_mcs :1;
+        uint8_t no_communication_with_mam :1;
+
         uint8_t no_message_from_MSC19_1   :1;
         uint8_t no_message_from_MSC19_2   :1;
         uint8_t no_message_from_MSC19_3   :1;
@@ -83,6 +85,15 @@ typedef struct battery_current
     uint16_t in;
     uint16_t out;
 }battery_current_t;
+
+volatile uint16_t boat_rpm;
+
+typedef struct temperatures
+{
+    uint16_t  battery_main;
+    uint16_t  mppt;
+    uint16_t  mam;
+}temperatures_t;
 
 // debug functions
 void print_configurations(void);
@@ -113,6 +124,7 @@ volatile error_flags_t error_flags;
 
 volatile battery_voltage_t battery_voltage;
 volatile battery_current_t battery_current;
+
 volatile uint8_t machine_clk;
 volatile uint8_t machine_clk_divider;
 volatile uint8_t total_errors;           // Contagem de ERROS
