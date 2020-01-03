@@ -23,32 +23,12 @@
 #include "usart.h"
 #include "display.h"
 #include <util/delay.h>
+#include "machine.h"
 
 void ui_init(void);
-void ui_clear(void);
-void ui_update(void);
-void ui_draw_layout(void);
-
-void ui_update_battery_voltage_main(uint16_t num);
-void ui_update_battery_voltage_auxiliary(uint16_t num);
-void ui_update_battery_voltage_extra(uint16_t num);
-void ui_update_battery_current_input(uint16_t num);
-void ui_update_battery_current_output(uint16_t num);
-void ui_update_boat_rpm(uint16_t num);
-void ui_update_no_communication_with_battery_main(void);
-void ui_update_no_communication_with_battery_auxiliary(void);
-void ui_update_no_communication_with_battery_extra(void);
-void ui_update_no_communication_with_current_input(void);
-void ui_update_no_communication_with_current_output(void);
-void ui_update_no_communication_with_tachometer(void);
-
-// UI boat messages
-void ui_boat_charging(void);
-void ui_boat_on(void);
-void ui_boat_off(void);
-void ui_boat_charge_failed(void);
-
-void ui_no_communication_with_mic(void);
-void ui_no_communication_with_mcs(void);
+void ui_update_battery_voltage(void);
+void ui_update_battery_current(void);
+void ui_update_temperatures(void);
+void ui_update_rpm(void);
 
 #endif /* ifndef _UI_H_ */

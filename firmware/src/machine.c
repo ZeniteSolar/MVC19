@@ -47,9 +47,6 @@ inline void set_machine_initial_state(void)
 {
     error_flags.all = 0;
     machine_clk = machine_clk_divider = led_clk_div = 0;
-    system_flags.charge_failed = 0;
-    system_flags.cap_charging  = 0;
-    system_flags.boat_on       = 0;
 }
 
 /**
@@ -77,12 +74,6 @@ inline void set_state_idle(void)
 {
     VERBOSE_MSG_MACHINE(usart_send_string("\n>>>IDLE STATE\n"));
     state_machine = STATE_IDLE;
-}
-
-inline void set_state_cap_charging(void)
-{
-    VERBOSE_MSG_MACHINE(usart_send_string("\n>>>CAP CHARGING STATE\n"));
-    state_machine = STATE_CAP_CHARGING;
 }
 
 /**
@@ -119,7 +110,6 @@ inline void print_configurations(void)
 
     VERBOSE_MSG_MACHINE(usart_send_string("\nmachine_f: "));
     VERBOSE_MSG_MACHINE(usart_send_uint16( MACHINE_FREQUENCY ));
-
     VERBOSE_MSG_MACHINE(usart_send_char('\n'));
 }
 
@@ -133,70 +123,6 @@ inline void print_system_flags(void)
 }
 
 /**
-* @brief prints the error flags
-*/
-inline void print_error_flags(void)
-{
-    //VERBOSE_MSG_MACHINE(usart_send_string(" errFl: "));
-    //VERBOSE_MSG_MACHINE(usart_send_char(48+error_flags.no_canbus));
-}
-
-/**
- * @brief Exibe no display um resumo das informações do barco
- */
-void ui_boat_info(void)
-{
-  #ifdef UI_ON
-      if(ui_clk_div++ >= UI_CLK_DIVIDER_VALUE){
-          ui_clear();
-          ui_draw_layout();
-
-  #ifdef UI_FAKE_DATA
-      static uint16_t fake_data = 0;
-      ui_update_battery_voltage_main(fake_data++);
-      ui_update_battery_voltage_auxiliary(fake_data++);
-      ui_update_battery_voltage_extra(fake_data++);
-      ui_update_battery_current_input(fake_data++);
-      ui_update_battery_current_output(fake_data++);
-      ui_update_boat_rpm(fake_data++);
-  #else
-      if(error_flags.no_message_from_MSC19_1)
-          ui_update_no_communication_with_battery_main();
-      else
-          ui_update_battery_voltage_main(battery_voltage.main);
-
-      if(error_flags.no_message_from_MSC19_2)
-          ui_update_no_communication_with_battery_auxiliary();
-      else
-          ui_update_battery_voltage_auxiliary(battery_voltage.aux);
-      if(error_flags.no_message_from_MSC19_3)
-          ui_update_no_communication_with_battery_extra();
-      else
-          ui_update_battery_voltage_extra(battery_voltage.extra);
-
-      if(error_flags.no_message_from_MSC19_4)
-          ui_update_no_communication_with_current_input();
-      else
-          ui_update_battery_current_input(battery_current.in);
-
-      if(error_flags.no_message_from_MSC19_5)
-          ui_update_no_communication_with_current_output();
-      else
-          ui_update_battery_current_output(battery_current.out);
-
-      if(error_flags.no_message_from_MT19)
-          ui_update_no_communication_with_tachometer();
-      else
-          ui_update_boat_rpm(control.rpm);
-
-  #endif
-          ui_update();
-          ui_clk_div = 0;
-      }
-  #endif // UI_ON
-}
-
-/**
  * @brief Checks if the system is OK to run
  */
 inline void task_initializing(void)
@@ -206,7 +132,18 @@ inline void task_initializing(void)
 #endif
 
     set_machine_initial_state();
-    VERBOSE_MSG_INIT(usart_send_string("System initialized without errors.\n"));
+#ifdef CAN_ON
+  VERBOSE_MSG_INIT(usart_send_string("System initialized without errors.\n"));
+#else
+#ifdef UI_ON
+  display_clear();
+  display_send_string("CAN", 7, 3, font_big);
+  display_send_string("OFF", 7, 5, font_big);
+#endif  /* UI_ON */
+
+  VERBOSE_MSG_ERROR(usart_send_string("CAN module disable.\n"));
+#endif
+
     set_state_idle();
 }
 
@@ -222,47 +159,10 @@ inline void task_idle(void)
     }
 #endif
 
-    if(system_flags.cap_charging)
-    {
-      #ifdef UI_ON
-      ui_boat_charging();
-      #endif
-      set_state_cap_charging();
-    }
-
-    ui_boat_info();
-}
-
-void task_cap_charging(void)
-{
-#ifdef LED_ON
-    if(led_clk_div++ >= 10){
-        cpl_led(LED1);
-        led_clk_div = 0;
-    }
+#ifdef CAN_ON
+    display_layout();
+    set_state_running();
 #endif
-
-    if(system_flags.boat_on)
-    {
-      ui_boat_on();
-      set_state_running();
-    }
-
-    if(!system_flags.cap_charging)
-    {
-      ui_boat_charge_failed();
-      _delay_ms(500);
-      ui_boat_off();
-      set_state_idle();
-    }
-
-    if(ui_timeout_clk_div++ >= UI_TIMEOUT_CLK_DIV_VALUE)
-    {
-      ui_timeout_clk_div = 0;
-      set_state_initializing();
-      set_state_idle();
-    }
-
 }
 
 /**
@@ -277,15 +177,13 @@ inline void task_running(void)
     }
 #endif
 
-    if(!system_flags.boat_on)
+    if(++ui_update_clk_div == UI_UPDATE_CLK_DIV_VALUE)
     {
-        #ifdef UI_ON
-        ui_boat_off();
-        #endif
-        set_state_idle();
-    }
+        ui_update_clk_div = 0;
 
-    ui_boat_info();
+        ui_update_battery_voltage();
+        ui_update_battery_current();
+    }
 }
 
 /**
@@ -300,30 +198,14 @@ inline void task_error(void)
         led_clk_div = 0;
     }
 #endif
-/*
-    total_errors++;         // incrementa a contagem de erros
 
-    if(error_flags.no_communication_with_mcs)
+    total_errors++;
+
+    if(total_errors > 20)
     {
-        VERBOSE_MSG_ERROR(usart_send_string("\t - No canbus communication with MCS!\n"));
-        ui_no_communication_with_mcs()
+      set_state_reset();
     }
 
-   if(error_flags.can_app_task)
-        VERBOSE_ON_ERROR(usart_send_string("\t - can_app_task failed"));
-
-    if(total_errors < 2){
-        VERBOSE_MSG_ERROR(usart_send_string("I will reset the machine state.\n"));
-    }
-    if(total_errors >= 20){
-        VERBOSE_MSG_ERROR(usart_send_string("The watchdog will reset the whole system.\n"));
-        set_state_reset();
-    }
-
-#ifdef LED_ON
-    cpl_led(LED1);
-#endif
-*/
     set_state_initializing();
 
 }
@@ -389,13 +271,6 @@ inline void machine_run(void)
                     #endif /* CAN_ON */
                     break;
 
-                case STATE_CAP_CHARGING:
-                    task_cap_charging();
-                    #ifdef CAN_ON
-                    can_app_task();
-                    #endif /* CAN_ON */
-                    break;
-
                 case STATE_RUNNING:
                     task_running();
                     #ifdef CAN_ON
@@ -421,12 +296,6 @@ inline void machine_run(void)
 ISR(TIMER2_COMPA_vect)
 {
     if(machine_clk_divider++ == MACHINE_CLK_DIVIDER_VALUE){
-       /* if(machine_clk){
-            for(;;){
-        //        pwm_reset();
-                VERBOSE_MSG_ERROR(if(machine_clk) usart_send_string("\nERROR: CLOCK CONFLICT!!!\n"));
-            }
-        }*/
         machine_clk = 1;
         machine_clk_divider = 0;
     }

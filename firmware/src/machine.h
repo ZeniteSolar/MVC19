@@ -14,7 +14,6 @@
 #include <avr/wdt.h>
 #include <avr/interrupt.h>
 #include <util/delay.h>
-
 #include "conf.h"
 
 // Equations for mode 2 (CTC with TOP OCR2A)
@@ -40,7 +39,6 @@ extern const uint8_t can_filter[];
 typedef enum state_machine{
     STATE_INITIALIZING,
     STATE_IDLE,
-    STATE_CAP_CHARGING,
     STATE_RUNNING,
     STATE_ERROR,
     STATE_RESET,
@@ -89,12 +87,10 @@ typedef struct battery_current
 // debug functions
 void print_configurations(void);
 void print_system_flags(void);
-void print_error_flags(void);
 
 // machine tasks
 void task_initializing(void);
 void task_idle(void);
-void task_cap_charging();
 void task_running(void);
 void task_error(void);
 void task_reset(void);
@@ -106,11 +102,8 @@ void machine_run(void);
 void set_state_error(void);
 void set_state_initializing(void);
 void set_state_idle(void);
-void set_state_cap_charging(void);
 void set_state_running(void);
 void set_state_reset(void);
-
-void ui_boat_info(void);
 
 // machine variables
 volatile state_machine_t state_machine;
@@ -126,10 +119,7 @@ volatile uint8_t total_errors;           // Contagem de ERROS
 
 // other variables
 volatile uint8_t led_clk_div;
-volatile uint8_t ui_clk_div;
-volatile uint8_t ui_clk_div_2;
-volatile uint16_t ui_timeout_clk_div;
-
+volatile uint8_t ui_update_clk_div;
 
 // ISRs
 ISR(TIMER2_COMPA_vect);

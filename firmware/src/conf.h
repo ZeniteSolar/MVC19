@@ -19,7 +19,7 @@
 #define DEBUG_ON
 #define VERBOSE_ON
 //#define VERBOSE_ON_CAN_APP
-//#define VERBOSE_ON_MACHINE
+#define VERBOSE_ON_MACHINE
 //#define VERBOSE_ON_ADC
 #define VERBOSE_ON_INIT
 #define VERBOSE_ON_ERROR
@@ -34,6 +34,10 @@
 #define WATCHDOG_ON
 #define SLEEP_ON
 #define UI_ON
+
+
+#define UI_UPDATE_CLK_DIV_VALUE             50
+
 
 #ifdef ADC_ON
 // ADC CONFIGURATION
@@ -52,13 +56,6 @@
 #endif // FAKE_ADC_ON
 
 #endif //ADC_ON
-
-//#define UI_FAKE_DATA
-#ifdef UI_ON
-#define UI_CLK_DIVIDER_VALUE  50
-#endif // UI_ON
-#define UI_TIMEOUT_CLK_DIV_VALUE  500
-
 
 #ifdef MACHINE_ON
 // The machine frequency may not be superior of ADC_FREQUENCY/ADC_AVG_SIZE_10

@@ -1,93 +1,84 @@
 #include "display.h"
 
+void display_layout(void)
+{
+    lcd_clrscr();
+    display_send_string("VOLTAGE", COL1, LINE0, font_small);
+    display_send_string("CURRENT", COL3, LINE0, font_small);
+
+    display_send_string("M:", COL0, LINE1, font_small);
+    display_send_string("A:", COL0, LINE2, font_small);
+    display_send_string("E:", COL0, LINE3, font_small);
+
+    display_send_string(">", COL2, LINE1, font_small);
+    display_send_string("<", COL2, LINE2, font_small);
+
+    #ifdef TEST_LAYOUT
+    display_send_float(43.74, COL1, LINE1, font_small);
+    display_send_float(13.92, COL1, LINE2, font_small);
+    display_send_float(11.43, COL1, LINE3, font_small);
+
+    display_send_float(150.59, COL3, LINE1, font_small);
+    display_send_float(143.74, COL3, LINE2, font_small);
+
+    _delay_ms(1000);
+
+    display_send_string("  ----- ", COL1, LINE2, font_small);
+    display_send_string("  N.C.  ", COL1, LINE3, font_small);
+
+    display_send_string("  ----- ", COL3, LINE1, font_small);
+    display_send_string("  ----- ", COL3, LINE2, font_small);
+    #endif
+}
+
 /**
  * @brief starts the display.
  */
 void display_init(void)
 {
-    SSD1306_Init();
+	lcd_init(LCD_DISP_ON);
+    lcd_set_contrast(0xFF);
 }
 
-void display_clear(void)
+inline void display_clear(void)
 {
-    LCD_Fill(0);
-}
-
-void display_update(void)
-{
-    LCD_UpdateScreen();
-}
-
-#define line1   8
-#define line2   25
-#define line3   40
-#define line4   55
-#define col1    0
-#define col2    18
-#define col3    65
-#define col4    83
-
-void display_layout(void)
-{
-    LCD_Line(0, 13, LCD_WIDTH, 13, 1);
-    LCD_Line(LCD_WIDTH/2, 0, LCD_WIDTH/2, LCD_HEIGHT, 1);
-
-    display_send_string("BAT.", col2, line1);
-    display_send_string("M", col1, line2);
-    display_send_string("A", col1, line3);
-    display_send_string("E", col1, line4);
-
-    display_send_string("CURR.", col4, line1);
-    display_send_string(">", col3, line2);
-    display_send_string("<", col3, line3);
-    display_send_string("T", col3, line4);
-
-    /*
-    display_send_uint16(43218, col2, line2);
-    display_send_uint16(12657, col2, line3);
-    display_send_uint16(13014, col2, line4);
-
-    display_send_uint16(9872, col4, line2);
-    display_send_uint16(10421, col4, line3);
-    */
+    lcd_clrscr();
 }
 
 /**
  * @brief test the display
  */
-void test_display(void)
+void display_test(void)
 {
-    LCD_Fill(1);
-    display_update();
+    uint8_t i,j;
+    lcd_clrscr();
+    for(i = 0; i<8; i++)
+    for(j = 0; j<21;){
+        lcd_gotoxy(j,i);
+        lcd_puts(" ");
+        lcd_gotoxy(++j,i);
+        lcd_puts("ZENITE");
+    }
+
+    display_send_string("Zenite", 4, 1, font_big);
     _delay_ms(250);
 
-    display_clear();
-    LCD_Font(15, 27, "Zenite", normal_font, 2, 1);
-    LCD_Font(45, 42, "Solar", normal_font, 2, 1);
-    LCD_Font(75, 57, "2019", normal_font, 2, 1);
-    display_update();
+    display_send_string("Solar", 5, 3, font_big);
     _delay_ms(250);
 
-    LCD_ToggleInvert();
-    display_update();
-    _delay_ms(250);
-
-    LCD_ToggleInvert();
-
+    display_send_string("2020", 6, 5, font_big);
+    _delay_ms(1000);
 }
 
 /**
  * @brief sends a char array
  * The strings are limited in 255 chars and MUST terminate with '\0'.
  */
-void display_send_string(char *s, uint8_t x, uint8_t y)
+void display_send_string(char *s, uint8_t x, uint8_t y, display_font_size_t size)
 {
-    LCD_Font(x, y, s, normal_font, 2, 1);
-}
-
-void display_send_string_big_font(char *s, uint8_t x, uint8_t y)
-{
-    LCD_Font(x, y, s, big_font, 2, 1);
+    lcd_charMode(size);
+    lcd_gotoxy(x,y);
+    lcd_puts(s);
 }
 
 /**
@@ -96,7 +87,7 @@ void display_send_string_big_font(char *s, uint8_t x, uint8_t y)
 * a defined BASE. Note that the LEN is 6 because 2^16 have its maximum ascii
 * size represented with 5 chars + '\0' in the end.
 */
-void display_send_uint8(uint8_t num, uint8_t x, uint8_t y)
+void display_send_uint8(uint8_t num, uint8_t x, uint8_t y, display_font_size_t size)
 {
     #define LEN      4              // length of the string w/ null terminator
     #define BASE    10              // string as a decimal base
@@ -109,14 +100,14 @@ void display_send_uint8(uint8_t num, uint8_t x, uint8_t y)
         str[i] = FILL + (num % BASE);// gets each algarism}
         num /= BASE;                // prepare the next
     }
-    display_send_string(str, x, y);       // sends the string
+    display_send_string(str, x, y, size);       // sends the string
 
     #undef LEN
     #undef BASE
     #undef FILL
 }
 
-void display_send_int8(int8_t num, uint8_t x, uint8_t y)
+void display_send_int8(int8_t num, uint8_t x, uint8_t y, display_font_size_t size)
 {
     #define LEN     4              // length of the string w/ null terminator
     #define BASE    10              // string as a decimal base
@@ -137,7 +128,7 @@ void display_send_int8(int8_t num, uint8_t x, uint8_t y)
         str[i] = FILL + (num % BASE);// gets each algarism}
         num /= BASE;                // prepare the next
     }
-    display_send_string(str, x, y);         // sends the string
+    display_send_string(str, x, y, size);         // sends the string
 
     #undef LEN
     #undef BASE
@@ -150,7 +141,7 @@ void display_send_int8(int8_t num, uint8_t x, uint8_t y)
  * a defined BASE. Note that the LEN is 6 because 2^16 have its maximum ascii
  * size represented with 5 chars + '\0' in the end.
  */
-void display_send_uint16(uint16_t num, uint8_t x, uint8_t y)
+void display_send_uint16(uint16_t num, uint8_t x, uint8_t y, display_font_size_t size)
 {
     #define LEN      6              // length of the string w/ null terminator
     #define BASE    10              // string as a decimal base
@@ -163,14 +154,14 @@ void display_send_uint16(uint16_t num, uint8_t x, uint8_t y)
         str[i] = FILL + (num % BASE);// gets each algarism}
         num /= BASE;                // prepare the next
     }
-    display_send_string(str, x, y);       // sends the string
+    display_send_string(str, x, y, size);       // sends the string
 
     #undef LEN
     #undef BASE
     #undef FILL
 }
 
-void display_send_int16(int16_t num, uint8_t x, uint8_t y)
+void display_send_int16(int16_t num, uint8_t x, uint8_t y, display_font_size_t size)
 {
     #define LEN     7              // length of the string w/ null terminator
     #define BASE    10              // string as a decimal base
@@ -191,7 +182,7 @@ void display_send_int16(int16_t num, uint8_t x, uint8_t y)
         str[i] = FILL + (num % BASE);// gets each algarism}
         num /= BASE;                // prepare the next
     }
-    display_send_string(str, x, y);         // sends the string
+    display_send_string(str, x, y, size);         // sends the string
 
     #undef LEN
     #undef BASE
@@ -204,7 +195,7 @@ void display_send_int16(int16_t num, uint8_t x, uint8_t y)
  * a defined BASE. Note that the LEN is 11 because 2^32 have its maximum ascii
  * size represented with 10 chars + '\0' in the end.
  */
-void display_send_uint32(uint32_t num, uint8_t x, uint8_t y)
+void display_send_uint32(uint32_t num, uint8_t x, uint8_t y, display_font_size_t size)
 {
     #define LEN     11              // length of the string w/ null terminator
     #define BASE    10              // string as a decimal base
@@ -217,14 +208,14 @@ void display_send_uint32(uint32_t num, uint8_t x, uint8_t y)
         str[i] = FILL + (num % BASE);// gets each algarism}
         num /= BASE;                // prepare the next
     }
-    display_send_string(str, x, y);       // sends the string
+    display_send_string(str, x, y, size);       // sends the string
 
     #undef LEN
     #undef BASE
     #undef FILL
 }
 
-void display_send_int32(int32_t num, uint8_t x, uint8_t y)
+void display_send_int32(int32_t num, uint8_t x, uint8_t y, display_font_size_t size)
 {
     #define LEN     12              // length of the string w/ null terminator
     #define BASE    10              // string as a decimal base
@@ -247,7 +238,7 @@ void display_send_int32(int32_t num, uint8_t x, uint8_t y)
 
     str[0] = sign;
 
-    display_send_string(str, x, y);         // sends the string
+    display_send_string(str, x, y, size);         // sends the string
 
     #undef LEN
     #undef BASE
@@ -257,16 +248,14 @@ void display_send_int32(int32_t num, uint8_t x, uint8_t y)
 /**
  * @brief sends a float number in ascii trough serial.
  */
-inline void display_send_float(float num, uint8_t x, uint8_t y)
+inline void display_send_float(float num, uint8_t x, uint8_t y, display_font_size_t size)
 {
     #define LEN     7               // length of the string w/ sign, dot ('.') and null terminator
-    #define PREC    3               // precision: digits before dot. 
+    #define PREC    2               // precision: digits before dot.
 
     char str[LEN];
 
     dtostrf(num, LEN, PREC, str);   // uses the avr-lib function (for doubles)
 
-    display_send_string(str, x, y); // sends the string
+    display_send_string(str, x, y, size); // sends the string
 }
-
-

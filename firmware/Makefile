@@ -135,10 +135,10 @@ CFLAGSALT += \
 
 LDFLAGS = -Wl,-Map=$(OBJDIR)/$(TARGET).map,--cref
 LDFLAGS += $(patsubst %,-L%,$(EXTRALIBDIRS))
-#LDFLAGS += $(PRINTF_LIB) $(SCANF_LIB) 
+#LDFLAGS += $(PRINTF_LIB) $(SCANF_LIB)
 LDFLAGS += $(MATH_LIB)
 LDFLAGS += -static -Llib/avr-can-lib/src/ -lcan
-LDFLAGS += -static -Llib/DISPLAYS/SSD1306_AVR/ -lssd1306
+#LDFLAGS += -static -Llib/DISPLAYS/SSD1306_AVR/ -lssd1306
 
 ## Intel Hex file production flags
 HEX_FLASH_FLAGS = \
@@ -157,7 +157,7 @@ HEX_EEPROM_FLAGS = \
 all: directories $(TARGET).elf size
 
 # directories
-directories: 
+directories:
 	$(SILENT) $(MKDIR_P) $(BINDIR) $(OBJDIR) $(DOCDIR) $(LIBDIR) $(SRCDIR)
 
 # size
@@ -187,7 +187,7 @@ MKDIR_P := mkdir -p
 	@echo "hex..:"
 	@echo ""
 	$(SILENT) $(OBJCPY) -O ihex $(HEX_FLASH_FLAGS)
- 
+
 ## Compile
 $(OBJDIR)/%.o: $(SRCDIR)/%.c
 	@echo "[$(TARGET)] Compiling:" $@...
