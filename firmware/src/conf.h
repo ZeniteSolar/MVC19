@@ -18,7 +18,7 @@
 // CONFIGURACOES DE COMPILACAO
 #define DEBUG_ON
 #define VERBOSE_ON
-//#define VERBOSE_ON_CAN_APP
+// #define VERBOSE_ON_CAN_APP
 #define VERBOSE_ON_MACHINE
 //#define VERBOSE_ON_ADC
 #define VERBOSE_ON_INIT
@@ -35,10 +35,11 @@
 #define SLEEP_ON
 #define UI_ON
 
-
 #define UI_UPDATE_CLK_DIV_VALUE             50
-#define PRIMARY_DISPLAY
-
+#define UI_UPDATE_CURRENT_FREQ              50
+// #define PRIMARY_DISPLAY
+// #define UI_FONT_SMALL
+#define UI_ENABLE_MODULES_FAILURE_MESSAGE
 
 #ifdef ADC_ON
 // ADC CONFIGURATION

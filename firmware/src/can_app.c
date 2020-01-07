@@ -30,7 +30,7 @@ inline void can_app_print_msg(can_t *msg)
 inline void can_app_task(void)
 {
     check_can();
- /*
+
     if(can_app_send_state_clk_div++ >= CAN_APP_SEND_STATE_CLK_DIV){
 #ifdef USART_ON
         VERBOSE_MSG_CAN_APP(usart_send_string("state msg was sent.\n"));
@@ -38,7 +38,7 @@ inline void can_app_task(void)
         can_app_send_state();
         can_app_send_state_clk_div = 0;
     }
-*/
+
 }
 
 inline void can_app_send_state(void)
@@ -436,6 +436,8 @@ inline void can_app_msg_extractors_switch(can_t *msg)
             #endif
                 VERBOSE_MSG_CAN_APP(can_app_print_msg(msg));
                 // can_app_extractor_mam17_state(msg);
+                error_flags.no_communication_with_mam = 0;
+
                 break;
 
             case CAN_FILTER_MSG_MAM17_MOTOR:

@@ -6,33 +6,35 @@ void display_layout(void)
 
 #ifdef PRIMARY_DISPLAY
     // Display primário
+#ifdef UI_FONT_SMALL
     display_send_string("VOLTAGE", COL1, LINE0, font_small);
     display_send_string("CURRENT", COL3, LINE0, font_small);
 
-    display_send_string("M:", COL0, LINE1, font_small);
-    display_send_string("A:", COL0, LINE2, font_small);
-    display_send_string("E:", COL0, LINE3, font_small);
+    display_send_string("M", COL0, LINE1, font_small);
+    display_send_string("A", COL0, LINE2, font_small);
+    display_send_string("E", COL0, LINE3, font_small);
 
     display_send_string(">", COL2, LINE1, font_small);
     display_send_string("<", COL2, LINE2, font_small);
+#else
+    display_send_string("-VOLTAGES-", COL0, LINE0, font_big);
 
-    #ifdef TEST_LAYOUT
-    display_send_float(43.74, COL1, LINE1, font_small);
-    display_send_float(13.92, COL1, LINE2, font_small);
-    display_send_float(11.43, COL1, LINE3, font_small);
-
-    display_send_float(150.59, COL3, LINE1, font_small);
-    display_send_float(143.74, COL3, LINE2, font_small);
-    #endif
+    display_send_string("M", COL0, LINE1, font_big);
+    display_send_string("A", COL0, LINE2, font_big);
+    display_send_string("E", COL0, LINE3, font_big);
+#endif /*UI_FONT_SMALL*/
 
 #else
     // Display secundario
-    display_send_string(" TEMP.", COL1, LINE0, font_small);
-    display_send_string("RPM", 13, LINE0, font_small);
+    display_send_string(" CURR.", COL1, LINE0, font_small);
+    // display_send_string("RPM", 13, LINE0, font_small);
 
-    display_send_string("t1", COL0, LINE1, font_small);
-    display_send_string("t2", COL0, LINE2, font_small);
-    display_send_string("t3", COL0, LINE3, font_small);
+    display_send_string(">", COL0, LINE1, font_small);
+    display_send_string("<", COL0, LINE2, font_small);
+    display_send_string("T", COL0, LINE3, font_small);
+
+    
+    // #endif
 #endif
 }
 

@@ -25,6 +25,11 @@
 #ifndef _UI_H_
 #define _UI_H_
 
+
+#ifndef PRIMARY_DISPLAY
+#undef UI_FONT_SMALL
+#endif
+
 #include "conf.h"
 #include "dbg_vrb.h"
 #include "usart.h"
@@ -37,6 +42,9 @@ void ui_update_battery_voltage(void);
 void ui_update_battery_current(void);
 void ui_update_temperatures(void);
 void ui_update_rpm(void);
+
+// modules check
+void ui_check_mam(void);
 
 volatile uint8_t update_display;
 volatile uint8_t ui_state;

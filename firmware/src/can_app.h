@@ -24,7 +24,7 @@ void can_app_send_state(void);
 
 void can_app_msg_extractors_switch(can_t *msg);
 
-/* */
+/* MSC19 */
 void can_app_extractor_msc19_1_state(can_t *msg);
 void can_app_extractor_msc19_1_adc(can_t *msg);
 void can_app_extractor_msc19_2_state(can_t *msg);
@@ -36,9 +36,11 @@ void can_app_extractor_msc19_4_adc(can_t *msg);
 void can_app_extractor_msc19_5_state(can_t *msg);
 void can_app_extractor_msc19_5_adc(can_t *msg);
 
+/* MCS19 */
 void can_app_extractor_mcs_state(can_t *msg);
 void can_app_extractor_mcs_relay(can_t *msg);
 
+/* MT19 */
 void can_app_extractor_mt19_state(can_t *msg);
 void can_app_extractor_mt19_rpm(can_t *msg);
 
@@ -52,14 +54,14 @@ void check_can(void);
 #define CAN_APP_SEND_ADC_CLK_DIV    1
 #endif
 
-#define CAN_APP_CHECKS_WITHOUT_MAM_MSG    200
+#define CAN_APP_CHECKS_WITHOUT_MAM_MSG    500
 #define CAN_APP_CHECKS_WITHOUT_MSC19_MSG  100
 #define CAN_APP_CHECKS_WITHOUT_MIC17_MSG  200
 #define CAN_APP_CHECKS_WITHOUT_MCS19_MSG  250
 #define CAN_APP_CHECKS_WITHOUT_MT19_MSG   200
 
 // can_app_checks
-uint8_t can_app_checks_without_mam_msg;
+uint16_t can_app_checks_without_mam_msg;
 uint8_t can_app_checks_without_mic17_msg;
 uint8_t can_app_checks_without_mcs19_msg;
 uint8_t can_app_checks_without_msc19_1_msg;
@@ -68,5 +70,7 @@ uint8_t can_app_checks_without_msc19_3_msg;
 uint8_t can_app_checks_without_msc19_4_msg;
 uint8_t can_app_checks_without_msc19_5_msg;
 uint8_t can_app_checks_without_mt19;
+
+uint8_t can_app_send_state_clk_div;
 
 #endif /* ifndef CAN_APP_H */

@@ -184,10 +184,13 @@ inline void task_running(void)
         ui_update_clk_div = 0;
 
         ui_update_battery_voltage();
+        #ifdef UI_FONT_SMALL
         ui_update_battery_current();
+        #endif
     }
 
 #else
+  /*
     if(error_flags.all)
       ui_state = STATE_ERROR;
 
@@ -232,7 +235,18 @@ inline void task_running(void)
 
       default:
       break;
+
+    }*/
+
+    if(++ui_update_clk_div == UI_UPDATE_CLK_DIV_VALUE)
+    {
+        ui_update_clk_div = 0;
+        ui_update_battery_current();
+        ui_update_rpm();
     }
+
+    ui_check_mam();
+
 #endif
 }
 
