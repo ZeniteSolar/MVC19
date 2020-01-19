@@ -17,29 +17,32 @@
 
 // CONFIGURACOES DE COMPILACAO
 #define DEBUG_ON
-#define VERBOSE_ON
+// #define VERBOSE_ON
 // #define VERBOSE_ON_CAN_APP
 #define VERBOSE_ON_MACHINE
 //#define VERBOSE_ON_ADC
 #define VERBOSE_ON_INIT
 #define VERBOSE_ON_ERROR
+#define VERBOSE_ON_DISPLAY
+
 
 // MODULES ACTIVATION
 #define USART_ON
-#define CAN_ON
+// #define CAN_ON
 // #define CAN_DEPENDENT
-//#define ADC_ON
+// #define ADC_ON
 #define MACHINE_ON
 #define LED_ON
-#define WATCHDOG_ON
-#define SLEEP_ON
+// #define WATCHDOG_ON
+// #define SLEEP_ON
 #define UI_ON
 
-#define UI_UPDATE_CLK_DIV_VALUE             50
-#define UI_UPDATE_CURRENT_FREQ              50
-// #define PRIMARY_DISPLAY
-// #define UI_FONT_SMALL
-#define UI_ENABLE_MODULES_FAILURE_MESSAGE
+
+#ifdef UI_ON
+// UI CONFIGURATION
+#define UI_UPDATE_CLK_DIV                   50
+
+#endif
 
 #ifdef ADC_ON
 // ADC CONFIGURATION
@@ -76,18 +79,18 @@
 #endif // MACHINE_ON
 
 #ifdef LED_ON
-#define     LED_PORT                PORTD
-#define     LED_PIN                 PIND
-#define     LED_DDR                 DDRD
-#define     LED1                    PD5
-#define     LED2                    PD6
+#define     LED_PORT                PORTB//PORTD
+#define     LED_PIN                 PINB//PIND
+#define     LED_DDR                 DDRB//DDRD
+#define     LED1                    PB5//PD5
+#define     LED2                    PB4//PD6
 #define     cpl_led(y)              cpl_bit(LED_PORT, y)
 #define     set_led(y)              set_bit(LED_PORT, y)
 #define     clr_led(y)              clr_bit(LED_PORT, y)
 #else
-#define     cpl_led()
-#define     set_led()
-#define     clr_led()
+#define     cpl_led(y)
+#define     set_led(y)
+#define     clr_led(y)
 #endif // LED_ON
 
 

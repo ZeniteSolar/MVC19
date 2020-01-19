@@ -46,29 +46,26 @@ typedef enum state_machine{
 
 typedef union system_flags{
     struct{
-        uint8_t     none          :1;
-        uint8_t     cap_charging  :1;
-        uint8_t     charge_failed :1;
-        uint8_t     boat_on       :1;
-    };
-    uint8_t   all;
-} system_flags_t;
-
-typedef struct control{
-    uint16_t rpm;
-}control_t;
-
-typedef union error_flags{
-    struct{
-        uint8_t no_communication_with_mcs :1;
-        uint8_t no_communication_with_mam :1;
-
+        uint8_t none                      :1;
+        uint8_t cap_charging              :1;
+        uint8_t charge_failed             :1;
+        uint8_t boat_on                   :1;
         uint8_t no_message_from_MSC19_1   :1;
         uint8_t no_message_from_MSC19_2   :1;
         uint8_t no_message_from_MSC19_3   :1;
         uint8_t no_message_from_MSC19_4   :1;
         uint8_t no_message_from_MSC19_5   :1;
         uint8_t no_message_from_MT19      :1;
+    };
+    uint8_t   all;
+} system_flags_t;
+
+
+typedef union error_flags{
+    struct{
+        uint8_t no_communication_with_mcs :1;
+        uint8_t no_communication_with_mam :1;
+        uint8_t no_communication_with_mic :1;
     };
     uint8_t   all;
 }error_flags_t;
@@ -87,13 +84,6 @@ typedef struct battery_current
 }battery_current_t;
 
 volatile uint16_t boat_rpm;
-
-typedef struct temperatures
-{
-    uint16_t  battery_main;
-    uint16_t  mppt;
-    uint16_t  mam;
-}temperatures_t;
 
 // debug functions
 void print_configurations(void);
@@ -119,8 +109,8 @@ void set_state_reset(void);
 // machine variables
 volatile state_machine_t state_machine;
 volatile system_flags_t system_flags;
-volatile control_t control;
 volatile error_flags_t error_flags;
+
 
 volatile battery_voltage_t battery_voltage;
 volatile battery_current_t battery_current;
@@ -131,8 +121,7 @@ volatile uint8_t total_errors;           // Contagem de ERROS
 
 // other variables
 volatile uint8_t led_clk_div;
-volatile uint8_t ui_update_clk_div;
-
+volatile uint8_t ui_clk_div;
 // ISRs
 ISR(TIMER2_COMPA_vect);
 

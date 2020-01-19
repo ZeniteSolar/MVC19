@@ -10,10 +10,8 @@
 #ifndef DISPLAY_H
 #define DISPLAY_H
 
-// #define TEST_LAYOUT
-
 #define COL0    0
-#define COL1    2
+#define COL1    3       // 2
 #define COL2    10
 #define COL3    11
 #define LINE0   0
