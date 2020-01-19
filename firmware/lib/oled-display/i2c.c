@@ -8,20 +8,10 @@
 
 #include "i2c.h"
 
-#if defined (__AVR_ATmega328__) || defined(__AVR_ATmega328P__) || \
-defined(__AVR_ATmega168P__) || defined(__AVR_ATmega168PA__) || \
-defined(__AVR_ATmega88P__) || \
-defined(__AVR_ATmega8__) || \
-defined(__AVR_ATmega48P__) || \
-defined(__AVR_ATmega1284P__) || \
-defined (__AVR_ATmega324A__) || defined (__AVR_ATmega324P__) || defined (__AVR_ATmega324PA__) || \
-defined (__AVR_ATmega644__) || defined (__AVR_ATmega644A__) || defined (__AVR_ATmega644P__) || defined (__AVR_ATmega644PA__) || \
-defined (__AVR_ATmega1284P__) || \
-defined (__AVR_ATmega2560__)
 #if PSC_I2C != 1 && PSC_I2C != 4 && PSC_I2C != 16 && PSC_I2C != 64
 #error "Wrong prescaler for TWI !"
 #elif SET_TWBR < 0 || SET_TWBR > 255
-#error "TWBR out of range, change PSC_I2C or F_I2C !"
+#error "TWBR0 out of range, change PSC_I2C or F_I2C !"
 #endif
 
 uint8_t I2C_ErrorCode;
@@ -38,21 +28,21 @@ void i2c_init(void){
     // set clock
     switch (PSC_I2C) {
         case 4:
-            TWSR = 0x1;
+            TWSR0 = 0x1;
             break;
         case 16:
-            TWSR = 0x2;
+            TWSR0 = 0x2;
             break;
         case 64:
-            TWSR = 0x3;
+            TWSR0 = 0x3;
             break;
         default:
-            TWSR = 0x00;
+            TWSR0 = 0x00;
             break;
     }
-    TWBR = (uint8_t)SET_TWBR;
+    TWBR0 = (uint8_t)SET_TWBR;
     // enable
-    TWCR = (1 << TWEN);
+    TWCR0 = (1 << TWEN);
 }
 /**********************************************
  Public Function: i2c_start
@@ -66,9 +56,9 @@ void i2c_init(void){
  **********************************************/
 void i2c_start(uint8_t i2c_addr){
     // i2c start
-    TWCR = (1 << TWINT)|(1 << TWSTA)|(1 << TWEN);
+    TWCR0 = (1 << TWINT)|(1 << TWSTA)|(1 << TWEN);
 	uint16_t timeout = F_CPU/F_I2C*2.0;
-    while((TWCR & (1 << TWINT)) == 0 &&
+    while((TWCR0 & (1 << TWINT)) == 0 &&
 		timeout !=0){
 		timeout--;
 		if(timeout == 0){
@@ -77,10 +67,10 @@ void i2c_start(uint8_t i2c_addr){
 		}
 	};
     // send adress
-    TWDR = i2c_addr;
-    TWCR = (1 << TWINT)|( 1 << TWEN);
+    TWDR0 = i2c_addr;
+    TWCR0 = (1 << TWINT)|( 1 << TWEN);
     timeout = F_CPU/F_I2C*2.0;
-    while((TWCR & (1 << TWINT)) == 0 &&
+    while((TWCR0 & (1 << TWINT)) == 0 &&
 		  timeout !=0){
 		timeout--;
 		if(timeout == 0){
@@ -100,7 +90,7 @@ void i2c_start(uint8_t i2c_addr){
  **********************************************/
 void i2c_stop(void){
     // i2c stop
-    TWCR = (1 << TWINT)|(1 << TWSTO)|(1 << TWEN);
+    TWCR0 = (1 << TWINT)|(1 << TWSTO)|(1 << TWEN);
 }
 /**********************************************
  Public Function: i2c_byte
@@ -113,10 +103,10 @@ void i2c_stop(void){
  Return Value: none
  **********************************************/
 void i2c_byte(uint8_t byte){
-    TWDR = byte;
-    TWCR = (1 << TWINT)|( 1 << TWEN);
+    TWDR0 = byte;
+    TWCR0 = (1 << TWINT)|( 1 << TWEN);
     uint16_t timeout = F_CPU/F_I2C*2.0;
-    while((TWCR & (1 << TWINT)) == 0 &&
+    while((TWCR0 & (1 << TWINT)) == 0 &&
 		  timeout !=0){
 		timeout--;
 		if(timeout == 0){
@@ -133,13 +123,13 @@ void i2c_byte(uint8_t byte){
  Input Parameter: none
  
  Return Value: uint8_t
-  - TWDR: recieved value at TWI/I2C-Interface, 0 at timeout
+  - TWDR0: recieved value at TWI/I2C-Interface, 0 at timeout
   - 0:    Error at read
  **********************************************/
 uint8_t i2c_readAck(void){
-    TWCR = (1<<TWINT)|(1<<TWEN)|(1<<TWEA);
+    TWCR0 = (1<<TWINT)|(1<<TWEN)|(1<<TWEA);
     uint16_t timeout = F_CPU/F_I2C*2.0;
-    while((TWCR & (1 << TWINT)) == 0 &&
+    while((TWCR0 & (1 << TWINT)) == 0 &&
 		  timeout !=0){
 		timeout--;
 		if(timeout == 0){
@@ -147,7 +137,7 @@ uint8_t i2c_readAck(void){
 			return 0;
 		}
 	};
-    return TWDR;
+    return TWDR0;
 }
 
  /**********************************************
@@ -158,13 +148,13 @@ uint8_t i2c_readAck(void){
  Input Parameter: none
  
  Return Value: uint8_t
-  - TWDR: recieved value at TWI/I2C-Interface
+  - TWDR0: recieved value at TWI/I2C-Interface
   - 0:    Error at read
  **********************************************/
 uint8_t i2c_readNAck(void){
-    TWCR = (1<<TWINT)|(1<<TWEN);
+    TWCR0 = (1<<TWINT)|(1<<TWEN);
     uint16_t timeout = F_CPU/F_I2C*2.0;
-    while((TWCR & (1 << TWINT)) == 0 &&
+    while((TWCR0 & (1 << TWINT)) == 0 &&
 		  timeout !=0){
 		timeout--;
 		if(timeout == 0){
@@ -172,8 +162,5 @@ uint8_t i2c_readNAck(void){
             return 0;
 		}
 	};
-    return TWDR;
+    return TWDR0;
 }
-#else
-#error "Micorcontroller not supported now!"
-#endif

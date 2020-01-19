@@ -8,7 +8,6 @@
  */
 #include "font.h"
 
-
 const char ssd1306oled_font[][6] PROGMEM = {
 {0x00, 0x00, 0x00, 0x00, 0x00, 0x00}, // sp
 {0x00, 0x00, 0x00, 0x2f, 0x00, 0x00}, // !
@@ -108,7 +107,6 @@ const char ssd1306oled_font[][6] PROGMEM = {
 /* end of normal char-set */
 /* put your own signs/chars here, edit special_char too */
 /* be sure that your first special char stand here */
-
 {0x00, 0x3A, 0x40, 0x40, 0x20, 0x7A}, // ü, !!! Important: this must be special_char[0] !!!
 {0x00, 0x3D, 0x40, 0x40, 0x40, 0x3D}, // Ü
 {0x00, 0x21, 0x54, 0x54, 0x54, 0x79}, // ä
@@ -117,23 +115,22 @@ const char ssd1306oled_font[][6] PROGMEM = {
 {0x00, 0x3D, 0x42, 0x42, 0x42, 0x3D}, // Ö
 {0x00, 0x02, 0x05, 0x02, 0x00, 0x00}, // °
 {0x00, 0x7E, 0x01, 0x49, 0x55, 0x73}, // ß
-{0x00, 0x7C, 0x10, 0x10, 0x08, 0x1C} // µ
+{0x00, 0x7C, 0x10, 0x10, 0x08, 0x1C}  // µ
 };
-
 const char special_char[][2] PROGMEM = {
     // define position of special char in font
     // {special char, position in font}
     // be sure that last element of this
     // array are {0xff, 0xff} and first element
     // are {first special char, first element after normal char-set in font}
-   {'ü', 95},  // special_char[0]
-   {'Ü', 96},
-   {'ä', 97},
-   {'Ä', 98},
-   {'ö', 99},
-   {'Ö', 100},
-   {'°', 101},
-   {'ß', 102},
-   {'µ', 103},
-   {0xff, 0xff} // end of table special_char
+    {'ü', 95},  // special_char[0]
+    {'Ü', 96},
+    {'ä', 97},
+    {'Ä', 98},
+    {'ö', 99},
+    {'Ö', 100},
+    {'°', 101},
+    {'ß', 102},
+    {'µ', 103},
+    {0xff, 0xff} // end of table special_char
 };

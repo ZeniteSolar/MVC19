@@ -25,7 +25,7 @@
 #include <stdlib.h>
 #include <util/delay.h>
 #include "conf.h"
-#include "lcd.h"
+#include "../lib/oled-display/lcd.h"
 
 typedef enum {font_small=NORMALSIZE, font_big=DOUBLESIZE} display_font_size_t;
 

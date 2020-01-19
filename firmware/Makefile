@@ -41,7 +41,7 @@ SRCDIR      :=  src
 # Project target and sources to be compiled
 MAIN 		= 	main
 # Define microcontroller settings
-MCU 		?=	atmega328p
+MCU 		?=	atmega328pb
 F_CPU		?=	16000000UL
 # Optimization
 OPT			=	s
@@ -66,8 +66,8 @@ SRCS	=	$(shell find $(SRCDIR) -type f -name \*.c)
 OBJS	=	$(patsubst $(SRCDIR)/%,$(OBJDIR)/%,$(SRCS:.c=.o))
 
 SILENT ?= @
-CROSS ?= avr-
-#CROSS ?= ~/.arduino15/packages/arduino/tools/avr-gcc/7.3.0-atmel3.6.1-arduino5/bin/avr-
+#CROSS ?= avr-
+CROSS ?= ~/.arduino15/packages/arduino/tools/avr-gcc/7.3.0-atmel3.6.1-arduino5/bin/avr-
 ifneq ($(CROSS), )
 	CC = $(CROSS)gcc
 	CXX = $(CROSS)g++
@@ -135,10 +135,11 @@ CFLAGSALT += \
 
 LDFLAGS = -Wl,-Map=$(OBJDIR)/$(TARGET).map,--cref
 LDFLAGS += $(patsubst %,-L%,$(EXTRALIBDIRS))
-#LDFLAGS += $(PRINTF_LIB) $(SCANF_LIB)
+#LDFLAGS += $(PRINTF_LIB) $(SCANF_LIB) 
 LDFLAGS += $(MATH_LIB)
 LDFLAGS += -static -Llib/avr-can-lib/src/ -lcan
 #LDFLAGS += -static -Llib/DISPLAYS/SSD1306_AVR/ -lssd1306
+LDFLAGS += -static -Llib/oled-display/ -loled-display
 
 ## Intel Hex file production flags
 HEX_FLASH_FLAGS = \
@@ -154,10 +155,10 @@ HEX_EEPROM_FLAGS = \
 .PHONY: directories doc
 
 # all
-all: directories $(TARGET).elf size
+all: directories $(TARGET).elf size 
 
 # directories
-directories:
+directories: 
 	$(SILENT) $(MKDIR_P) $(BINDIR) $(OBJDIR) $(DOCDIR) $(LIBDIR) $(SRCDIR)
 
 # size
@@ -183,11 +184,11 @@ MKDIR_P := mkdir -p
 	@echo ""
 	$(SILENT) $(CC) $(CFLAGSALT) $(CFLAGS) $(OBJS) -o $(BINDIR)/$@ $(LDFLAGS)
 
-%.hex: $(TARGET)
-	@echo "hex..:"
+%.hex: $(BINDIR)/$(TARGET).elf 
+	@echo "hex..:" $@
 	@echo ""
-	$(SILENT) $(OBJCPY) -O ihex $(HEX_FLASH_FLAGS)
-
+	$(SILENT) $(OBJCOPY) -O ihex $(BINDIR)/$(TARGET).elf $(HEX_FLASH_FLAGS) $(BINDIR)/$@
+ 
 ## Compile
 $(OBJDIR)/%.o: $(SRCDIR)/%.c
 	@echo "[$(TARGET)] Compiling:" $@...
