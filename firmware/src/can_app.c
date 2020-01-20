@@ -113,8 +113,8 @@ void can_app_extractor_msc19_1_adc(can_t *msg)
         can_app_checks_without_msc19_1_msg = 0;
 
         HIGH_LOW(battery_voltage.main, msg->data[
-            CAN_MSG_MSC19_ADC_AVG_BYTE_H], msg->data[
-            CAN_MSG_MSC19_ADC_AVG_BYTE_L] );
+            CAN_MSG_MSC19_x_ADCAVG_BYTE_H], msg->data[
+            CAN_MSG_MSC19_x_ADCAVG_BYTE_L] );
     }
 }
 
@@ -125,8 +125,8 @@ void can_app_extractor_msc19_2_adc(can_t *msg)
         error_flags.no_message_from_MSC19_2 = 0;
 
         HIGH_LOW(battery_voltage.aux, msg->data[
-            CAN_MSG_MSC19_ADC_AVG_BYTE_H], msg->data[
-            CAN_MSG_MSC19_ADC_AVG_BYTE_L] );
+            CAN_MSG_MSC19_x_ADCAVG_BYTE_H], msg->data[
+            CAN_MSG_MSC19_x_ADCAVG_BYTE_L] );
     }
 }
 
@@ -138,8 +138,8 @@ void can_app_extractor_msc19_3_adc(can_t *msg)
         error_flags.no_message_from_MSC19_3 = 0;
 
         HIGH_LOW(battery_voltage.extra, msg->data[
-            CAN_MSG_MSC19_ADC_AVG_BYTE_H], msg->data[
-            CAN_MSG_MSC19_ADC_AVG_BYTE_L] );
+            CAN_MSG_MSC19_x_ADCAVG_BYTE_H], msg->data[
+            CAN_MSG_MSC19_x_ADCAVG_BYTE_L] );
     }
 }
 
@@ -151,8 +151,8 @@ void can_app_extractor_msc19_4_adc(can_t *msg)
         error_flags.no_message_from_MSC19_4 = 0;
 
         HIGH_LOW(battery_current.in, msg->data[
-            CAN_MSG_MSC19_ADC_AVG_BYTE_H], msg->data[
-            CAN_MSG_MSC19_ADC_AVG_BYTE_L] );
+            CAN_MSG_MSC19_x_ADCAVG_BYTE_H], msg->data[
+            CAN_MSG_MSC19_x_ADCAVG_BYTE_L] );
     }
 }
 
@@ -164,8 +164,8 @@ void can_app_extractor_msc19_5_adc(can_t *msg)
         error_flags.no_message_from_MSC19_5 = 0;
 
         HIGH_LOW(battery_current.out, msg->data[
-            CAN_MSG_MSC19_ADC_AVG_BYTE_H], msg->data[
-            CAN_MSG_MSC19_ADC_AVG_BYTE_L] );
+            CAN_MSG_MSC19_x_ADCAVG_BYTE_H], msg->data[
+            CAN_MSG_MSC19_x_ADCAVG_BYTE_L] );
     }
 }
 
