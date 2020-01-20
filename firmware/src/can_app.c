@@ -190,8 +190,8 @@ void can_app_extractor_mt19_rpm(can_t *msg)
         error_flags.no_message_from_MT19 = 0;
 
         HIGH_LOW(control.rpm, msg->data[
-            CAN_MSG_MT19_RPM_AVG_BYTE_H], msg->data[
-            CAN_MSG_MT19_RPM_AVG_BYTE_L] );
+            CAN_MSG_MT19_RPM_AVG_H_BYTE], msg->data[
+            CAN_MSG_MT19_RPM_AVG_L_BYTE] );
     }
 }
 
