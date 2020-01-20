@@ -69,14 +69,14 @@
 const uint8_t can_filter[] PROGMEM =
 {
     // Group 0
-    MCP2515_FILTER(CAN_FILTER_MSG_MSC19_STATE), // Filter 0
-    MCP2515_FILTER(CAN_FILTER_MSG_MSC19_ADC),   // Filter 1
+    MCP2515_FILTER(CAN_MSG_MSC19_STATE_ID), // Filter 0
+    MCP2515_FILTER(CAN_MSG_MSC19_ADC),   // Filter 1
 
     // Group 1
-    MCP2515_FILTER(CAN_FILTER_MSG_MCS19_RELAY), // Filter 0
-    MCP2515_FILTER(CAN_FILTER_MSG_MCS19_STATE), // Filter 0
-    MCP2515_FILTER(CAN_FILTER_MSG_MT19_STATE),  // Filter 1
-    MCP2515_FILTER(CAN_FILTER_MSG_MT19_RPM),    // Filter 1
+    MCP2515_FILTER(CAN_MSG_MCS19_RELAY), // Filter 0
+    MCP2515_FILTER(CAN_MSG_MCS19_STATE_ID), // Filter 0
+    MCP2515_FILTER(CAN_MSG_MT19_STATE_ID),  // Filter 1
+    MCP2515_FILTER(CAN_MSG_MT19_RPM),    // Filter 1
 
     MCP2515_FILTER(CAN_MASK_MSC19),             // Mask 0 (for group 0)
     MCP2515_FILTER(CAN_MASK_MCS17),             // Mask 1 (for group 1)
@@ -86,17 +86,17 @@ const uint8_t can_filter[] PROGMEM =
 const uint8_t can_filter[] PROGMEM =
 {
     // Group 0
-    MCP2515_FILTER(CAN_FILTER_MSG_MSC19_STATE), // Filter 0
-    MCP2515_FILTER(CAN_FILTER_MSG_MSC19_ADC),   // Filter 1
+    MCP2515_FILTER(CAN_MSG_MSC19_STATE_ID), // Filter 0
+    MCP2515_FILTER(CAN_MSG_MSC19_ADC),   // Filter 1
 
     // Group 1
-    MCP2515_FILTER(CAN_FILTER_MSG_MAM17_MOTOR), // Filter 0
-    MCP2515_FILTER(CAN_FILTER_MSG_MAM17_STATE), // Filter 0
-    MCP2515_FILTER(CAN_FILTER_MSG_MT19_STATE),  // Filter 1
-    MCP2515_FILTER(CAN_FILTER_MSG_MT19_RPM),    // Filter 1
+    MCP2515_FILTER(CAN_MSG_MAM19_MOTOR), // Filter 0
+    MCP2515_FILTER(CAN_MSG_MAM19_STATE_ID), // Filter 0
+    MCP2515_FILTER(CAN_MSG_MT19_STATE_ID),  // Filter 1
+    MCP2515_FILTER(CAN_MSG_MT19_RPM),    // Filter 1
 
     MCP2515_FILTER(CAN_MASK_MSC19),             // Mask 0 (for group 0)
-    MCP2515_FILTER(CAN_MASK_MAM17),             // Mask 1 (for group 1)
+    MCP2515_FILTER(CAN_MASK_MAM19),             // Mask 1 (for group 1)
 };
 #endif
 

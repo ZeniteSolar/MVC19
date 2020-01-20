@@ -44,7 +44,7 @@ inline void can_app_task(void)
 inline void can_app_send_state(void)
 {
     can_t msg;
-    msg.id                                  = CAN_FILTER_MSG_MAM17_STATE;
+    msg.id                                  = CAN_MSG_MAM19_STATE_ID;
     msg.length                              = CAN_LENGTH_MSG_STATE;
     msg.flags.rtr = 0;
 
@@ -236,7 +236,7 @@ inline void can_app_msg_extractors_switch(can_t *msg)
 
         switch(msg->id)
         {
-            case CAN_FILTER_MSG_MCS19_STATE:
+            case CAN_MSG_MCS19_STATE_ID:
             #ifdef USART_ON
                 VERBOSE_MSG_CAN_APP(usart_send_string(" got a state msg from MCS: "));
             #endif
@@ -244,7 +244,7 @@ inline void can_app_msg_extractors_switch(can_t *msg)
                 can_app_extractor_mcs_state(msg);
                 break;
 
-            case CAN_FILTER_MSG_MCS19_RELAY:
+            case CAN_MSG_MCS19_RELAY:
             #ifdef USART_ON
                 VERBOSE_MSG_CAN_APP(usart_send_string(" got a relay msg from MCS: "));
             #endif
@@ -263,7 +263,7 @@ inline void can_app_msg_extractors_switch(can_t *msg)
 
     if(msg->data[CAN_SIGNATURE_BYTE] == CAN_SIGNATURE_MSC19_1){
         switch(msg->id){
-            case CAN_FILTER_MSG_MSC19_STATE:
+            case CAN_MSG_MSC19_STATE_ID:
             #ifdef USART_ON
                 VERBOSE_MSG_CAN_APP(usart_send_string(" got a state msg from MSC19_1: "));
             #endif
@@ -271,7 +271,7 @@ inline void can_app_msg_extractors_switch(can_t *msg)
                 can_app_extractor_msc19_1_state(msg);
                 break;
 
-            case CAN_FILTER_MSG_MSC19_ADC:
+            case CAN_MSG_MSC19_ADC:
             #ifdef USART_ON
                 VERBOSE_MSG_CAN_APP(usart_send_string(" got a adc msg from MSC19_1: "));
             #endif
@@ -290,7 +290,7 @@ inline void can_app_msg_extractors_switch(can_t *msg)
 
     if(msg->data[CAN_SIGNATURE_BYTE] == CAN_SIGNATURE_MSC19_2){
         switch(msg->id){
-            case CAN_FILTER_MSG_MSC19_STATE:
+            case CAN_MSG_MSC19_STATE_ID:
             #ifdef USART_ON
                 VERBOSE_MSG_CAN_APP(usart_send_string(" got a state msg from MSC19_2: "));
             #endif
@@ -298,7 +298,7 @@ inline void can_app_msg_extractors_switch(can_t *msg)
                 can_app_extractor_msc19_2_state(msg);
                 break;
 
-            case CAN_FILTER_MSG_MSC19_ADC:
+            case CAN_MSG_MSC19_ADC:
             #ifdef USART_ON
                 VERBOSE_MSG_CAN_APP(usart_send_string(" got a adc msg from MSC19_2: "));
             #endif
@@ -318,7 +318,7 @@ inline void can_app_msg_extractors_switch(can_t *msg)
     if(msg->data[CAN_SIGNATURE_BYTE] == CAN_SIGNATURE_MSC19_3){
         switch(msg->id)
         {
-            case CAN_FILTER_MSG_MSC19_STATE:
+            case CAN_MSG_MSC19_STATE_ID:
             #ifdef USART_ON
                 VERBOSE_MSG_CAN_APP(usart_send_string(" got a state msg from MSC19_3: "));
             #endif
@@ -326,7 +326,7 @@ inline void can_app_msg_extractors_switch(can_t *msg)
                 can_app_extractor_msc19_3_state(msg);
                 break;
 
-            case CAN_FILTER_MSG_MSC19_ADC:
+            case CAN_MSG_MSC19_ADC:
             #ifdef USART_ON
                 VERBOSE_MSG_CAN_APP(usart_send_string(" got a adc msg from MSC19_3"));
             #endif
@@ -346,7 +346,7 @@ inline void can_app_msg_extractors_switch(can_t *msg)
     if(msg->data[CAN_SIGNATURE_BYTE] == CAN_SIGNATURE_MSC19_4){
         switch(msg->id)
         {
-            case CAN_FILTER_MSG_MSC19_STATE:
+            case CAN_MSG_MSC19_STATE_ID:
             #ifdef USART_ON
                 VERBOSE_MSG_CAN_APP(usart_send_string(" got a state msg from MSC19_4: "));
             #endif
@@ -354,7 +354,7 @@ inline void can_app_msg_extractors_switch(can_t *msg)
                 can_app_extractor_msc19_4_state(msg);
                 break;
 
-            case CAN_FILTER_MSG_MSC19_ADC:
+            case CAN_MSG_MSC19_ADC:
             #ifdef USART_ON
                 VERBOSE_MSG_CAN_APP(usart_send_string(" got a adc msg from MSC19_4"));
             #endif
@@ -374,7 +374,7 @@ inline void can_app_msg_extractors_switch(can_t *msg)
     if(msg->data[CAN_SIGNATURE_BYTE] == CAN_SIGNATURE_MSC19_5){
         switch(msg->id)
         {
-            case CAN_FILTER_MSG_MSC19_STATE:
+            case CAN_MSG_MSC19_STATE_ID:
             #ifdef USART_ON
                 VERBOSE_MSG_CAN_APP(usart_send_string(" got a state msg from MSC19_5: "));
             #endif
@@ -382,7 +382,7 @@ inline void can_app_msg_extractors_switch(can_t *msg)
                 can_app_extractor_msc19_5_state(msg);
                 break;
 
-            case CAN_FILTER_MSG_MSC19_ADC:
+            case CAN_MSG_MSC19_ADC:
             #ifdef USART_ON
                 VERBOSE_MSG_CAN_APP(usart_send_string(" got a adc msg from MSC19_5"));
             #endif
@@ -402,7 +402,7 @@ inline void can_app_msg_extractors_switch(can_t *msg)
     if(msg->data[CAN_SIGNATURE_BYTE] == CAN_SIGNATURE_MT19){
         switch(msg->id)
         {
-            case CAN_FILTER_MSG_MT19_STATE:
+            case CAN_MSG_MT19_STATE_ID:
             #ifdef USART_ON
                 VERBOSE_MSG_CAN_APP(usart_send_string(" got a state msg from MSC19_5: "));
             #endif
@@ -410,7 +410,7 @@ inline void can_app_msg_extractors_switch(can_t *msg)
                 can_app_extractor_mt19_state(msg);
                 break;
 
-            case CAN_FILTER_MSG_MT19_RPM:
+            case CAN_MSG_MT19_RPM:
             #ifdef USART_ON
                 VERBOSE_MSG_CAN_APP(usart_send_string(" got a adc msg from MSC19_5"));
             #endif
@@ -427,12 +427,12 @@ inline void can_app_msg_extractors_switch(can_t *msg)
         }
     } // CAN_SIGNATURE_MT19
 
-    if(msg->data[CAN_SIGNATURE_BYTE] == CAN_SIGNATURE_MAM17){
+    if(msg->data[CAN_SIGNATURE_BYTE] == CAN_SIGNATURE_MAM19){
         switch(msg->id)
         {
-            case CAN_FILTER_MSG_MAM17_STATE:
+            case CAN_MSG_MAM19_STATE_ID:
             #ifdef USART_ON
-                VERBOSE_MSG_CAN_APP(usart_send_string(" got a state msg from MAM17: "));
+                VERBOSE_MSG_CAN_APP(usart_send_string(" got a state msg from MAM19: "));
             #endif
                 VERBOSE_MSG_CAN_APP(can_app_print_msg(msg));
                 // can_app_extractor_mam17_state(msg);
@@ -440,9 +440,9 @@ inline void can_app_msg_extractors_switch(can_t *msg)
 
                 break;
 
-            case CAN_FILTER_MSG_MAM17_MOTOR:
+            case CAN_MSG_MAM19_MOTOR:
             #ifdef USART_ON
-                VERBOSE_MSG_CAN_APP(usart_send_string(" got a motor msg from MAM17: "));
+                VERBOSE_MSG_CAN_APP(usart_send_string(" got a motor msg from MAM19: "));
             #endif
                 VERBOSE_MSG_CAN_APP(can_app_print_msg(msg));
                 error_flags.no_communication_with_mam = 0;
@@ -450,12 +450,12 @@ inline void can_app_msg_extractors_switch(can_t *msg)
 
             default:
             #ifdef USART_ON
-                VERBOSE_MSG_CAN_APP(usart_send_string(" got a unknown msg from MAM17: "));
+                VERBOSE_MSG_CAN_APP(usart_send_string(" got a unknown msg from MAM19: "));
             #endif
                 VERBOSE_MSG_CAN_APP(can_app_print_msg(msg));
                 break;
         }
-    } // CAN_SIGNATURE_MAM17
+    } // CAN_SIGNATURE_MAM19
 
 }
 
@@ -465,7 +465,7 @@ inline void can_app_msg_extractors_switch(can_t *msg)
 inline void check_can(void)
 {
 
-    if(can_app_checks_without_mic17_msg++ >= CAN_APP_CHECKS_WITHOUT_MIC17_MSG){
+    if(can_app_checks_without_mic17_msg++ >= CAN_APP_CHECKS_WITHOUT_MIC19_MSG){
 #ifdef USART_ON
         VERBOSE_MSG_CAN_APP(usart_send_string("too many cycles without MIC message.\n"));
 #endif
@@ -529,7 +529,7 @@ inline void check_can(void)
     if(can_app_checks_without_mam_msg++ >= CAN_APP_CHECKS_WITHOUT_MAM_MSG)
     {
 #ifdef USART_ON
-        VERBOSE_MSG_CAN_APP(usart_send_string("too many cycles without MAM17 message.\n"));
+        VERBOSE_MSG_CAN_APP(usart_send_string("too many cycles without MAM19 message.\n"));
 #endif
         can_app_checks_without_mam_msg = 0;
         error_flags.no_communication_with_mam = 1;
