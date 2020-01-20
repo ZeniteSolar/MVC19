@@ -171,7 +171,7 @@ void can_app_extractor_msc19_5_adc(can_t *msg)
 
 void can_app_extractor_mcs_state(can_t *msg)
 {
-    // if(msg->data[CAN_SIGNATURE_BYTE] == CAN_SIGNATURE_MCS17){
+    // if(msg->data[CAN_SIGNATURE_BYTE] == CAN_SIGNATURE_MCS19){
     //     if(msg->data[CAN_STATE_MSG_ERROR_BYTE] == 0xFF){
     //       system_flags.charge_failed = 1;
     //     }
@@ -202,7 +202,7 @@ void can_app_extractor_mt19_state(can_t *msg)
 
 void can_app_extractor_mcs_relay(can_t *msg)
 {
-    if(msg->data[CAN_SIGNATURE_BYTE] == CAN_SIGNATURE_MCS17)
+    if(msg->data[CAN_SIGNATURE_BYTE] == CAN_SIGNATURE_MCS19)
     {
       if(msg->data[CAN_MSG_MCS19_CHARGE_RELAY_BYTE] == 0xFF)
       {
@@ -231,7 +231,7 @@ void can_app_extractor_mcs_relay(can_t *msg)
  */
 inline void can_app_msg_extractors_switch(can_t *msg)
 {
-    if(msg->data[CAN_SIGNATURE_BYTE] == CAN_SIGNATURE_MCS17){
+    if(msg->data[CAN_SIGNATURE_BYTE] == CAN_SIGNATURE_MCS19){
         // can_app_checks_without_mcs19_msg = 0;
 
         switch(msg->id)
@@ -259,7 +259,7 @@ inline void can_app_msg_extractors_switch(can_t *msg)
                 VERBOSE_MSG_CAN_APP(can_app_print_msg(msg));
                 break;
         }
-    } // CAN_SIGNATURE_MCS17
+    } // CAN_SIGNATURE_MCS19
 
     if(msg->data[CAN_SIGNATURE_BYTE] == CAN_SIGNATURE_MSC19_1){
         switch(msg->id){

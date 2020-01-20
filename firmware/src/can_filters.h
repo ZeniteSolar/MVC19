@@ -79,7 +79,7 @@ const uint8_t can_filter[] PROGMEM =
     MCP2515_FILTER(CAN_MSG_MT19_RPM),    // Filter 1
 
     MCP2515_FILTER(CAN_MASK_MSC19),             // Mask 0 (for group 0)
-    MCP2515_FILTER(CAN_MASK_MCS17),             // Mask 1 (for group 1)
+    MCP2515_FILTER(CAN_MASK_MCS19),             // Mask 1 (for group 1)
 };
 // You can receive 11 bit identifiers with either group 0 or 1.
 #else
