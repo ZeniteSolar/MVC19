@@ -204,11 +204,11 @@ void can_app_extractor_mcs_relay(can_t *msg)
 {
     if(msg->data[CAN_SIGNATURE_BYTE] == CAN_SIGNATURE_MCS19)
     {
-      if(msg->data[CAN_MSG_MCS19_CHARGE_RELAY_BYTE] == 0xFF)
+      if(msg->data[CAN_MSG_MCS19_START_STAGES_CHARGE_RELAY_BYTE] == 0xFF)
       {
         system_flags.cap_charging = 1;
 
-      } else if(msg->data[CAN_MSG_MCS19_CHARGE_RELAY_BYTE] == 0x00)
+      } else if(msg->data[CAN_MSG_MCS19_START_STAGES_CHARGE_RELAY_BYTE] == 0x00)
       {
         system_flags.cap_charging = 0;
 
