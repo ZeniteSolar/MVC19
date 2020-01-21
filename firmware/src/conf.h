@@ -28,15 +28,16 @@
 
 // MODULES ACTIVATION
 #define USART_ON
-// #define CAN_ON
+#define CAN_ON
 // #define CAN_DEPENDENT
 // #define ADC_ON
 #define MACHINE_ON
 #define LED_ON
-// #define WATCHDOG_ON
+#define WATCHDOG_ON
 // #define SLEEP_ON
 #define UI_ON
 
+#define CAN_SIGNATURE_SELF                  CAN_SIGNATURE_MVC19_1
 
 #ifdef UI_ON
 // UI CONFIGURATION
