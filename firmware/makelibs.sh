@@ -1,7 +1,7 @@
-cd lib/avr-can-lib/src
+cd lib/avr-can-lib/src/
 make clean
 make lib
 cd ../../../
-cd lib/oled-display/
-make clean
-make lib
+cd src
+wget https://raw.githubusercontent.com/ZeniteSolar/CAN_IDS/master/can_ids.h
+cd ..

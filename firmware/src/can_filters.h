@@ -65,7 +65,6 @@
  * If you want to receive both 11 and 29 bit identifiers, set your filters
  * and masks as follows:
  */
-
 const uint8_t can_filter[] PROGMEM =
 {
     // Group 0
