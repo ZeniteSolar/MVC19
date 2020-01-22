@@ -138,15 +138,13 @@ inline void task_initializing(void)
 #else
 #ifdef UI_ON
   display_clear();
-  display_send_string("CAN", 7, 1, font_big);
+  display_send_string("CAN", 7, 2, font_big);
   display_send_string("OFF", 7, 5, font_big);
 #endif  /* UI_ON */
   VERBOSE_MSG_ERROR(usart_send_string("CAN module disable.\n"));
 #endif 
 
     set_state_idle();
-
-    
 }
 
 /**
@@ -155,25 +153,25 @@ inline void task_initializing(void)
 inline void task_idle(void)
 {
 #ifdef LED_ON
-    if(led_clk_div++ >= 100){
-        cpl_led(LED1);
+    if(led_clk_div++ >= 20){
+        cpl_led(LED2);
         led_clk_div = 0;
     }
 #endif
 
 #ifdef CAN_ON
-    display_layout();
-    set_state_running();
+    
+    #if CAN_SIGNATURE_SELF == CAN_SIGNATURE_MVC19_1
     ui_select_screen(VOLTAGE);
-#endif
+    #elif CAN_SIGNATURE_SELF == CAN_SIGNATURE_MVC19_2
+    ui_select_screen(CURRENT);
+    #endif
 
-    static uint16_t i;
-    if(i++ > 1000)
-    {
-        i = 0;
-        set_state_running();
-        ui_select_screen(CURRENT_SMALL);
-    } 
+    set_led(LED2);
+
+    ui_draw_layout();
+    set_state_running();
+#endif
 }
 
 /**

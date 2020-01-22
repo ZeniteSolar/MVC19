@@ -6,9 +6,9 @@
 void ui_init(void)
 {
     display_init();
-#ifdef PRIMARY_DISPLAY
+#if CAN_SIGNATURE_SELF == CAN_SIGNATURE_MVC19_1
     display_send_string("Display 1", 0, 0, font_big);
-#else
+#elif CAN_SIGNATURE_SELF == CAN_SIGNATURE_MVC19_2
     display_send_string("Display 2", 0, 0, font_big);
 #endif
     _delay_ms(700);
@@ -19,24 +19,19 @@ void ui_init(void)
 /**
  * @brief Atualiza a tensao medida nas baterias
  */
-void ui_update_battery_voltage(void)
+void ui_update_main_battery_voltage(void)
 {
     static char desconnected_msg[] = " N.C.  ";
+    uint16_t main_battery_voltage = battery_voltage.main_cell_1 + battery_voltage.main_cell_2 + battery_voltage.main_cell_3;
 
-    if(system_flags.no_message_from_MSC19_1)
+    if(system_flags.no_message_from_MSC19_1 || system_flags.no_message_from_MSC19_2 || system_flags.no_message_from_MSC19_3)
+    {
         display_send_string(desconnected_msg, COL1, LINE1, font_selected);
+    }
     else
-        display_send_float((battery_voltage.main/100.f), COL1, LINE1, font_selected);
-
-    if(system_flags.no_message_from_MSC19_2)
-        display_send_string(desconnected_msg, COL1, LINE2, font_selected);
-    else
-        display_send_float((battery_voltage.aux/100.f), COL1, LINE2, font_selected);
-
-    if(system_flags.no_message_from_MSC19_3)
-        display_send_string(desconnected_msg, COL1, LINE3, font_selected);
-    else
-        display_send_float((battery_voltage.extra/100.f), COL1, LINE3, font_selected);
+    {
+        display_send_float((main_battery_voltage/100.f), COL1, LINE1, font_selected);
+    }
 }
 
 /**
@@ -70,20 +65,13 @@ void ui_update_rpm(void)
         display_send_uint16(boat_rpm, COL1, LINE3, font_selected);
 }
 
-
-void ui_check_modules(void)
-{
-    display_send_string("MAM", 12, 1, font_big);
-    display_send_string("FAIL", 12, 4, font_big);
-}
-
 void ui_update(void)
 {
     switch(screen)
     {
         default:
         case VOLTAGE:
-            ui_update_battery_voltage();
+            ui_update_main_battery_voltage();
             break;
 
         case CURRENT:
@@ -94,7 +82,6 @@ void ui_update(void)
         case CURRENT_SMALL:
             ui_update_battery_current();
             ui_update_rpm();
-            ui_check_modules();
             break;
     }
 }
@@ -133,7 +120,7 @@ void ui_select_screen(screen_t screen_selected)
     usart_send_string("\nui_select_screen(): ");
     #endif
 
-    if(screen_selected <= LAST_SCREEN)
+    if(screen_selected < LAST_SCREEN)
     {
         screen = screen_selected;
         display_clear();

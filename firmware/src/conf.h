@@ -42,7 +42,6 @@
 #ifdef UI_ON
 // UI CONFIGURATION
 #define UI_UPDATE_CLK_DIV                   50
-
 #endif
 
 #ifdef ADC_ON
@@ -80,11 +79,11 @@
 #endif // MACHINE_ON
 
 #ifdef LED_ON
-#define     LED_PORT                PORTB//PORTD
-#define     LED_PIN                 PINB//PIND
-#define     LED_DDR                 DDRB//DDRD
-#define     LED1                    PB5//PD5
-#define     LED2                    PB4//PD6
+#define     LED_PORT                PORTD
+#define     LED_PIN                 PIND
+#define     LED_DDR                 DDRD
+#define     LED1                    PD5
+#define     LED2                    PD6
 #define     cpl_led(y)              cpl_bit(LED_PORT, y)
 #define     set_led(y)              set_bit(LED_PORT, y)
 #define     clr_led(y)              clr_bit(LED_PORT, y)

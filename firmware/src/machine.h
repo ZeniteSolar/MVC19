@@ -72,7 +72,9 @@ typedef union error_flags{
 
 typedef struct battery_voltage
 {
-    uint16_t main;
+    uint16_t main_cell_1;
+    uint16_t main_cell_2;
+    uint16_t main_cell_3;
     uint16_t aux;
     uint16_t extra;
 }battery_voltage_t;

@@ -112,7 +112,7 @@ void can_app_extractor_msc19_1_adc(can_t *msg)
         system_flags.no_message_from_MSC19_1 = 0;
         can_app_checks_without_msc19_1_msg = 0;
 
-        HIGH_LOW(battery_voltage.main, msg->data[
+        HIGH_LOW(battery_voltage.main_cell_1, msg->data[
             CAN_MSG_MSC19_1_ADC_AVG_H_BYTE], msg->data[
             CAN_MSG_MSC19_1_ADC_AVG_L_BYTE] );
     }
@@ -124,7 +124,7 @@ void can_app_extractor_msc19_2_adc(can_t *msg)
         can_app_checks_without_msc19_2_msg = 0;
         system_flags.no_message_from_MSC19_2 = 0;
 
-        HIGH_LOW(battery_voltage.main, msg->data[
+        HIGH_LOW(battery_voltage.main_cell_2, msg->data[
             CAN_MSG_MSC19_2_ADC_AVG_H_BYTE], msg->data[
             CAN_MSG_MSC19_2_ADC_AVG_L_BYTE] );
     }
@@ -137,7 +137,7 @@ void can_app_extractor_msc19_3_adc(can_t *msg)
         can_app_checks_without_msc19_3_msg = 0;
         system_flags.no_message_from_MSC19_3 = 0;
 
-        HIGH_LOW(battery_voltage.main, msg->data[
+        HIGH_LOW(battery_voltage.main_cell_3, msg->data[
             CAN_MSG_MSC19_3_ADC_AVG_H_BYTE], msg->data[
             CAN_MSG_MSC19_3_ADC_AVG_L_BYTE] );
     }
@@ -150,7 +150,7 @@ void can_app_extractor_msc19_4_adc(can_t *msg)
         can_app_checks_without_msc19_4_msg = 0;
         system_flags.no_message_from_MSC19_4 = 0;
 
-        HIGH_LOW(battery_voltage.main, msg->data[
+        HIGH_LOW(battery_current.in, msg->data[
             CAN_MSG_MSC19_4_ADC_AVG_H_BYTE], msg->data[
             CAN_MSG_MSC19_4_ADC_AVG_L_BYTE] );
     }
@@ -163,7 +163,7 @@ void can_app_extractor_msc19_5_adc(can_t *msg)
         can_app_checks_without_msc19_5_msg = 0;
         system_flags.no_message_from_MSC19_5 = 0;
 
-        HIGH_LOW(battery_voltage.main, msg->data[
+        HIGH_LOW(battery_current.out, msg->data[
             CAN_MSG_MSC19_5_ADC_AVG_H_BYTE], msg->data[
             CAN_MSG_MSC19_5_ADC_AVG_L_BYTE] );
     }
