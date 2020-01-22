@@ -1,6 +1,6 @@
 # Hey Emacs, this is a -*- makefile -*-
 #----------------------------------------------------------------------------
-# WinAVR Makefile Template written by Eric B. Weddington, JÃ¶rg Wunsch, et al.
+# WinAVR Makefile Template written by Eric B. Weddington, Jörg Wunsch, et al.
 #
 # Released to the Public Domain
 #
@@ -42,7 +42,7 @@
 
 # MCU name
 MCU = atmega328p
-#MCU = at90can128
+
 
 # Processor frequency.
 #     This will define a symbol, F_CPU, in all source code files equal to the 
@@ -62,8 +62,7 @@ MCU = atmega328p
 #         F_CPU = 16000000
 #         F_CPU = 18432000
 #         F_CPU = 20000000
-#         F_CPU = 14745600
-F_CPU = 16000000
+F_CPU =  14745600
 
 
 # Output format. (can be srec, ihex, binary)
@@ -71,7 +70,7 @@ FORMAT = ihex
 
 
 # Target file name (without extension).
-TARGET = can
+TARGET = can_testprogram
 
 
 # Object files directory
@@ -81,40 +80,7 @@ OBJDIR = build
 
 
 # List C source files here. (C dependencies are automatically generated.)
-SRC = mcp2515.c
-SRC += mcp2515_buffer.c
-SRC += mcp2515_get_message.c
-SRC += mcp2515_send_message.c
-SRC += mcp2515_set_dyn_filter.c
-SRC += mcp2515_get_dyn_filter.c
-SRC += mcp2515_static_filter.c
-SRC += mcp2515_write_id.c
-SRC += mcp2515_read_id.c
-SRC += mcp2515_error_register.c
-SRC += mcp2515_regdump.c
-SRC += mcp2515_set_mode.c
-SRC += mcp2515_sleep.c
-SRC += spi.c
-
-SRC += at90can.c
-SRC += at90can_buffer.c
-SRC += at90can_disable_dyn_filter.c
-SRC += at90can_set_dyn_filter.c
-SRC += at90can_get_dyn_filter.c
-SRC += at90can_send_message.c
-SRC += at90can_send_buf_message.c
-SRC += at90can_get_message.c
-SRC += at90can_get_buf_message.c
-SRC += at90can_error_register.c
-SRC += at90can_set_mode.c
-
-SRC += sja1000.c
-SRC += sja1000_buffer.c
-SRC += sja1000_send_message.c
-SRC += sja1000_get_message.c
-SRC += sja1000_error_register.c
-
-SRC += can_buffer.c
+SRC = main.c
 
 
 # List C++ source files here. (C dependencies are automatically generated.)
@@ -148,7 +114,7 @@ DEBUG = dwarf-2
 #     Each directory must be seperated by a space.
 #     Use forward slashes for directory separators.
 #     For a directory that has spaces, enclose it in quotes.
-EXTRAINCDIRS = ../
+EXTRAINCDIRS = 
 
 
 # Compiler flag to set the C Standard level.
@@ -218,10 +184,10 @@ CPPFLAGS += -fno-exceptions
 CPPFLAGS += -Wall
 CFLAGS += -Wundef
 #CPPFLAGS += -mshort-calls
-CPPFLAGS += -fno-unit-at-a-time
-CPPFLAGS += -Wstrict-prototypes
-CPPFLAGS += -Wunreachable-code
-CPPFLAGS += -Wsign-compare
+#CPPFLAGS += -fno-unit-at-a-time
+#CPPFLAGS += -Wstrict-prototypes
+#CPPFLAGS += -Wunreachable-code
+#CPPFLAGS += -Wsign-compare
 CPPFLAGS += -Wa,-adhlns=$(<:%.cpp=$(OBJDIR)/%.lst)
 CPPFLAGS += $(patsubst %,-I%,$(EXTRAINCDIRS))
 #CPPFLAGS += $(CSTANDARD)
@@ -259,7 +225,7 @@ SCANF_LIB_MIN = -Wl,-u,vfscanf -lscanf_min
 SCANF_LIB_FLOAT = -Wl,-u,vfscanf -lscanf_flt
 
 # If this is left blank, then it will use the Standard scanf version.
-#SCANF_LIB = 
+SCANF_LIB = 
 #SCANF_LIB = $(SCANF_LIB_MIN)
 #SCANF_LIB = $(SCANF_LIB_FLOAT)
 
@@ -271,7 +237,7 @@ MATH_LIB = -lm
 #     Each directory must be seperated by a space.
 #     Use forward slashes for directory separators.
 #     For a directory that has spaces, enclose it in quotes.
-EXTRALIBDIRS = 
+EXTRALIBDIRS =
 
 
 
@@ -297,6 +263,7 @@ LDFLAGS = -Wl,-Map=$(TARGET).map,--cref
 LDFLAGS += $(EXTMEMOPTS)
 LDFLAGS += $(patsubst %,-L%,$(EXTRALIBDIRS))
 LDFLAGS += $(PRINTF_LIB) $(SCANF_LIB) $(MATH_LIB)
+LDFLAGS += -L. -lcan
 #LDFLAGS += -T linker_script.x
 
 
@@ -372,14 +339,13 @@ DEBUG_HOST = localhost
 
 
 # Define programs and commands.
-CROSS ?= ~/.arduino15/packages/arduino/tools/avr-gcc/7.3.0-atmel3.6.1-arduino5/bin/avr-
 SHELL = sh
-CC = $(CROSS)gcc
-OBJCOPY = $(CROSS)objcopy
-OBJDUMP = $(CROSS)objdump
-SIZE = $(CROSS)size
-AR = $(CROSS)ar rcs
-NM = $(CROSS)nm
+CC = avr-gcc
+OBJCOPY = avr-objcopy
+OBJDUMP = avr-objdump
+SIZE = avr-size
+AR = avr-ar rcs
+NM = avr-nm
 AVRDUDE = avrdude
 REMOVE = rm -f
 REMOVEDIR = rm -rf
@@ -435,8 +401,8 @@ ALL_ASFLAGS = -mmcu=$(MCU) -I. -x assembler-with-cpp $(ASFLAGS)
 all: begin gccversion sizebefore build sizeafter end
 
 # Change the build target to build a HEX file or a library.
-#build: elf hex eep lss sym
-build: lib
+build: elf hex eep lss sym
+#build: lib
 
 
 elf: $(TARGET).elf
@@ -632,7 +598,6 @@ clean_list :
 	$(REMOVE) $(TARGET).map
 	$(REMOVE) $(TARGET).sym
 	$(REMOVE) $(TARGET).lss
-	$(REMOVE) lib$(TARGET).a
 	$(REMOVE) $(SRC:%.c=$(OBJDIR)/%.o)
 	$(REMOVE) $(SRC:%.c=$(OBJDIR)/%.lst)
 	$(REMOVE) $(SRC:.c=.s)

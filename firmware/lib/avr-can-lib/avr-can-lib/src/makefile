@@ -1,6 +1,6 @@
 # Hey Emacs, this is a -*- makefile -*-
 #----------------------------------------------------------------------------
-# WinAVR Makefile Template written by Eric B. Weddington, JÃ¶rg Wunsch, et al.
+# WinAVR Makefile Template written by Eric B. Weddington, Jörg Wunsch, et al.
 #
 # Released to the Public Domain
 #
@@ -41,7 +41,7 @@
 
 
 # MCU name
-MCU = atmega328p
+MCU = atmega328pb
 #MCU = at90can128
 
 # Processor frequency.
@@ -96,23 +96,23 @@ SRC += mcp2515_set_mode.c
 SRC += mcp2515_sleep.c
 SRC += spi.c
 
-SRC += at90can.c
-SRC += at90can_buffer.c
-SRC += at90can_disable_dyn_filter.c
-SRC += at90can_set_dyn_filter.c
-SRC += at90can_get_dyn_filter.c
-SRC += at90can_send_message.c
-SRC += at90can_send_buf_message.c
-SRC += at90can_get_message.c
-SRC += at90can_get_buf_message.c
-SRC += at90can_error_register.c
-SRC += at90can_set_mode.c
+#SRC += at90can.c
+#SRC += at90can_buffer.c
+#SRC += at90can_disable_dyn_filter.c
+#SRC += at90can_set_dyn_filter.c
+#SRC += at90can_get_dyn_filter.c
+#SRC += at90can_send_message.c
+#SRC += at90can_send_buf_message.c
+#SRC += at90can_get_message.c
+#SRC += at90can_get_buf_message.c
+#SRC += at90can_error_register.c
+#SRC += at90can_set_mode.c
 
-SRC += sja1000.c
-SRC += sja1000_buffer.c
-SRC += sja1000_send_message.c
-SRC += sja1000_get_message.c
-SRC += sja1000_error_register.c
+#SRC += sja1000.c
+#SRC += sja1000_buffer.c
+#SRC += sja1000_send_message.c
+#SRC += sja1000_get_message.c
+#SRC += sja1000_error_register.c
 
 SRC += can_buffer.c
 
@@ -190,11 +190,20 @@ CFLAGS += -fpack-struct
 CFLAGS += -fshort-enums
 CFLAGS += -Wall
 CFLAGS += -Wstrict-prototypes
-#CFLAGS += -mshort-calls
+CFLAGS += -mshort-calls
+CFLAGS += -ffunction-sections
+CFLAGS += -fdata-sections
+CFLAGS += -ffreestanding
+CFLAGS += -mcall-prologues
+#CFLAGS += --param inline-call-cost=2
+#CFLAGS += -finline-limit=3
+#CFLAGS += -fno-inline-small-functions
 #CFLAGS += -fno-unit-at-a-time
-#CFLAGS += -Wundef
-#CFLAGS += -Wunreachable-code
-#CFLAGS += -Wsign-compare
+CFLAGS += -Wundef
+CFLAGS += -Wunreachable-code
+CFLAGS += -Wsign-compare
+CFLAGS += -Waddr-space-convert
+CFLAGS += -Wmisspelled-isr
 CFLAGS += -Wa,-adhlns=$(<:%.c=$(OBJDIR)/%.lst)
 CFLAGS += $(patsubst %,-I%,$(EXTRAINCDIRS))
 CFLAGS += $(CSTANDARD)
@@ -241,10 +250,10 @@ ASFLAGS = $(ADEFS) -Wa,-adhlns=$(<:%.S=$(OBJDIR)/%.lst),-gstabs,--listing-cont-l
 
 #---------------- Library Options ----------------
 # Minimalistic printf version
-PRINTF_LIB_MIN = -Wl,-u,vfprintf -lprintf_min
+#PRINTF_LIB_MIN = -Wl,-u,vfprintf -lprintf_min
 
 # Floating point printf version (requires MATH_LIB = -lm below)
-PRINTF_LIB_FLOAT = -Wl,-u,vfprintf -lprintf_flt
+#PRINTF_LIB_FLOAT = -Wl,-u,vfprintf -lprintf_flt
 
 # If this is left blank, then it will use the Standard printf version.
 PRINTF_LIB = 
@@ -253,10 +262,10 @@ PRINTF_LIB =
 
 
 # Minimalistic scanf version
-SCANF_LIB_MIN = -Wl,-u,vfscanf -lscanf_min
+#SCANF_LIB_MIN = -Wl,-u,vfscanf -lscanf_min
 
 # Floating point + %[ scanf version (requires MATH_LIB = -lm below)
-SCANF_LIB_FLOAT = -Wl,-u,vfscanf -lscanf_flt
+#SCANF_LIB_FLOAT = -Wl,-u,vfscanf -lscanf_flt
 
 # If this is left blank, then it will use the Standard scanf version.
 #SCANF_LIB = 
@@ -264,7 +273,7 @@ SCANF_LIB_FLOAT = -Wl,-u,vfscanf -lscanf_flt
 #SCANF_LIB = $(SCANF_LIB_FLOAT)
 
 
-MATH_LIB = -lm
+#MATH_LIB = -lm
 
 
 # List any extra directories to look for libraries here.

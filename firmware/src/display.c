@@ -3,39 +3,6 @@
 void display_layout(void)
 {
     lcd_clrscr();
-
-#ifdef PRIMARY_DISPLAY
-    // Display primário
-#ifdef UI_FONT_SMALL
-    display_send_string("VOLTAGE", COL1, LINE0, font_small);
-    display_send_string("CURRENT", COL3, LINE0, font_small);
-
-    display_send_string("M", COL0, LINE1, font_small);
-    display_send_string("A", COL0, LINE2, font_small);
-    display_send_string("E", COL0, LINE3, font_small);
-
-    display_send_string(">", COL2, LINE1, font_small);
-    display_send_string("<", COL2, LINE2, font_small);
-#else
-    display_send_string("-VOLTAGES-", COL0, LINE0, font_big);
-
-    display_send_string("M", COL0, LINE1, font_big);
-    display_send_string("A", COL0, LINE2, font_big);
-    display_send_string("E", COL0, LINE3, font_big);
-#endif /*UI_FONT_SMALL*/
-
-#else
-    // Display secundario
-    display_send_string(" CURR.", COL1, LINE0, font_small);
-    // display_send_string("RPM", 13, LINE0, font_small);
-
-    display_send_string(">", COL0, LINE1, font_small);
-    display_send_string("<", COL0, LINE2, font_small);
-    display_send_string("T", COL0, LINE3, font_small);
-
-    
-    // #endif
-#endif
 }
 
 /**

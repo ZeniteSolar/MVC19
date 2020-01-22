@@ -65,39 +65,20 @@
  * If you want to receive both 11 and 29 bit identifiers, set your filters
  * and masks as follows:
  */
-#ifdef PRIMARY_DISPLAY
 const uint8_t can_filter[] PROGMEM =
 {
     // Group 0
-    MCP2515_FILTER(CAN_MSG_MSC19_STATE_ID), // Filter 0
-    MCP2515_FILTER(CAN_MSG_MSC19_ADC),   // Filter 1
+    MCP2515_FILTER(0), // Filter 0
+    MCP2515_FILTER(0),   // Filter 1
 
     // Group 1
-    MCP2515_FILTER(CAN_MSG_MCS19_RELAY), // Filter 0
-    MCP2515_FILTER(CAN_MSG_MCS19_STATE_ID), // Filter 0
-    MCP2515_FILTER(CAN_MSG_MT19_STATE_ID),  // Filter 1
-    MCP2515_FILTER(CAN_MSG_MT19_RPM),    // Filter 1
+    MCP2515_FILTER(0), // Filter 0
+    MCP2515_FILTER(0), // Filter 0
+    MCP2515_FILTER(0),  // Filter 1
+    MCP2515_FILTER(0),    // Filter 1
 
-    MCP2515_FILTER(CAN_MASK_MSC19),             // Mask 0 (for group 0)
-    MCP2515_FILTER(CAN_MASK_MCS19),             // Mask 1 (for group 1)
+    MCP2515_FILTER(0),             // Mask 0 (for group 0)
+    MCP2515_FILTER(0),             // Mask 1 (for group 1)
 };
-// You can receive 11 bit identifiers with either group 0 or 1.
-#else
-const uint8_t can_filter[] PROGMEM =
-{
-    // Group 0
-    MCP2515_FILTER(CAN_MSG_MSC19_STATE_ID), // Filter 0
-    MCP2515_FILTER(CAN_MSG_MSC19_ADC),   // Filter 1
-
-    // Group 1
-    MCP2515_FILTER(CAN_MSG_MAM19_MOTOR), // Filter 0
-    MCP2515_FILTER(CAN_MSG_MAM19_STATE_ID), // Filter 0
-    MCP2515_FILTER(CAN_MSG_MT19_STATE_ID),  // Filter 1
-    MCP2515_FILTER(CAN_MSG_MT19_RPM),    // Filter 1
-
-    MCP2515_FILTER(CAN_MASK_MSC19),             // Mask 0 (for group 0)
-    MCP2515_FILTER(CAN_MASK_MAM19),             // Mask 1 (for group 1)
-};
-#endif
 
 #endif /* ifndef CAN_FILTERS_H */

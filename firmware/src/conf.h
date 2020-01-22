@@ -17,29 +17,32 @@
 
 // CONFIGURACOES DE COMPILACAO
 #define DEBUG_ON
-#define VERBOSE_ON
+// #define VERBOSE_ON
 // #define VERBOSE_ON_CAN_APP
 #define VERBOSE_ON_MACHINE
 //#define VERBOSE_ON_ADC
 #define VERBOSE_ON_INIT
 #define VERBOSE_ON_ERROR
+#define VERBOSE_ON_DISPLAY
+
 
 // MODULES ACTIVATION
 #define USART_ON
 #define CAN_ON
 // #define CAN_DEPENDENT
-//#define ADC_ON
+// #define ADC_ON
 #define MACHINE_ON
 #define LED_ON
 #define WATCHDOG_ON
-#define SLEEP_ON
+// #define SLEEP_ON
 #define UI_ON
 
-#define UI_UPDATE_CLK_DIV_VALUE             50
-#define UI_UPDATE_CURRENT_FREQ              50
-// #define PRIMARY_DISPLAY
-// #define UI_FONT_SMALL
-#define UI_ENABLE_MODULES_FAILURE_MESSAGE
+#define CAN_SIGNATURE_SELF                  CAN_SIGNATURE_MVC19_1
+
+#ifdef UI_ON
+// UI CONFIGURATION
+#define UI_UPDATE_CLK_DIV                   50
+#endif
 
 #ifdef ADC_ON
 // ADC CONFIGURATION
@@ -85,9 +88,9 @@
 #define     set_led(y)              set_bit(LED_PORT, y)
 #define     clr_led(y)              clr_bit(LED_PORT, y)
 #else
-#define     cpl_led()
-#define     set_led()
-#define     clr_led()
+#define     cpl_led(y)
+#define     set_led(y)
+#define     clr_led(y)
 #endif // LED_ON
 
 

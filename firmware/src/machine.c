@@ -132,17 +132,17 @@ inline void task_initializing(void)
 #endif
 
     set_machine_initial_state();
+
 #ifdef CAN_ON
   VERBOSE_MSG_INIT(usart_send_string("System initialized without errors.\n"));
 #else
 #ifdef UI_ON
   display_clear();
-  display_send_string("CAN", 7, 3, font_big);
+  display_send_string("CAN", 7, 2, font_big);
   display_send_string("OFF", 7, 5, font_big);
 #endif  /* UI_ON */
-
   VERBOSE_MSG_ERROR(usart_send_string("CAN module disable.\n"));
-#endif
+#endif 
 
     set_state_idle();
 }
@@ -153,14 +153,23 @@ inline void task_initializing(void)
 inline void task_idle(void)
 {
 #ifdef LED_ON
-    if(led_clk_div++ >= 100){
-        cpl_led(LED1);
+    if(led_clk_div++ >= 20){
+        cpl_led(LED2);
         led_clk_div = 0;
     }
 #endif
 
 #ifdef CAN_ON
-    display_layout();
+    
+    #if CAN_SIGNATURE_SELF == CAN_SIGNATURE_MVC19_1
+    ui_select_screen(VOLTAGE);
+    #elif CAN_SIGNATURE_SELF == CAN_SIGNATURE_MVC19_2
+    ui_select_screen(CURRENT);
+    #endif
+
+    set_led(LED2);
+
+    ui_draw_layout();
     set_state_running();
 #endif
 }
@@ -177,76 +186,12 @@ inline void task_running(void)
     }
 #endif
 
-
-#ifdef PRIMARY_DISPLAY
-    if(++ui_update_clk_div == UI_UPDATE_CLK_DIV_VALUE)
+#ifdef UI_ON
+    if(++ui_clk_div == UI_UPDATE_CLK_DIV)
     {
-        ui_update_clk_div = 0;
-
-        ui_update_battery_voltage();
-        #ifdef UI_FONT_SMALL
-        ui_update_battery_current();
-        #endif
+        ui_clk_div = 0;
+        ui_update();
     }
-
-#else
-  /*
-    if(error_flags.all)
-      ui_state = STATE_ERROR;
-
-    // Display secundário
-    switch (ui_state) {
-      case STATE_RUNNING:
-        if(++ui_update_clk_div == UI_UPDATE_CLK_DIV_VALUE)
-        {
-            ui_update_clk_div = 0;
-            ui_update_temperatures();
-            ui_update_rpm();
-        }
-      break;
-
-      case STATE_ERROR:
-      if(error_flags.no_communication_with_mam && !display_freeze)
-      {
-          display_freeze = 1;
-          display_clear();
-          display_send_string("MAM", 6, 2, font_big);
-          display_send_string("DESCON.", 3, 5, font_big);
-      }
-      else if(error_flags.no_communication_with_mcs && !display_freeze)
-      {
-          display_freeze = 1;
-          display_clear();
-          display_send_string("MCS", 6, 2, font_big);
-          display_send_string("DESCON.", 3, 5, font_big);
-      }
-      else
-      {
-
-      }
-
-      if(!error_flags.all)
-      {
-        display_freeze = 0;
-        display_layout();
-        ui_state = STATE_RUNNING;
-      }
-      break;
-
-      default:
-      break;
-
-    }*/
-
-    if(++ui_update_clk_div == UI_UPDATE_CLK_DIV_VALUE)
-    {
-        ui_update_clk_div = 0;
-        ui_update_battery_current();
-        ui_update_rpm();
-    }
-
-    ui_check_mam();
-
 #endif
 }
 
@@ -266,11 +211,10 @@ inline void task_error(void)
     total_errors++;
 
     if(total_errors > 20)
-    {
-      set_state_reset();
-    }
+        set_state_reset();
 
-    set_state_initializing();
+    if(total_errors < 2)
+        set_state_initializing();
 
 }
 
