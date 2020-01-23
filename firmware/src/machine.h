@@ -72,6 +72,7 @@ typedef union error_flags{
 
 typedef struct battery_voltage
 {
+    uint16_t main_bank;
     uint16_t main_cell_1;
     uint16_t main_cell_2;
     uint16_t main_cell_3;
@@ -85,6 +86,17 @@ typedef struct battery_current
     uint16_t out;
 }battery_current_t;
 
+typedef union{
+    struct{
+	uint8_t main_bank	:1;
+	uint8_t main_cell_1	:1;
+	uint8_t main_cell_2	:1;
+	uint8_t main_cell_3	:1;
+    };
+    uint8_t all;
+}undervoltage_t;
+
+volatile undervoltage_t undervoltage;
 volatile uint16_t boat_rpm;
 
 // debug functions

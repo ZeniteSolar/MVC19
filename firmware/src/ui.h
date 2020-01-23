@@ -32,6 +32,10 @@
 #include <util/delay.h>
 #include "machine.h"
 
+#ifndef DESCONNECTED_MESSAGE
+#define DESCONNECTED_MESSAGE		"  N.C.  "
+#endif
+
 typedef enum screen
 {
     VOLTAGE,
@@ -46,6 +50,7 @@ display_font_size_t font_selected;
 void ui_init(void);
 
 void ui_update_main_battery_voltage(void);
+void ui_update_auxiliary_battery_voltage(void);
 void ui_update_battery_current(void);
 void ui_update_rpm(void);
 

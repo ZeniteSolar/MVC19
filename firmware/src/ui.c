@@ -21,35 +21,43 @@ void ui_init(void)
  */
 void ui_update_main_battery_voltage(void)
 {
-    static char desconnected_msg[] = " N.C.  ";
-    uint16_t main_battery_voltage = battery_voltage.main_cell_1 + battery_voltage.main_cell_2 + battery_voltage.main_cell_3;
+    static uint8_t i;
 
     if(system_flags.no_message_from_MSC19_1 || system_flags.no_message_from_MSC19_2 || system_flags.no_message_from_MSC19_3)
     {
-        display_send_string(desconnected_msg, COL1, LINE1, font_selected);
+        display_send_string(DESCONNECTED_MESSAGE, COL1, LINE1, font_selected);
     }
     else
     {
-        display_send_float((main_battery_voltage/100.f), COL1, LINE1, font_selected);
-    }
+	if(undervoltage.main_bank)
+	{
+	    i++;
+	    if(i < 4)
+        	display_send_float((battery_voltage.main_bank/VSCALE_FLOAT), COL1, LINE1, font_selected);
+	    else if(i == 4)
+		display_send_string(("BAT. LOW"), COL1, LINE1, font_selected);
+	    else if(i == 8)
+		i = 0;
+	}
+	else			
+            display_send_float((battery_voltage.main_bank/VSCALE_FLOAT), COL1, LINE1, font_selected);
 }
+
 
 /**
  * @brief Atualiza a corrente medida nas baterias
  */
 void ui_update_battery_current(void)
 {
-    static char desconnected_msg[] = " N.C.  ";
-
     if(system_flags.no_message_from_MSC19_4)
-        display_send_string(desconnected_msg, COL1, LINE1, font_selected);
+        display_send_string(DESCONNECTED_MESSAGE, COL1, LINE1, font_selected);
     else
-        display_send_float((battery_current.in/100.f), COL1, LINE1, font_selected);
+        display_send_float((battery_current.in/VSCALE_FLOAT), COL1, LINE1, font_selected);
 
     if(system_flags.no_message_from_MSC19_5)
-        display_send_string(desconnected_msg, COL1, LINE2, font_selected);
+        display_send_string(DESCONNECTED_MESSAGE, COL1, LINE2, font_selected);
     else
-        display_send_float((battery_current.out/100.f), COL1, LINE2, font_selected);
+        display_send_float((battery_current.out/VSCALE_FLOAT), COL1, LINE2, font_selected);
 }
 
 /**
@@ -57,10 +65,8 @@ void ui_update_battery_current(void)
  */
 void ui_update_rpm(void)
 {
-    static char desconnected_msg[] = " N.C.  ";
-
     if(system_flags.no_message_from_MT19)
-        display_send_string(desconnected_msg, COL1, LINE3, font_selected);
+        display_send_string(DESCONNECTED_MESSAGE, COL1, LINE3, font_selected);
     else
         display_send_uint16(boat_rpm, COL1, LINE3, font_selected);
 }
@@ -86,6 +92,11 @@ void ui_update(void)
     }
 }
 
+void ui_check_modules_failure(void)
+{
+   
+}
+
 void ui_draw_layout(void)
 {
     switch(screen)
@@ -93,16 +104,16 @@ void ui_draw_layout(void)
         default:
         case VOLTAGE:
             display_send_string("-VOLTAGES-", COL0, LINE0, font_big);
-            display_send_string("M:", COL0, LINE1, font_big);
-            display_send_string("A:", COL0, LINE2, font_big);
-            display_send_string("E:", COL0, LINE3, font_big);
+            display_send_string("M:", COL0, LINE1, font_selected);
+            display_send_string("A:", COL0, LINE2, font_selected);
+            display_send_string("E:", COL0, LINE3, font_selected);
             break;
 
         case CURRENT:
             display_send_string("-CURRENTS-", COL0, LINE0, font_big);
-            display_send_string(">:", COL0, LINE1, font_big);
-            display_send_string("<:", COL0, LINE2, font_big);
-            display_send_string("T:", COL0, LINE3, font_big);
+            display_send_string(">:", COL0, LINE1, font_selected);
+            display_send_string("<:", COL0, LINE2, font_selected);
+            display_send_string("T:", COL0, LINE3, font_selected);
             break;
 
         case CURRENT_SMALL:
@@ -110,6 +121,8 @@ void ui_draw_layout(void)
             display_send_string(">:", COL0, LINE1, font_small);
             display_send_string("<:", COL0, LINE2, font_small);
             display_send_string("T:", COL0, LINE3, font_small);
+	    display_send_string("A:", COL2, LINE1, font_small);
+	    display_send_string("E:", COL2, LINE2, font_small);
             break;
     }
 }
@@ -117,7 +130,7 @@ void ui_draw_layout(void)
 void ui_select_screen(screen_t screen_selected)
 {   
     #ifdef VERBOSE_ON_DISPLAY
-    usart_send_string("\nui_select_screen(): ");
+    usart_send_string("\nui_select_screen: ");
     #endif
 
     if(screen_selected < LAST_SCREEN)

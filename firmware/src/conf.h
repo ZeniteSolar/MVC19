@@ -42,6 +42,10 @@
 #ifdef UI_ON
 // UI CONFIGURATION
 #define UI_UPDATE_CLK_DIV                   50
+// battery voltage check
+#define MAIN_BATTERY_UNDERVOLTAGE_WARNING
+// #define MAIN_BATTERY_OVERVOLTAGE_WARNING
+// #define UI_CHECK_AUXILIARY_BATTERY_VOLTAGE
 #endif
 
 #ifdef ADC_ON
@@ -55,6 +59,15 @@
 #define ADC_AVG_SIZE_2                      7                  // in base 2
 #define ADC_AVG_SIZE_10                     128                // in base 10
 
+#define VSCALE				    100
+#define VSCALE_FLOAT			    100.f
+
+// BATTERY INFORMATION
+#define BATTERY_CELL_DISCHARGED_VOLTAGE	    7.0 * VSCALE
+#define BATTERY_CELL_OVERCHARGED_VOLTAGE    15.6 * VSCALE
+#define BATTERY_SERIES_CELLS		    3
+#define BATTERY_BANK_DISCHARGED_VOLTAGE	    BATTERY_CELL_DISCHARGED_VOLTAGE * BATTERY_SERIES_CELLS
+#define BATTERY_BANK_OVERCHARGED_VOLTAGE    BATTERY_CELL_OVERCHARGED_VOLTAGE * BATTERY_SERIES_CELLS
 //#define FAKE_ADC_ON
 #ifdef FAKE_ADC_ON
 #define FAKE_ADC                            1
@@ -74,7 +87,7 @@
 #define MACHINE_FREQUENCY                   (MACHINE_TIMER_FREQUENCY)/(MACHINE_CLK_DIVIDER_VALUE)
 
 // SCALE TO CONVERT ADC DEFINITIONS
-#define VSCALE                              (uint16_t)1000
+//#define VSCALE                              (uint16_t)1000
 
 #endif // MACHINE_ON
 

@@ -122,6 +122,41 @@ inline void print_system_flags(void)
     //VERBOSE_MSG_MACHINE(usart_send_char(48+system_flags.enable));
 }
 
+inline void read_main_battery_voltage(void)
+{
+	battery_voltage.main_bank = battery_voltage.main_cell_1 \
+				  + battery_voltage.main_cell_2 \
+				  + battery_voltage.main_cell_3;
+
+#ifdef MAIN_BATTERY_UNDERVOLTAGE_WARNING
+	if(battery_voltage.main_bank < BATTERY_BANK_DISCHARGED_VOLTAGE)
+		undervoltage.main_bank = 1;
+	else
+		undervoltage.main_bank = 0;
+#endif
+
+#ifdef MAIN_BATTERY_OVERVOLTAGE_WARNING
+
+#endif
+
+#ifdef UI_CHECK_MAIN_BATTERY_CELL_VOLTAGE
+	if(battery_voltage.main_cell_1 < BATTERY_CELL_DISCHARGED_VOLTAGE
+		undervoltate.main_cell_1 = 1;
+	else
+		undervoltage.main_cell_1 = 0;
+
+	if(battery_voltage.main_cell_2 < BATTERY_CELL_DISCHARGED_VOLTAGE)	
+		undervoltage.main_cell_2 = 1;
+	else
+		undervoltate.main_cell_2 = 0;
+
+	if(battery_voltage.main_cell_3 < BATTERY_CELL_DISCHARGED_VOLTAGE)
+		undervoltage.main_cell_3 = 1;
+	else
+		undervoltage.main_cell_3 = 0;
+#endif
+}
+
 /**
  * @brief Checks if the system is OK to run
  */
@@ -159,7 +194,7 @@ inline void task_idle(void)
     }
 #endif
 
-#ifdef CAN_ON
+#if defined CAN_ON && defined UI_ON
     
     #if CAN_SIGNATURE_SELF == CAN_SIGNATURE_MVC19_1
     ui_select_screen(VOLTAGE);
@@ -190,6 +225,7 @@ inline void task_running(void)
     if(++ui_clk_div == UI_UPDATE_CLK_DIV)
     {
         ui_clk_div = 0;
+	read_main_battery_voltage();
         ui_update();
     }
 #endif
