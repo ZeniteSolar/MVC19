@@ -10,6 +10,10 @@ Equipe Zênite Solar
 
 Este módulo é responável por exibir os principais parâmetros do sistema para o piloto em um display OLED de 0,96" (SSD1306).
 
+![3DDOWN](hardware\IMG\3DDOWN.png)
+
+![3DDOWN](hardware\IMG\3DUP.png)
+
 
 #### Requisitos e Abordagens
 1. Adquirir os parâmetros relevantes da rede CAN
