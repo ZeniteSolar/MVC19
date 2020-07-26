@@ -8,11 +8,11 @@ Equipe Zênite Solar
 
 ###  Sobre
 
-Este módulo é responável por exibir os principais parâmetros do sistema para o piloto em um display OLED de 0,96" (SSD1306).
+Este módulo é responsável por exibir os principais parâmetros do sistema para o piloto em um display OLED de 0,96" (SSD1306).
 
-![3DDOWN](hardware\IMG\3DDOWN.png?raw=true)
+![3DDOWN](hardware/IMG/3DDOWN.png?raw=true)
 
-![3DDOWN](hardware\IMG\3DUP.png?raw=true)
+![3DDOWN](hardware/IMG/3DUP.png?raw=true)
 
 
 #### Requisitos e Abordagens
