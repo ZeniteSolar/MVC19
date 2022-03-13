@@ -153,7 +153,7 @@ inline void read_main_battery_voltage(void)
 #endif
 
 #ifdef UI_CHECK_MAIN_BATTERY_CELL_VOLTAGE
-	if(battery_voltage.main_cell_1 < BATTERY_CELL_DISCHARGED_VOLTAGE
+	if(battery_voltage.main_cell_1 < BATTERY_CELL_DISCHARGED_VOLTAGE)
 		undervoltate.main_cell_1 = 1;
 	else
 		undervoltage.main_cell_1 = 0;
