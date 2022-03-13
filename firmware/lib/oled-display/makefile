@@ -41,7 +41,7 @@
 
 
 # MCU name
-MCU = atmega328pb
+MCU = atmega328p
 #MCU = at90can128
 
 # Processor frequency.
@@ -351,7 +351,8 @@ DEBUG_HOST = localhost
 
 
 # Define programs and commands.
-CROSS ?= ~/.arduino15/packages/arduino/tools/avr-gcc/7.3.0-atmel3.6.1-arduino5/bin/avr-
+#CROSS ?= ~/.arduino15/packages/arduino/tools/avr-gcc/7.3.0-atmel3.6.1-arduino5/bin/avr-
+CROSS ?= avr-
 SHELL = sh
 CC = $(CROSS)gcc
 OBJCOPY = $(CROSS)objcopy

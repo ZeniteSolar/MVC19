@@ -41,7 +41,7 @@ SRCDIR      :=  src
 # Project target and sources to be compiled
 MAIN 		= 	main
 # Define microcontroller settings
-MCU 		?=	atmega328pb
+MCU 		?=	atmega328p
 F_CPU		?=	16000000UL
 # Optimization
 OPT			=	s
@@ -66,8 +66,8 @@ SRCS	=	$(shell find $(SRCDIR) -type f -name \*.c)
 OBJS	=	$(patsubst $(SRCDIR)/%,$(OBJDIR)/%,$(SRCS:.c=.o))
 
 SILENT ?= @
-#CROSS ?= avr-
-CROSS ?= ~/.arduino15/packages/arduino/tools/avr-gcc/7.3.0-atmel3.6.1-arduino5/bin/avr-
+CROSS ?= avr-
+#CROSS ?= ~/.arduino15/packages/arduino/tools/avr-gcc/7.3.0-atmel3.6.1-arduino5/bin/avr-
 ifneq ($(CROSS), )
 	CC = $(CROSS)gcc
 	CXX = $(CROSS)g++
@@ -100,42 +100,47 @@ $(foreach i,$(SPECIAL_DEFS),$(eval $(call CHECK_ANSWER,$(i))))
 #  -Wa,...:      tell GCC to pass this to the assembler.
 #  -adhlns...:   create assembler listing
 #  INFO: https://www.nongnu.org/avr-libc/user-manual/using_tools.html
-CFLAGS += $(CDEFS)
 CFLAGS += -O$(OPT)
-CFLAGS += -g$(DEBUG)
+#CFLAGS += -g$(DEBUG)
+CFLAGS += -Wall -Wextra
+# CFLAGS += -Wconversion
+CFLAGS += -Wshadow
+CFLAGS += -Wunsafe-loop-optimizations
+CFLAGS += -Waddress
+CFLAGS += -Wlogical-op
+CFLAGS += -Wstrict-prototypes
+CFLAGS += -Wold-style-definition
+CFLAGS += -Wmissing-prototypes
+CFLAGS += -Wmissing-declarations
+CFLAGS += -Wpacked
+CFLAGS += -Wundef
+CFLAGS += -Wredundant-decls
+CFLAGS += -Wnested-externs
+CFLAGS += -Wunreachable-code
+# CFLAGS += -Winline
+CFLAGS += -Woverlength-strings
+CFLAGS += -Wpointer-sign
+CFLAGS += -Wdisabled-optimization
+CFLAGS += -Wvariadic-macros
+CFLAGS += -fstrict-aliasing
+CFLAGS += -Wstrict-overflow=5 -fstrict-overflow
 CFLAGS += -funsigned-char
 CFLAGS += -funsigned-bitfields
-CFLAGS += -fpack-struct
+# CFLAGS += -fpack-struct
 CFLAGS += -fshort-enums
-CFLAGS += -Wall
-CFLAGS += -Wstrict-prototypes
-CFLAGS += -mshort-calls
+CFLAGS += -Wformat=2
 CFLAGS += -ffunction-sections
 CFLAGS += -fdata-sections
-CFLAGS += -ffreestanding
-CFLAGS += -mcall-prologues
-#CFLAGS += --param inline-call-cost=2
-#CFLAGS += -finline-limit=3
-#CFLAGS += -fno-inline-small-functions
-#CFLAGS += -fno-unit-at-a-time
-CFLAGS += -Wundef
-CFLAGS += -Wunreachable-code
-CFLAGS += -Wsign-compare
-CFLAGS += -Waddr-space-convert
-CFLAGS += -Wmisspelled-isr
-#CFLAGS += -Wa,-adhlns=$(<:%.c=$(OBJDIR)/%.lst)
-CFLAGS += $(patsubst %,-I%,$(EXTRAINCDIRS))
 CFLAGS += -mmcu=$(MCU)
 CFLAGS += -std=gnu99
 CFLAGS += -DF_CPU=$(F_CPU)
-CFLAGS += -finput-charset=utf-8 -fexec-charset=iso-8859-15
 
 CFLAGSALT += \
 	-D__AVR_DEV_LIB_NAME__=m328pb
 
 LDFLAGS = -Wl,-Map=$(OBJDIR)/$(TARGET).map,--cref
 LDFLAGS += $(patsubst %,-L%,$(EXTRALIBDIRS))
-#LDFLAGS += $(PRINTF_LIB) $(SCANF_LIB) 
+#LDFLAGS += $(PRINTF_LIB) $(SCANF_LIB)
 LDFLAGS += $(MATH_LIB)
 LDFLAGS += -static -Llib/avr-can-lib/src/ -lcan
 #LDFLAGS += -static -Llib/DISPLAYS/SSD1306_AVR/ -lssd1306
@@ -155,10 +160,10 @@ HEX_EEPROM_FLAGS = \
 .PHONY: directories doc
 
 # all
-all: directories $(TARGET).elf size 
+all: directories $(TARGET).elf size
 
 # directories
-directories: 
+directories:
 	$(SILENT) $(MKDIR_P) $(BINDIR) $(OBJDIR) $(DOCDIR) $(LIBDIR) $(SRCDIR)
 
 # size
@@ -184,11 +189,11 @@ MKDIR_P := mkdir -p
 	@echo ""
 	$(SILENT) $(CC) $(CFLAGSALT) $(CFLAGS) $(OBJS) -o $(BINDIR)/$@ $(LDFLAGS)
 
-%.hex: $(BINDIR)/$(TARGET).elf 
-	@echo "hex..:" $@
+%.hex: $(TARGET)
+	@echo "hex..:"
 	@echo ""
-	$(SILENT) $(OBJCOPY) -O ihex $(BINDIR)/$(TARGET).elf $(HEX_FLASH_FLAGS) $(BINDIR)/$@
- 
+	$(SILENT) $(OBJCPY) -O ihex $(HEX_FLASH_FLAGS)
+
 ## Compile
 $(OBJDIR)/%.o: $(SRCDIR)/%.c
 	@echo "[$(TARGET)] Compiling:" $@...
