@@ -1,5 +1,8 @@
 #include "ui.h"
 
+screen_t screen;
+display_font_size_t font_selected;
+
 /**
  * @brief inicializa o UI
  */
@@ -39,8 +42,9 @@ void ui_update_main_battery_voltage(void)
 	    else if(i == 8)
 		i = 0;
 	}
-	else			
+	else
             display_send_float((battery_voltage.main_bank/VSCALE_FLOAT), COL1, LINE1, font_selected);
+    }
 }
 
 
@@ -94,7 +98,7 @@ void ui_update(void)
 
 void ui_check_modules_failure(void)
 {
-   
+
 }
 
 void ui_draw_layout(void)
@@ -128,7 +132,7 @@ void ui_draw_layout(void)
 }
 
 void ui_select_screen(screen_t screen_selected)
-{   
+{
     #ifdef VERBOSE_ON_DISPLAY
     usart_send_string("\nui_select_screen: ");
     #endif

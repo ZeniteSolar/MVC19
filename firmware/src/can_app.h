@@ -61,16 +61,16 @@ void check_can(void);
 #define CAN_APP_CHECKS_WITHOUT_MT19_MSG   200
 
 // can_app_checks
-uint16_t can_app_checks_without_mam_msg;
-uint8_t can_app_checks_without_mic17_msg;
-uint8_t can_app_checks_without_mcs19_msg;
-uint8_t can_app_checks_without_msc19_1_msg;
-uint8_t can_app_checks_without_msc19_2_msg;
-uint8_t can_app_checks_without_msc19_3_msg;
-uint8_t can_app_checks_without_msc19_4_msg;
-uint8_t can_app_checks_without_msc19_5_msg;
-uint8_t can_app_checks_without_mt19;
+extern uint16_t can_app_checks_without_mam_msg;
+extern uint8_t can_app_checks_without_mic17_msg;
+extern uint8_t can_app_checks_without_mcs19_msg;
+extern uint8_t can_app_checks_without_msc19_1_msg;
+extern uint8_t can_app_checks_without_msc19_2_msg;
+extern uint8_t can_app_checks_without_msc19_3_msg;
+extern uint8_t can_app_checks_without_msc19_4_msg;
+extern uint8_t can_app_checks_without_msc19_5_msg;
+extern uint8_t can_app_checks_without_mt19;
 
-uint8_t can_app_send_state_clk_div;
+extern uint8_t can_app_send_state_clk_div;
 
 #endif /* ifndef CAN_APP_H */

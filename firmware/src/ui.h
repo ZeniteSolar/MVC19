@@ -44,8 +44,8 @@ typedef enum screen
     LAST_SCREEN,
 }screen_t;
 
-screen_t screen;
-display_font_size_t font_selected;
+extern screen_t screen;
+extern display_font_size_t font_selected;
 
 void ui_init(void);
 

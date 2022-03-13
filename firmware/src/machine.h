@@ -96,10 +96,8 @@ typedef union{
     uint8_t all;
 }undervoltage_t;
 
-volatile undervoltage_t undervoltage;
-volatile uint16_t boat_rpm;
-
 // debug functions
+void print_infos(void);
 void print_configurations(void);
 void print_system_flags(void);
 
@@ -120,23 +118,25 @@ void set_state_idle(void);
 void set_state_running(void);
 void set_state_reset(void);
 
+void read_main_battery_voltage(void);
+
 // machine variables
-volatile state_machine_t state_machine;
-volatile system_flags_t system_flags;
-volatile error_flags_t error_flags;
+extern volatile state_machine_t state_machine;
+extern volatile system_flags_t system_flags;
+extern volatile error_flags_t error_flags;
 
+extern volatile undervoltage_t undervoltage;
+extern volatile uint16_t boat_rpm;
 
-volatile battery_voltage_t battery_voltage;
-volatile battery_current_t battery_current;
+extern volatile battery_voltage_t battery_voltage;
+extern volatile battery_current_t battery_current;
 
-volatile uint8_t machine_clk;
-volatile uint8_t machine_clk_divider;
-volatile uint8_t total_errors;           // Contagem de ERROS
+extern volatile uint8_t machine_clk;
+extern volatile uint8_t machine_clk_divider;
+extern volatile uint8_t total_errors;           // Contagem de ERROS
 
 // other variables
-volatile uint8_t led_clk_div;
-volatile uint8_t ui_clk_div;
-// ISRs
-ISR(TIMER2_COMPA_vect);
+extern volatile uint8_t led_clk_div;
+extern volatile uint8_t ui_clk_div;
 
 #endif /* ifndef MACHINE_H */
