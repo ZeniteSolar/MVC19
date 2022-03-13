@@ -58,6 +58,12 @@
 #define ADC0_LINEAR_COEF                    0
 #define ADC_AVG_SIZE_2                      7                  // in base 2
 #define ADC_AVG_SIZE_10                     128                // in base 10
+//#define FAKE_ADC_ON
+#ifdef FAKE_ADC_ON
+#define FAKE_ADC                            1
+#endif // FAKE_ADC_ON
+
+#endif //ADC_ON
 
 #define VSCALE				    100
 #define VSCALE_FLOAT			    100.f
@@ -68,12 +74,6 @@
 #define BATTERY_SERIES_CELLS		    3
 #define BATTERY_BANK_DISCHARGED_VOLTAGE	    BATTERY_CELL_DISCHARGED_VOLTAGE * BATTERY_SERIES_CELLS
 #define BATTERY_BANK_OVERCHARGED_VOLTAGE    BATTERY_CELL_OVERCHARGED_VOLTAGE * BATTERY_SERIES_CELLS
-//#define FAKE_ADC_ON
-#ifdef FAKE_ADC_ON
-#define FAKE_ADC                            1
-#endif // FAKE_ADC_ON
-
-#endif //ADC_ON
 
 #ifdef MACHINE_ON
 // The machine frequency may not be superior of ADC_FREQUENCY/ADC_AVG_SIZE_10
