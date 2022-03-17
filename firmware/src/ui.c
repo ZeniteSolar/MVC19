@@ -14,8 +14,8 @@ void ui_init(void)
 #elif CAN_SIGNATURE_SELF == CAN_SIGNATURE_MVC19_2
     display_send_string("Display 2", 0, 0, font_big);
 #endif
-    _delay_ms(700);
-    display_test();
+    //_delay_ms(700);
+    //display_test();
     font_selected = font_big;
 }
 

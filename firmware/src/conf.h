@@ -18,7 +18,7 @@
 // CONFIGURACOES DE COMPILACAO
 #define DEBUG_ON
 // #define VERBOSE_ON
-// #define VERBOSE_ON_CAN_APP
+//#define VERBOSE_ON_CAN_APP
 #define VERBOSE_ON_MACHINE
 //#define VERBOSE_ON_ADC
 #define VERBOSE_ON_INIT
@@ -41,7 +41,7 @@
 
 #ifdef UI_ON
 // UI CONFIGURATION
-#define UI_UPDATE_CLK_DIV                   10
+#define UI_UPDATE_CLK_DIV                   100
 // battery voltage check
 //#define MAIN_BATTERY_UNDERVOLTAGE_WARNING
 // #define MAIN_BATTERY_OVERVOLTAGE_WARNING
@@ -79,7 +79,7 @@
 
 #ifdef MACHINE_ON
 // The machine frequency may not be superior of ADC_FREQUENCY/ADC_AVG_SIZE_10
-#define MACHINE_TIMER_FREQUENCY             240           //<! machine timer frequency in Hz
+#define MACHINE_TIMER_FREQUENCY             120           //<! machine timer frequency in Hz
 #define MACHINE_TIMER_PRESCALER             1024          //<! machine timer prescaler
 #ifdef ADC_ON
 #define MACHINE_CLK_DIVIDER_VALUE           ((uint64_t)(uint32_t)MACHINE_TIMER_FREQUENCY*(uint32_t)ADC_AVG_SIZE_10)/(ADC_FREQUENCY)           //<! machine_run clock divider
