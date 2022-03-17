@@ -25,19 +25,19 @@ void ui_init(void)
 void ui_update_main_battery_voltage(void)
 {
     if (system_flags.no_message_from_MSC19_1)
-        display_send_float((battery_voltage.main_cell_1 / VSCALE_FLOAT), COL1, LINE1, font_selected);
-    else
         display_send_string(DESCONNECTED_MESSAGE, COL1, LINE1, font_selected);
+    else
+        display_send_float((battery_voltage.main_cell_1 / VSCALE_FLOAT), COL1, LINE1, font_selected);
 
     if (system_flags.no_message_from_MSC19_2)
-        display_send_float((battery_voltage.main_cell_2 / VSCALE_FLOAT), COL1, LINE2, font_selected);
-    else
         display_send_string(DESCONNECTED_MESSAGE, COL1, LINE1, font_selected);
+    else
+        display_send_float((battery_voltage.main_cell_2 / VSCALE_FLOAT), COL1, LINE2, font_selected);
 
     if (system_flags.no_message_from_MSC19_3)
-        display_send_float((battery_voltage.main_cell_3 / VSCALE_FLOAT), COL1, LINE3, font_selected);
-    else
         display_send_string(DESCONNECTED_MESSAGE, COL1, LINE1, font_selected);
+    else
+        display_send_float((battery_voltage.main_cell_3 / VSCALE_FLOAT), COL1, LINE3, font_selected);
 }
 
 /**
@@ -51,13 +51,13 @@ void ui_update_battery_current(void)
     if (system_flags.no_message_from_MSC19_4)
         display_send_string(DESCONNECTED_MESSAGE, COL1, LINE1, font_selected);
     else
-        display_send_float((battery_current.in / VSCALE_FLOAT), COL1, LINE1, font_selected);
+        display_send_float((battery_current.in / I_SCALE_FLOAT), COL1, LINE1, font_selected);
 
     // Pout = Vmain * Iout
     if (system_flags.no_message_from_MSC19_5 || system_flags.no_message_from_MSC19_1 || system_flags.no_message_from_MSC19_2 || system_flags.no_message_from_MSC19_3)
         display_send_string(DESCONNECTED_MESSAGE, COL1, LINE2, font_selected);
     else
-        display_send_float((battery_current.out / VSCALE_FLOAT), COL1, LINE2, font_selected);
+        display_send_float((battery_current.out / I_SCALE_FLOAT), COL1, LINE2, font_selected);
 }
 
 /**
@@ -90,10 +90,6 @@ void ui_update(void)
         // ui_update_rpm();
         break;
     }
-}
-
-void ui_check_modules_failure(void)
-{
 }
 
 void ui_draw_layout(void)

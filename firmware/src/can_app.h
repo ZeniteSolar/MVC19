@@ -44,6 +44,12 @@ void can_app_extractor_mcs_relay(can_t *msg);
 void can_app_extractor_mt19_state(can_t *msg);
 void can_app_extractor_mt19_rpm(can_t *msg);
 
+/* MCC19 */
+void can_app_extractor_mcc19_1_output_voltage(can_t *msg);
+void can_app_extractor_mcc19_2_output_voltage(can_t *msg);
+void can_app_extractor_mcc19_3_output_voltage(can_t *msg);
+void can_app_extractor_mcc19_4_output_voltage(can_t *msg);
+
 void check_can(void);
 
 #ifdef CAN_ON

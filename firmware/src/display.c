@@ -40,7 +40,7 @@ void display_test(void)
     display_send_string("Solar", 5, 3, font_big);
     _delay_ms(250);
 
-    display_send_string("2020", 6, 5, font_big);
+    display_send_string("2022", 6, 5, font_big);
     _delay_ms(1000);
 }
 

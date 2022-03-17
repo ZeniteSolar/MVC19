@@ -41,9 +41,9 @@
 
 #ifdef UI_ON
 // UI CONFIGURATION
-#define UI_UPDATE_CLK_DIV                   50
+#define UI_UPDATE_CLK_DIV                   10
 // battery voltage check
-#define MAIN_BATTERY_UNDERVOLTAGE_WARNING
+//#define MAIN_BATTERY_UNDERVOLTAGE_WARNING
 // #define MAIN_BATTERY_OVERVOLTAGE_WARNING
 // #define UI_CHECK_AUXILIARY_BATTERY_VOLTAGE
 #endif
@@ -67,6 +67,8 @@
 
 #define VSCALE				                100
 #define VSCALE_FLOAT			            100.f
+#define I_SCALE_FLOAT                       100.f
+
 
 // BATTERY INFORMATION
 #define BATTERY_CELL_DISCHARGED_VOLTAGE	    7.0 * VSCALE
