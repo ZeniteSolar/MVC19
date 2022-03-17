@@ -25,9 +25,9 @@ void ui_init(void)
 void ui_update_main_battery_voltage(void)
 {
     if (system_flags.no_message_from_MSC19_1)
-        display_send_string(DESCONNECTED_MESSAGE, COL1, LINE1, font_selected);
-    else
         display_send_float((battery_voltage.main_cell_1 / VSCALE_FLOAT), COL1, LINE1, font_selected);
+    else
+        display_send_string(DESCONNECTED_MESSAGE, COL1, LINE1, font_selected);
 
     if (system_flags.no_message_from_MSC19_2)
         display_send_float((battery_voltage.main_cell_2 / VSCALE_FLOAT), COL1, LINE2, font_selected);
@@ -45,12 +45,16 @@ void ui_update_main_battery_voltage(void)
  */
 void ui_update_battery_current(void)
 {
+    // MSC19_4 -> Corrente de entrada
+    // MSC19_5 -> Corrente de saída
+
     if (system_flags.no_message_from_MSC19_4)
         display_send_string(DESCONNECTED_MESSAGE, COL1, LINE1, font_selected);
     else
         display_send_float((battery_current.in / VSCALE_FLOAT), COL1, LINE1, font_selected);
 
-    if (system_flags.no_message_from_MSC19_5)
+    // Pout = Vmain * Iout
+    if (system_flags.no_message_from_MSC19_5 || system_flags.no_message_from_MSC19_1 || system_flags.no_message_from_MSC19_2 || system_flags.no_message_from_MSC19_3)
         display_send_string(DESCONNECTED_MESSAGE, COL1, LINE2, font_selected);
     else
         display_send_float((battery_current.out / VSCALE_FLOAT), COL1, LINE2, font_selected);
@@ -62,9 +66,9 @@ void ui_update_battery_current(void)
 void ui_update_rpm(void)
 {
     if (system_flags.no_message_from_MT19)
-        display_send_string(DESCONNECTED_MESSAGE, COL1, LINE3, font_selected);
+        display_send_string(DESCONNECTED_MESSAGE, COL1, LINE0, font_selected);
     else
-        display_send_uint16(boat_rpm, COL1, LINE3, font_selected);
+        display_send_uint16(boat_rpm, COL1, LINE0, font_selected);
 }
 
 void ui_update(void)
@@ -74,16 +78,16 @@ void ui_update(void)
     default:
     case VOLTAGE:
         ui_update_main_battery_voltage();
+        ui_update_rpm();
         break;
 
     case CURRENT:
         ui_update_battery_current();
-        ui_update_rpm();
         break;
 
     case CURRENT_SMALL:
         ui_update_battery_current();
-        ui_update_rpm();
+        // ui_update_rpm();
         break;
     }
 }
@@ -98,17 +102,17 @@ void ui_draw_layout(void)
     {
     default:
     case VOLTAGE:
-        display_send_string("-VOLTAGES-", COL0, LINE0, font_big);
+        display_send_string("T:", COL0, LINE0, font_big);
         display_send_string("1:", COL0, LINE1, font_selected);
         display_send_string("2:", COL0, LINE2, font_selected);
         display_send_string("3:", COL0, LINE3, font_selected);
         break;
 
     case CURRENT:
-        display_send_string("--POWER--", COL0, LINE0, font_big);
-        display_send_string(">:", COL0, LINE1, font_selected);
-        display_send_string("<:", COL0, LINE2, font_selected);
-        display_send_string("T:", COL0, LINE3, font_selected);
+        display_send_string(">:", COL0, LINE0, font_big);
+        display_send_string("<:", COL0, LINE1, font_selected);
+        display_send_string("A:", COL0, LINE2, font_selected);
+        display_send_string("E:", COL0, LINE3, font_selected);
         break;
 
     case CURRENT_SMALL:

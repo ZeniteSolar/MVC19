@@ -137,7 +137,7 @@ inline void print_system_flags(void)
 
 inline void read_main_battery_voltage(void)
 {
-	battery_voltage.main_bank = battery_voltage.main_cell_1 \
+	//battery_voltage.main_bank = battery_voltage.main_cell_1 \
 				  + battery_voltage.main_cell_2 \
 				  + battery_voltage.main_cell_3;
 
@@ -238,7 +238,7 @@ inline void task_running(void)
     if(++ui_clk_div == UI_UPDATE_CLK_DIV)
     {
         ui_clk_div = 0;
-	read_main_battery_voltage();
+	    read_main_battery_voltage();
         ui_update();
     }
 #endif
