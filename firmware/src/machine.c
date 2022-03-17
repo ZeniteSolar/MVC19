@@ -137,9 +137,6 @@ inline void print_system_flags(void)
 
 inline void read_main_battery_voltage(void)
 {
-	battery_voltage.main_bank = battery_voltage.main_cell_1 \
-				  + battery_voltage.main_cell_2 \
-				  + battery_voltage.main_cell_3;
 
 #ifdef MAIN_BATTERY_UNDERVOLTAGE_WARNING
 	if(battery_voltage.main_bank < BATTERY_BANK_DISCHARGED_VOLTAGE)
