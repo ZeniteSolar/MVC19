@@ -65,6 +65,7 @@ void check_can(void);
 #define CAN_APP_CHECKS_WITHOUT_MIC19_MSG  500
 #define CAN_APP_CHECKS_WITHOUT_MCS19_MSG  550
 #define CAN_APP_CHECKS_WITHOUT_MT19_MSG   500
+#define CAN_APP_CHECKS_WITHOUT_MCC19_MSG   500
 
 // can_app_checks
 extern uint16_t can_app_checks_without_mam_msg;

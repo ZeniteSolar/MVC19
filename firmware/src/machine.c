@@ -2,6 +2,7 @@
 
 volatile undervoltage_t undervoltage;
 volatile uint16_t boat_rpm;
+volatile mcc_measurements_t mcc_measurements;
 volatile battery_voltage_t battery_voltage;
 volatile battery_current_t battery_current;
 volatile uint8_t machine_clk;

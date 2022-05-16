@@ -8,6 +8,10 @@ uint8_t can_app_checks_without_msc19_2_msg;
 uint8_t can_app_checks_without_msc19_3_msg;
 uint8_t can_app_checks_without_msc19_4_msg;
 uint8_t can_app_checks_without_msc19_5_msg;
+uint8_t can_app_checks_without_mcc19_1_msg;
+uint8_t can_app_checks_without_mcc19_2_msg;
+uint8_t can_app_checks_without_mcc19_3_msg;
+uint8_t can_app_checks_without_mcc19_4_msg;
 uint8_t can_app_checks_without_mt19;
 uint8_t can_app_send_state_clk_div;
 
@@ -195,6 +199,17 @@ void can_app_extractor_mt19_rpm(can_t *msg)
 
 void can_app_extractor_mt19_state(can_t *msg)
 {
+}
+
+void can_app_extractor_mcc_1_measurements(can_t *msg)
+{
+    if (msg->data[CAN_MSG_GENERIC_STATE_SIGNATURE_BYTE] == CAN_SIGNATURE_MCC19_1)
+    {
+        can_app_checks_without_mcc19_1_msg = 0;
+        system_flags.no_message_from_MCC19_1 = 0;
+        //HIGH_LOW(boat_rpm, msg->data[CAN_MSG_MT19_RPM_AVG_H_BYTE], msg->data[CAN_MSG_MT19_RPM_AVG_L_BYTE])
+                                                                                                                            
+    }
 }
 
 void can_app_extractor_mcs_relay(can_t *msg)
