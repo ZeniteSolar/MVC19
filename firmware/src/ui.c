@@ -24,10 +24,13 @@ void ui_init(void)
  */
 void ui_update_main_battery_voltage(void)
 {
+	usart_send_string("update!");
     if (system_flags.no_message_from_MSC19_3)
         display_send_string(DESCONNECTED_MESSAGE, COL1, LINE1, font_selected);
-    else
+    else{
+		usart_send_string("bat");
         display_send_float((battery_voltage.main_cell_3 / VSCALE_FLOAT)+0.2, COL1, LINE1, font_selected);
+	}
 
     if (system_flags.no_message_from_MSC19_3)
         display_send_string(DESCONNECTED_MESSAGE, COL1, LINE1, font_selected);

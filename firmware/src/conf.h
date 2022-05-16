@@ -41,7 +41,7 @@
 
 #ifdef UI_ON
 // UI CONFIGURATION
-#define UI_UPDATE_CLK_DIV                   100
+#define UI_UPDATE_CLK_DIV                   50
 // battery voltage check
 //#define MAIN_BATTERY_UNDERVOLTAGE_WARNING
 // #define MAIN_BATTERY_OVERVOLTAGE_WARNING
