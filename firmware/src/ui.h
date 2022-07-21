@@ -54,6 +54,10 @@ void ui_update_auxiliary_battery_voltage(void);
 void ui_update_battery_current(void);
 void ui_update_rpm(void);
 
+void ui_update_steering_battery_voltage(void);
+void ui_update_steering_battery_current(void);
+void ui_update_tail_position(void);
+
 void ui_draw_layout(void);
 
 void ui_select_screen(screen_t screen);
