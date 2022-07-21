@@ -97,9 +97,9 @@ void ui_update(void)
 
 	if (++update >= 100){
 		update = 0;
-		display_send_string("|", COL5,LINE0,font_selected);
+		display_send_string("|", COL3,LINE0,font_selected);
 	}else {
-		display_send_string("/", COL5,LINE0,font_selected);
+		display_send_string("/", COL3,LINE0,font_selected);
 	}
 }
 
