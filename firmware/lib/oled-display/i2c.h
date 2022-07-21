@@ -14,7 +14,7 @@ extern "C" {
 #endif
 	
 /* TODO: setup i2c/twi */
-#define F_I2C			8000UL// clock i2c
+#define F_I2C			500UL// clock i2c
 #define PSC_I2C			4		// prescaler i2c
 #define SET_TWBR		(F_CPU/F_I2C-16UL)/(PSC_I2C*2UL)
 
