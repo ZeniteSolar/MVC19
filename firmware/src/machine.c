@@ -13,6 +13,11 @@ volatile state_machine_t state_machine;
 volatile system_flags_t system_flags;
 volatile error_flags_t error_flags;
 
+/* MDE22 */
+extern volatile uint16_t steerinbat_voltage;
+extern volatile uint16_t steeringbat_current;
+extern volatile uint16_t tail_position;
+
 /**
  * @brief
  */
