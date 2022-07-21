@@ -55,15 +55,9 @@ typedef union system_flags{
         uint8_t no_message_from_MSC19_3   :1;
         uint8_t no_message_from_MSC19_4   :1;
         uint8_t no_message_from_MSC19_5   :1;
-        uint8_t no_message_from_MT19      :1;
-<<<<<<< HEAD
         uint8_t no_message_from_MCC19_1   :1;
-        uint8_t no_message_from_MCC19_2   :1;
-        uint8_t no_message_from_MCC19_3   :1;
-        uint8_t no_message_from_MCC19_4   :1;
-=======
+        uint8_t no_message_from_MT19      :1;
         uint8_t no_message_from_MDE22     :1;
->>>>>>> Created MDE22 related functions and variables
     };
     uint16_t   all;
 } system_flags_t;

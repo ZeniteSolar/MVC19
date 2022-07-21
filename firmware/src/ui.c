@@ -102,22 +102,6 @@ void ui_update(void)
 {
     switch (screen)
     {
-<<<<<<< HEAD
-    default:
-    case VOLTAGE:
-        ui_update_main_battery_voltage();
-        ui_update_rpm();
-        break;
-
-    case CURRENT:
-        ui_update_battery_current();
-        break;
-
-    case CURRENT_SMALL:
-        ui_update_battery_current();
-        // ui_update_rpm();
-        break;
-=======
         default:
         case VOLTAGE:
             //ui_update_main_battery_voltage();
@@ -136,7 +120,6 @@ void ui_update(void)
             ui_update_battery_current();
             ui_update_rpm();
             break;
->>>>>>> Created MDE22 related functions and variables
     }
 }
 
