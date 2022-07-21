@@ -56,6 +56,7 @@ typedef union system_flags{
         uint8_t no_message_from_MSC19_4   :1;
         uint8_t no_message_from_MSC19_5   :1;
         uint8_t no_message_from_MT19      :1;
+        uint8_t no_message_from_MDE22     :1;
     };
     uint8_t   all;
 } system_flags_t;
@@ -127,6 +128,11 @@ extern volatile error_flags_t error_flags;
 
 extern volatile undervoltage_t undervoltage;
 extern volatile uint16_t boat_rpm;
+
+/* MDE22 */
+extern volatile uint16_t steeringbat_voltage;
+extern volatile uint16_t steeringbat_current;
+extern volatile uint16_t tail_position;
 
 extern volatile battery_voltage_t battery_voltage;
 extern volatile battery_current_t battery_current;
