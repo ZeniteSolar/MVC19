@@ -74,10 +74,35 @@ void ui_update_rpm(void)
         display_send_uint16(boat_rpm, COL1, LINE0, font_selected);
 }
 
+/**
+ * @brief
+ */
+void ui_update_steering_battery_voltage(void){
+    if(system_flags.no_message_from_MDE22)
+        display_send_string(DESCONNECTED_MESSAGE, COL1, LINE1, font_selected);
+    else
+        display_send_uint16(steeringbat_voltage, COL1, LINE1, font_selected);
+}
+void ui_update_steering_battery_current(void)
+{
+    if(system_flags.no_message_from_MDE22)
+        display_send_string(DESCONNECTED_MESSAGE, COL1, LINE2, font_selected);
+    else
+        display_send_uint16(steeringbat_current, COL1, LINE2, font_selected);
+}
+void ui_update_tail_position(void)
+{
+    if(system_flags.no_message_from_MDE22)
+        display_send_string(DESCONNECTED_MESSAGE, COL1, LINE3, font_selected);
+    else
+        display_send_uint16(tail_position, COL1, LINE3, font_selected);
+}
+
 void ui_update(void)
 {
     switch (screen)
     {
+<<<<<<< HEAD
     default:
     case VOLTAGE:
         ui_update_main_battery_voltage();
@@ -92,6 +117,26 @@ void ui_update(void)
         ui_update_battery_current();
         // ui_update_rpm();
         break;
+=======
+        default:
+        case VOLTAGE:
+            //ui_update_main_battery_voltage();
+            ui_update_steering_battery_voltage();
+            ui_update_steering_battery_current();
+            ui_update_tail_position();
+            
+            break;
+
+        case CURRENT:
+            ui_update_battery_current();
+            ui_update_rpm();
+            break;
+
+        case CURRENT_SMALL:
+            ui_update_battery_current();
+            ui_update_rpm();
+            break;
+>>>>>>> Created MDE22 related functions and variables
     }
 }
 
@@ -99,29 +144,33 @@ void ui_draw_layout(void)
 {
     switch (screen)
     {
-    default:
-    case VOLTAGE:
-        display_send_string("T:", COL0, LINE0, font_big);
-        display_send_string("1:", COL0, LINE1, font_selected);
-        display_send_string("2:", COL0, LINE2, font_selected);
-        display_send_string("3:", COL0, LINE3, font_selected);
-        break;
+        default:
+        case VOLTAGE:
+            /*display_send_string("-VOLTAGES-", COL0, LINE0, font_big);
+            display_send_string("M:", COL0, LINE1, font_selected);
+            display_send_string("A:", COL0, LINE2, font_selected);
+            display_send_string("E:", COL0, LINE3, font_selected);*/
+            display_send_string("-STEERING-", COL0, LINE0, font_big);   
+            display_send_string("V:", COL0, LINE1, font_selected);
+            display_send_string("A:", COL0, LINE2, font_selected);
+            display_send_string("°:", COL0, LINE3, font_selected);
+            break;
 
-    case CURRENT:
-        display_send_string(">:", COL0, LINE0, font_big);
-        display_send_string("<:", COL0, LINE1, font_selected);
-        display_send_string("A:", COL0, LINE2, font_selected);
-        display_send_string("E:", COL0, LINE3, font_selected);
-        break;
+        case CURRENT:
+            display_send_string("-CURRENTS-", COL0, LINE0, font_big);
+            display_send_string(">:", COL0, LINE1, font_selected);
+            display_send_string("<:", COL0, LINE2, font_selected);
+            display_send_string("T:", COL0, LINE3, font_selected);
+            break;
 
-    case CURRENT_SMALL:
-        display_send_string("-CURRENTS-", COL0, LINE0, font_small);
-        display_send_string(">:", COL0, LINE1, font_small);
-        display_send_string("<:", COL0, LINE2, font_small);
-        display_send_string("T:", COL0, LINE3, font_small);
-        display_send_string("A:", COL2, LINE1, font_small);
-        display_send_string("E:", COL2, LINE2, font_small);
-        break;
+        case CURRENT_SMALL:
+            display_send_string("-CURRENTS-", COL0, LINE0, font_small);
+            display_send_string(">:", COL0, LINE1, font_small);
+            display_send_string("<:", COL0, LINE2, font_small);
+            display_send_string("T:", COL0, LINE3, font_small);
+	    display_send_string("A:", COL2, LINE1, font_small);
+	    display_send_string("E:", COL2, LINE2, font_small);
+            break;
     }
 }
 

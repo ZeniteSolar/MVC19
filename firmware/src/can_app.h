@@ -49,6 +49,9 @@ void can_app_extractor_mcc19_1_output_voltage(can_t *msg);
 void can_app_extractor_mcc19_2_output_voltage(can_t *msg);
 void can_app_extractor_mcc19_3_output_voltage(can_t *msg);
 void can_app_extractor_mcc19_4_output_voltage(can_t *msg);
+/* MDE22 */
+void can_app_extractor_mde22_state(can_t *msg);
+void can_app_extractor_mde22_steeringbat_measurements(can_t *msg);
 
 void check_can(void);
 
@@ -76,6 +79,7 @@ extern uint8_t can_app_checks_without_msc19_2_msg;
 extern uint8_t can_app_checks_without_msc19_3_msg;
 extern uint8_t can_app_checks_without_msc19_4_msg;
 extern uint8_t can_app_checks_without_msc19_5_msg;
+extern uint8_t can_app_checks_without_mde22_msg;
 extern uint8_t can_app_checks_without_mt19;
 
 extern uint8_t can_app_send_state_clk_div;
