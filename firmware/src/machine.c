@@ -232,6 +232,10 @@ inline void task_running(void)
     }
 #endif
 
+	if (I2C_ErrorCode){
+		set_state_reset();
+	}
+
 #ifdef UI_ON
     if(++ui_clk_div == UI_UPDATE_CLK_DIV)
     {

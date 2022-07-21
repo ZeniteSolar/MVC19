@@ -76,6 +76,7 @@ void ui_update_rpm(void)
 
 void ui_update(void)
 {
+	static uint8_t update = 0;
     switch (screen)
     {
     default:
@@ -93,6 +94,13 @@ void ui_update(void)
         // ui_update_rpm();
         break;
     }
+
+	if (++update >= 100){
+		update = 0;
+		display_send_string("|", COL5,LINE0,font_selected);
+	}else {
+		display_send_string("/", COL5,LINE0,font_selected);
+	}
 }
 
 void ui_draw_layout(void)
