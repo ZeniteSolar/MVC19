@@ -37,7 +37,7 @@
 // #define SLEEP_ON
 #define UI_ON
 
-#define CAN_SIGNATURE_SELF                  CAN_SIGNATURE_MVC19_1
+#define CAN_SIGNATURE_SELF                  CAN_SIGNATURE_MVC19_2
 
 #ifdef UI_ON
 // UI CONFIGURATION
@@ -66,7 +66,7 @@
 #endif //ADC_ON
 
 #define VSCALE				                100
-#define VSCALE_FLOAT			            100.f
+#define VSCALE_FLOAT			            1000.f
 #define I_SCALE_FLOAT                       100.f
 
 
