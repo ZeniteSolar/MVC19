@@ -46,12 +46,14 @@ typedef enum screen
 
 extern screen_t screen;
 extern display_font_size_t font_selected;
+extern uint8_t screen_toggle; 
 
 void ui_init(void);
 
 void ui_update_main_battery_voltage(void);
 void ui_update_auxiliary_battery_voltage(void);
 void ui_update_battery_current(void);
+void ui_update_mppt_measurements(void);
 void ui_update_rpm(void);
 
 void ui_draw_layout(void);

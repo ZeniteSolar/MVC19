@@ -2,6 +2,7 @@
 
 screen_t screen;
 display_font_size_t font_selected;
+uint8_t screen_toggle; 
 
 /**
  * @brief inicializa o UI
@@ -30,15 +31,40 @@ void ui_update_main_battery_voltage(void)
     else
         display_send_float((battery_voltage.main_cell_1 / VSCALE_FLOAT) , COL1, LINE1, font_selected);
 
+#ifdef VERBOSE_ON_UI
+    usart_send_uint16(battery_voltage.main_cell_1);
+    usart_send_char('\t');
+#endif
+
     if (system_flags.no_message_from_MSC19_2)
         display_send_string(DESCONNECTED_MESSAGE, COL1, LINE1, font_selected);
     else
         display_send_float((battery_voltage.main_cell_2 / VSCALE_FLOAT), COL1, LINE2, font_selected);
 
+#ifdef VERBOSE_ON_UI
+    usart_send_uint16(battery_voltage.main_cell_1);
+    usart_send_char('\t');
+#endif
+
     if (system_flags.no_message_from_MSC19_3)
         display_send_string(DESCONNECTED_MESSAGE, COL1, LINE1, font_selected);
     else
         display_send_float((battery_voltage.main_cell_3 / VSCALE_FLOAT), COL1, LINE3, font_selected);
+
+#ifdef VERBOSE_ON_UI
+    usart_send_uint16(battery_voltage.main_cell_1);
+    usart_send_char('\t');
+#endif
+
+    if (system_flags.no_message_from_MDE)
+        display_send_string(DESCONNECTED_MESSAGE, COL1, LINE1, font_selected);
+    else
+        display_send_float((steeringbat_measurements.steeringbat_voltage / VSCALE_FLOAT), COL1, LINE0, font_selected);
+
+#ifdef VERBOSE_ON_UI
+    usart_send_uint16(steeringbat_measurements.steeringbat_voltage);
+    usart_send_char('\n');
+#endif
 }
 
 /**
@@ -52,13 +78,33 @@ void ui_update_battery_current(void)
     if (system_flags.no_message_from_MSC19_4)
         display_send_string(DESCONNECTED_MESSAGE, COL1, LINE1, font_selected);
     else
-        display_send_float((battery_current.in / I_SCALE_FLOAT), COL1, LINE1, font_selected);
-
+        display_send_float((battery_current.in / I_SCALE_FLOAT), COL1, LINE0, font_selected);
+#ifdef VERBOSE_ON_UI
+        usart_send_uint16(battery_current.in);
+        usart_send_char('\t');
+#endif
     // Pout = Vmain * Iout
     if (system_flags.no_message_from_MSC19_5 || system_flags.no_message_from_MSC19_1 || system_flags.no_message_from_MSC19_2 || system_flags.no_message_from_MSC19_3)
         display_send_string(DESCONNECTED_MESSAGE, COL1, LINE2, font_selected);
     else
-        display_send_float((battery_current.out / I_SCALE_FLOAT), COL1, LINE2, font_selected);
+        display_send_float((battery_current.out / I_SCALE_FLOAT), COL1, LINE1, font_selected);
+#ifdef VERBOSE_ON_UI
+        usart_send_uint16(battery_current.out);
+        usart_send_char('\t');
+#endif
+
+    if (system_flags.no_message_from_MDE)
+        display_send_string(DESCONNECTED_MESSAGE, COL1, LINE1, font_selected);
+    else
+        display_send_float((steeringbat_measurements.steeringbat_current / I_SCALE_FLOAT), COL1, LINE2, font_selected);
+        display_send_float((steeringbat_measurements.tail_position / I_SCALE_FLOAT), COL1, LINE3, font_selected);
+#ifdef VERBOSE_ON_UI
+        usart_send_uint16(steeringbat_measurements.steeringbat_current);
+        usart_send_char('\t');
+        usart_send_uint16(steeringbat_measurements.tail_position);
+        usart_send_char('\n');
+#endif
+
 }
 
 /**
@@ -70,6 +116,11 @@ void ui_update_rpm(void)
         display_send_string(DESCONNECTED_MESSAGE, COL1, LINE0, font_selected);
     else
         display_send_uint16(boat_rpm, COL1, LINE0, font_selected);
+}
+
+void ui_update_mppt_measurements(void)
+{
+
 }
 
 void ui_update(void)
@@ -84,12 +135,16 @@ void ui_update(void)
         break;
 
     case CURRENT:
-        ui_update_battery_current();
+        if (screen_toggle == 0b0){
+            ui_update_battery_current();
+        } else {
+            ui_update_mppt_measurements();
+        }
         break;
 
-    case CURRENT_SMALL:
+    /*case CURRENT_SMALL:
         ui_update_battery_current();
-        // ui_update_rpm();
+        // ui_update_rpm();*/
         break;
     }
 
@@ -114,8 +169,8 @@ void ui_draw_layout(void)
         break;
 
     case CURRENT:
-        display_send_string(">:", COL0, LINE0, font_big);
-        display_send_string("<:", COL0, LINE1, font_selected);
+        display_send_string("<:", COL0, LINE0, font_big);
+        display_send_string(">:", COL0, LINE1, font_selected);
         display_send_string("A:", COL0, LINE2, font_selected);
         display_send_string("E:", COL0, LINE3, font_selected);
         break;
