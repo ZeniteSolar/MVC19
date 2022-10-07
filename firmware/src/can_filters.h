@@ -90,9 +90,14 @@ const uint8_t can_filter[] PROGMEM =
     MCP2515_FILTER(CAN_MSG_MSC19_4_ADC_ID),     // Filter 1
     MCP2515_FILTER(CAN_MSG_MSC19_4_STATE_ID),   // Filter 0
     
+    MCP2515_FILTER(CAN_MSG_MSC19_5_ADC_ID),     // Filter 1
+    MCP2515_FILTER(CAN_MSG_MSC19_5_STATE_ID),   // Filter 0
+    
     // Group 1
-    MCP2515_FILTER(CAN_MSG_MSC19_5_ADC_ID),     // Filter 3
-    MCP2515_FILTER(CAN_MSG_MSC19_5_STATE_ID),   // Filter 2
+    MCP2515_FILTER(CAN_MSG_MDE22_STEERINGBAT_MEASUREMENTS_ID),     // Filter 1
+    MCP2515_FILTER(CAN_MSG_MDE22_STATE_ID),   // Filter 0
+
+    MCP2515_FILTER(CAN_MSG_MIC19_PUMPS_ID),     // Filter 1
 
     MCP2515_FILTER(0b11111111),             // Mask 0 (for group 0)
     MCP2515_FILTER(0b11111111),             // Mask 1 (for group 1)
