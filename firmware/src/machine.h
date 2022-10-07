@@ -60,6 +60,8 @@ typedef union system_flags{
         uint8_t no_message_from_MCC19_2   :1;
         uint8_t no_message_from_MCC19_3   :1;
         uint8_t no_message_from_MCC19_4   :1;
+        uint8_t no_message_from_MCC19_5   :1;
+        uint8_t no_message_from_MCC19_6   :1;
     };
     uint16_t   all;
 } system_flags_t;
@@ -74,13 +76,6 @@ typedef union error_flags{
     };
     uint8_t   all;
 }error_flags_t;
-
-typedef struct mcc_measurements
-{
-    uint16_t voltage[4];
-    uint16_t current[4];
-    uint16_t power[4];
-}mcc_measurements_t;
 
 typedef struct battery_voltage
 {
@@ -107,6 +102,11 @@ typedef union{
     };
     uint8_t all;
 }undervoltage_t;
+
+typedef struct{
+    uint16_t ii;
+    uint16_t vi
+}mcc_t;
 
 // debug functions
 void print_infos(void);
@@ -140,7 +140,7 @@ extern volatile error_flags_t error_flags;
 extern volatile undervoltage_t undervoltage;
 extern volatile uint16_t boat_rpm;
 
-extern volatile mcc_measurements_t mcc_measurements;
+extern volatile mcc_t mcc[6];
 extern volatile battery_voltage_t battery_voltage;
 extern volatile battery_current_t battery_current;
 
@@ -151,5 +151,6 @@ extern volatile uint8_t total_errors;           // Contagem de ERROS
 // other variables
 extern volatile uint8_t led_clk_div;
 extern volatile uint8_t ui_clk_div;
+
 
 #endif /* ifndef MACHINE_H */

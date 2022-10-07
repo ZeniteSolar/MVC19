@@ -8,10 +8,7 @@ uint8_t can_app_checks_without_msc19_2_msg;
 uint8_t can_app_checks_without_msc19_3_msg;
 uint8_t can_app_checks_without_msc19_4_msg;
 uint8_t can_app_checks_without_msc19_5_msg;
-uint8_t can_app_checks_without_mcc19_1_msg;
-uint8_t can_app_checks_without_mcc19_2_msg;
-uint8_t can_app_checks_without_mcc19_3_msg;
-uint8_t can_app_checks_without_mcc19_4_msg;
+uint8_t can_app_checks_without_mcc19[6];
 uint8_t can_app_checks_without_mt19;
 uint8_t can_app_send_state_clk_div;
 
@@ -119,6 +116,50 @@ void can_app_extractor_msc19_5_state(can_t *msg)
     // }
 }
 
+void can_app_extractor_mccs(can_t *msg)
+{
+    uint8_t index = 0;
+    switch (msg->data[CAN_MSG_GENERIC_STATE_SIGNATURE_BYTE])
+    {
+    case CAN_SIGNATURE_MCC19_1:
+        system_flags.no_message_from_MCC19_1 = 0;
+        index = 0;
+        break;
+    case CAN_SIGNATURE_MCC19_2:
+        system_flags.no_message_from_MCC19_2 = 0;
+        index = 1;
+        break;
+    case CAN_SIGNATURE_MCC19_3:
+        system_flags.no_message_from_MCC19_3 = 0;
+        index = 2;
+        break;
+    case CAN_SIGNATURE_MCC19_4:
+        system_flags.no_message_from_MCC19_4 = 0;
+        index = 3;
+        break;
+    case CAN_SIGNATURE_MCC19_5:
+        system_flags.no_message_from_MCC19_5 = 0;
+        index = 4;
+        break;
+    case CAN_SIGNATURE_MCC19_6:
+        system_flags.no_message_from_MCC19_6 = 0;
+        index = 5;
+        break;
+    default:
+        return;
+    }
+    can_app_checks_without_mcc19[index] = 0;
+
+        
+    HIGH_LOW(mcc[index].ii,
+        msg->data[CAN_MSG_MCC19_1_MEASUREMENTS_INPUT_CURRENT_H_BYTE],
+        msg->data[CAN_MSG_MCC19_1_MEASUREMENTS_INPUT_CURRENT_L_BYTE]);
+
+    HIGH_LOW(mcc[index].vi,
+        msg->data[CAN_MSG_MCC19_1_MEASUREMENTS_INPUT_VOLTAGE_H_BYTE],
+        msg->data[CAN_MSG_MCC19_1_MEASUREMENTS_INPUT_VOLTAGE_L_BYTE]);
+}
+
 void can_app_extractor_msc19_1_adc(can_t *msg)
 {
     if (msg->data[CAN_MSG_GENERIC_STATE_SIGNATURE_BYTE] == CAN_SIGNATURE_MSC19_1)
@@ -201,17 +242,6 @@ void can_app_extractor_mt19_state(can_t *msg)
 {
 }
 
-void can_app_extractor_mcc_1_measurements(can_t *msg)
-{
-    if (msg->data[CAN_MSG_GENERIC_STATE_SIGNATURE_BYTE] == CAN_SIGNATURE_MCC19_1)
-    {
-        can_app_checks_without_mcc19_1_msg = 0;
-        system_flags.no_message_from_MCC19_1 = 0;
-        //HIGH_LOW(boat_rpm, msg->data[CAN_MSG_MT19_RPM_AVG_H_BYTE], msg->data[CAN_MSG_MT19_RPM_AVG_L_BYTE])
-                                                                                                                            
-    }
-}
-
 void can_app_extractor_mcs_relay(can_t *msg)
 {
     if (msg->data[CAN_MSG_GENERIC_STATE_SIGNATURE_BYTE] == CAN_SIGNATURE_MCS19)
@@ -242,6 +272,17 @@ void can_app_extractor_mcs_relay(can_t *msg)
  */
 inline void can_app_msg_extractors_switch(can_t *msg)
 {
+
+    if (msg->data[CAN_MSG_MCC19_1_MEASUREMENTS_ID] ||
+        msg->data[CAN_MSG_MCC19_2_MEASUREMENTS_ID] ||
+        msg->data[CAN_MSG_MCC19_3_MEASUREMENTS_ID] ||
+        msg->data[CAN_MSG_MCC19_4_MEASUREMENTS_ID] ||
+        msg->data[CAN_MSG_MCC19_5_MEASUREMENTS_ID] ||
+        msg->data[CAN_MSG_MCC19_6_MEASUREMENTS_ID])
+    {
+        can_app_extractor_mccs(msg);
+    }
+
     if (msg->data[CAN_MSG_GENERIC_STATE_SIGNATURE_BYTE] == CAN_SIGNATURE_MCS19)
     {
         // can_app_checks_without_mcs19_msg = 0;
