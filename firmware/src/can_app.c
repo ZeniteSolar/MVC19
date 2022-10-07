@@ -338,7 +338,7 @@ inline void can_app_msg_extractors_switch(can_t *msg)
         can_app_extractor_mccs(msg);
     }
 
-    if (msg->data[CAN_MSG_GENERIC_STATE_SIGNATURE_BYTE] == CAN_SIGNATURE_MCS19)
+    /*if (msg->data[CAN_MSG_GENERIC_STATE_SIGNATURE_BYTE] == CAN_SIGNATURE_MCS19)
     {
         // can_app_checks_without_mcs19_msg = 0;
 
@@ -367,7 +367,7 @@ inline void can_app_msg_extractors_switch(can_t *msg)
             VERBOSE_MSG_CAN_APP(can_app_print_msg(msg));
             break;
         }
-    } // CAN_SIGNATURE_MCS19
+    } // CAN_SIGNATURE_MCS19*/
 
     if (msg->data[CAN_MSG_GENERIC_STATE_SIGNATURE_BYTE] == CAN_SIGNATURE_MSC19_1)
     {
