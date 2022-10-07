@@ -11,6 +11,21 @@ uint8_t can_app_checks_without_msc19_5_msg;
 uint8_t can_app_checks_without_mcc19[6];
 uint8_t can_app_checks_without_mt19;
 uint8_t can_app_send_state_clk_div;
+uint16_t can_app_checks_without_mic17_msg;
+uint16_t can_app_checks_without_mcs19_msg;
+uint16_t can_app_checks_without_msc19_1_msg;
+uint16_t can_app_checks_without_msc19_2_msg;
+uint16_t can_app_checks_without_msc19_3_msg;
+uint16_t can_app_checks_without_msc19_4_msg;
+uint16_t can_app_checks_without_msc19_5_msg;
+uint16_t can_app_checks_without_mcc19_1_msg;
+uint16_t can_app_checks_without_mcc19_2_msg;
+uint16_t can_app_checks_without_mcc19_3_msg;
+uint16_t can_app_checks_without_mcc19_4_msg;
+uint16_t can_app_checks_without_mde_msg;
+uint16_t can_app_checks_without_mt19;
+uint16_t can_app_checks_without_mde;
+uint16_t can_app_send_state_clk_div;
 
 /**
  * @brief Prints a can message via usart
@@ -242,7 +257,18 @@ void can_app_extractor_mt19_state(can_t *msg)
 {
 }
 
-void can_app_extractor_mcs_relay(can_t *msg)
+void can_app_extractor_mcc_1_measurements(can_t *msg)
+{
+    if (msg->data[CAN_MSG_GENERIC_STATE_SIGNATURE_BYTE] == CAN_SIGNATURE_MCC19_1)
+    {
+        can_app_checks_without_mcc19_1_msg = 0;
+        system_flags.no_message_from_MCC19_1 = 0;
+        //HIGH_LOW(boat_rpm, msg->data[CAN_MSG_MT19_RPM_AVG_H_BYTE], msg->data[CAN_MSG_MT19_RPM_AVG_L_BYTE])
+                                                                                                                            
+    }
+}
+
+/*void can_app_extractor_mcs_relay(can_t *msg)
 {
     if (msg->data[CAN_MSG_GENERIC_STATE_SIGNATURE_BYTE] == CAN_SIGNATURE_MCS19)
     {
@@ -264,7 +290,36 @@ void can_app_extractor_mcs_relay(can_t *msg)
             system_flags.boat_on = 0;
         }
     }
+}*/
+
+void can_app_extractor_mde_state(can_t *msg)
+{
+    //
 }
+
+void can_app_extractor_mde_measurements(can_t *msg)
+{
+    if (msg->data[CAN_MSG_GENERIC_STATE_SIGNATURE_BYTE] == CAN_SIGNATURE_MDE22)
+    {
+        can_app_checks_without_mde = 0;
+        system_flags.no_message_from_MDE = 0;
+        HIGH_LOW(steeringbat_measurements.steeringbat_voltage, msg->data[CAN_MSG_MDE22_STEERINGBAT_MEASUREMENTS_BATVOLTAGE_H_BYTE], msg->data[CAN_MSG_MDE22_STEERINGBAT_MEASUREMENTS_BATVOLTAGE_L_BYTE]);
+        HIGH_LOW(steeringbat_measurements.tail_position, msg->data[CAN_MSG_MDE22_STEERINGBAT_MEASUREMENTS_POSITION_H_BYTE], msg->data[CAN_MSG_MDE22_STEERINGBAT_MEASUREMENTS_POSITION_L_BYTE]);
+        HIGH_LOW(steeringbat_measurements.steeringbat_current, msg->data[CAN_MSG_MDE22_STEERINGBAT_MEASUREMENTS_BATCURRENT_H_BYTE], msg->data[CAN_MSG_MDE22_STEERINGBAT_MEASUREMENTS_BATCURRENT_L_BYTE]);
+    }
+}
+
+void can_app_extractor_mic19_pumps(can_t *msg)
+{
+    if (msg->data[CAN_MSG_GENERIC_STATE_SIGNATURE_BYTE] == CAN_MSG_MIC19_PUMPS_SIGNATURE_BYTE)
+    {
+        can_app_checks_without_mic17_msg = 0;   
+        system_flags.no_message_from_MIC19 = 0;
+        screen_toggle = CAN_MSG_MIC19_PUMPS_PUMPS_BYTE;     
+    }
+
+}
+
 
 /**
  * @brief redirects a specific message extractor to a given message
@@ -531,6 +586,54 @@ inline void can_app_msg_extractors_switch(can_t *msg)
             // error_flags.no_communication_with_mam = 0;
         }
     } // CAN_SIGNATURE_MCC19_1
+    
+    /* MDE22 */
+    if (msg->data[CAN_MSG_GENERIC_STATE_SIGNATURE_BYTE] == CAN_SIGNATURE_MDE22)
+    {
+        switch (msg->id)
+        {
+        case CAN_MSG_MDE22_STATE_ID:
+#ifdef USART_ON
+            VERBOSE_MSG_CAN_APP(usart_send_string(" got a state msg from MDE22: "));
+#endif
+            VERBOSE_MSG_CAN_APP(can_app_print_msg(msg));
+            // can_app_extractor_mam17_state(msg);
+            error_flags.no_communication_with_mde = 0;
+
+            break;
+        
+        case CAN_MSG_MDE22_STEERINGBAT_MEASUREMENTS_ID:
+#ifdef USART_ON
+            VERBOSE_MSG_CAN_APP(usart_send_string(" got measurements msg from MDE22: "));
+#endif
+            VERBOSE_MSG_CAN_APP(can_app_print_msg(msg));
+            can_app_extractor_mde_measurements(msg);
+            error_flags.no_communication_with_mde = 0;
+
+            break;
+
+        default:
+#ifdef USART_ON
+            VERBOSE_MSG_CAN_APP(usart_send_string(" got a unknown msg from MDE22: "));
+#endif
+            VERBOSE_MSG_CAN_APP(can_app_print_msg(msg));
+            break;    
+        }
+    } // CAN_SIGNATURE_MDE22 
+
+    /* MIC19 */
+    if (msg->data[CAN_MSG_GENERIC_STATE_SIGNATURE_BYTE] == CAN_SIGNATURE_MIC19)
+    {
+        if (msg->id == CAN_MSG_MIC19_PUMPS_ID)
+        {
+#ifdef USART_ON
+            VERBOSE_MSG_CAN_APP(usart_send_string(" got an output voltage msg from MCC19_1: "));
+#endif
+            VERBOSE_MSG_CAN_APP(can_app_print_msg(msg));
+            can_app_extractor_mic19_pumps(msg);
+            error_flags.no_communication_with_mic = 0;
+        }
+    } // CAN_SIGNATURE_MIC19
 }
 
 /**
@@ -608,6 +711,15 @@ inline void check_can(void)
 #endif
         can_app_checks_without_mam_msg = 0;
         error_flags.no_communication_with_mam = 1;
+    }
+
+    if (can_app_checks_without_mde_msg++ >= CAN_APP_CHECKS_WITHOUT_MDE_MSG)
+    {
+#ifdef USART_ON
+        VERBOSE_MSG_CAN_APP(usart_send_string("too many cycles without MDE22 message.\n"));
+#endif
+        can_app_checks_without_mde_msg = 0;
+        error_flags.no_communication_with_mde = 1;
     }
 
     if (can_check_message())

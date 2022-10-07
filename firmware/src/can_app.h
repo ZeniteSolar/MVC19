@@ -50,6 +50,13 @@ void can_app_extractor_mcc19_2_output_voltage(can_t *msg);
 void can_app_extractor_mcc19_3_output_voltage(can_t *msg);
 void can_app_extractor_mcc19_4_output_voltage(can_t *msg);
 
+/* MDE22 */
+void can_app_extractor_mde_state(can_t *msg);
+void can_app_extractor_mde_measurements(can_t *msg);
+
+/* MIC19 */
+void can_app_extractor_mic19_pumps(can_t *msg);
+
 void check_can(void);
 
 #ifdef CAN_ON
@@ -60,24 +67,26 @@ void check_can(void);
 #define CAN_APP_SEND_ADC_CLK_DIV    1
 #endif
 
-#define CAN_APP_CHECKS_WITHOUT_MAM_MSG    500
-#define CAN_APP_CHECKS_WITHOUT_MSC19_MSG  500
-#define CAN_APP_CHECKS_WITHOUT_MIC19_MSG  500
-#define CAN_APP_CHECKS_WITHOUT_MCS19_MSG  550
-#define CAN_APP_CHECKS_WITHOUT_MT19_MSG   500
-#define CAN_APP_CHECKS_WITHOUT_MCC19_MSG   500
+#define CAN_APP_CHECKS_WITHOUT_MAM_MSG      500
+#define CAN_APP_CHECKS_WITHOUT_MSC19_MSG    500
+#define CAN_APP_CHECKS_WITHOUT_MIC19_MSG    500
+#define CAN_APP_CHECKS_WITHOUT_MCS19_MSG    550
+#define CAN_APP_CHECKS_WITHOUT_MT19_MSG     500
+#define CAN_APP_CHECKS_WITHOUT_MCC19_MSG    500
+#define CAN_APP_CHECKS_WITHOUT_MDE_MSG      500
 
 // can_app_checks
 extern uint16_t can_app_checks_without_mam_msg;
-extern uint8_t can_app_checks_without_mic17_msg;
-extern uint8_t can_app_checks_without_mcs19_msg;
-extern uint8_t can_app_checks_without_msc19_1_msg;
-extern uint8_t can_app_checks_without_msc19_2_msg;
-extern uint8_t can_app_checks_without_msc19_3_msg;
-extern uint8_t can_app_checks_without_msc19_4_msg;
-extern uint8_t can_app_checks_without_msc19_5_msg;
-extern uint8_t can_app_checks_without_mt19;
-
-extern uint8_t can_app_send_state_clk_div;
+extern uint16_t can_app_checks_without_mic17_msg;
+extern uint16_t can_app_checks_without_mcs19_msg;
+extern uint16_t can_app_checks_without_msc19_1_msg;
+extern uint16_t can_app_checks_without_msc19_2_msg;
+extern uint16_t can_app_checks_without_msc19_3_msg;
+extern uint16_t can_app_checks_without_msc19_4_msg;
+extern uint16_t can_app_checks_without_msc19_5_msg;
+extern uint16_t can_app_checks_without_mde_msg;
+extern uint16_t can_app_checks_without_mt19;
+extern uint16_t can_app_checks_without_mde;
+extern uint16_t can_app_send_state_clk_div;
 
 #endif /* ifndef CAN_APP_H */
