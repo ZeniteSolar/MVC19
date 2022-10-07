@@ -210,7 +210,11 @@ inline void task_idle(void)
     #if CAN_SIGNATURE_SELF == CAN_SIGNATURE_MVC19_1
     ui_select_screen(VOLTAGE);
     #elif CAN_SIGNATURE_SELF == CAN_SIGNATURE_MVC19_2
-    ui_select_screen(CURRENT);
+    if (screen_toggle == 0){
+        ui_select_screen(CURRENT);
+    } else if (screen_toggle == 1){
+        ui_select_screen(MPPT);
+    }
     #endif
 
     set_led(LED2);
@@ -225,6 +229,7 @@ inline void task_idle(void)
  */
 inline void task_running(void)
 {
+    uint8_t old_screen_toggle = screen_toggle;
 #ifdef LED_ON
     if(led_clk_div++ >= 50){
         cpl_led(LED1);
@@ -239,6 +244,9 @@ inline void task_running(void)
 #ifdef UI_ON
     if(++ui_clk_div == UI_UPDATE_CLK_DIV)
     {
+        if(screen_toggle != old_screen_toggle){
+            set_state_idle;
+        }
         ui_clk_div = 0;
 	    read_main_battery_voltage();
         ui_update();
