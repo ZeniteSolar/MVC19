@@ -26,6 +26,17 @@ void ui_init(void)
 void ui_update_main_battery_voltage(void)
 {
 	usart_send_string("update!");
+
+    if (system_flags.no_message_from_MDE)
+        display_send_string(DESCONNECTED_MESSAGE, COL1, LINE0, font_selected);
+    else
+        display_send_float((steeringbat_measurements.steeringbat_voltage / VSCALE_FLOAT), COL1, LINE0, font_selected);
+
+#ifdef VERBOSE_ON_UI
+    usart_send_uint16(steeringbat_measurements.steeringbat_voltage);
+    usart_send_char('\n');
+#endif
+
     if (system_flags.no_message_from_MSC19_1)
         display_send_string(DESCONNECTED_MESSAGE, COL1, LINE1, font_selected);
     else
@@ -37,7 +48,7 @@ void ui_update_main_battery_voltage(void)
 #endif
 
     if (system_flags.no_message_from_MSC19_2)
-        display_send_string(DESCONNECTED_MESSAGE, COL1, LINE1, font_selected);
+        display_send_string(DESCONNECTED_MESSAGE, COL1, LINE2, font_selected);
     else
         display_send_float((battery_voltage.main_cell_2 / VSCALE_FLOAT), COL1, LINE2, font_selected);
 
@@ -47,23 +58,13 @@ void ui_update_main_battery_voltage(void)
 #endif
 
     if (system_flags.no_message_from_MSC19_3)
-        display_send_string(DESCONNECTED_MESSAGE, COL1, LINE1, font_selected);
+        display_send_string(DESCONNECTED_MESSAGE, COL1, LINE3, font_selected);
     else
         display_send_float((battery_voltage.main_cell_3 / VSCALE_FLOAT), COL1, LINE3, font_selected);
 
 #ifdef VERBOSE_ON_UI
     usart_send_uint16(battery_voltage.main_cell_1);
     usart_send_char('\t');
-#endif
-
-    if (system_flags.no_message_from_MDE)
-        display_send_string(DESCONNECTED_MESSAGE, COL1, LINE1, font_selected);
-    else
-        display_send_float((steeringbat_measurements.steeringbat_voltage / VSCALE_FLOAT), COL1, LINE0, font_selected);
-
-#ifdef VERBOSE_ON_UI
-    usart_send_uint16(steeringbat_measurements.steeringbat_voltage);
-    usart_send_char('\n');
 #endif
 }
 
@@ -84,7 +85,7 @@ void ui_update_battery_current(void)
         usart_send_char('\t');
 #endif
     // Pout = Vmain * Iout
-    if (system_flags.no_message_from_MSC19_5 || system_flags.no_message_from_MSC19_1 || system_flags.no_message_from_MSC19_2 || system_flags.no_message_from_MSC19_3)
+    if (system_flags.no_message_from_MSC19_5) 
         display_send_string(DESCONNECTED_MESSAGE, COL1, LINE2, font_selected);
     else
         display_send_float((battery_current.out / I_SCALE_FLOAT), COL1, LINE1, font_selected);
@@ -93,18 +94,16 @@ void ui_update_battery_current(void)
         usart_send_char('\t');
 #endif
 
-    if (system_flags.no_message_from_MDE)
+    if (system_flags.no_message_from_MCC19_5 || system_flags.no_message_from_MCC19_6)
         display_send_string(DESCONNECTED_MESSAGE, COL1, LINE1, font_selected);
-    else
-        display_send_float((steeringbat_measurements.steeringbat_current / I_SCALE_FLOAT), COL1, LINE2, font_selected);
-        display_send_float((steeringbat_measurements.tail_position / I_SCALE_FLOAT), COL1, LINE3, font_selected);
+    else if 
+        display_send_float((mcc[4].vi*mcc[4].ii/ I_SCALE_FLOAT), COL1, LINE2, font_selected);
+        display_send_float((mcc[5].vi*mcc[5].ii/ I_SCALE_FLOAT), COL1, LINE3, font_selected);
 #ifdef VERBOSE_ON_UI
-        usart_send_uint16(steeringbat_measurements.steeringbat_current);
+        usart_send_uint16(mcc[5].vi*mcc[4].ii);
         usart_send_char('\t');
-        usart_send_uint16(steeringbat_measurements.tail_position);
+        usart_send_uint16(mcc[4].vi*mcc[5].ii);
         usart_send_char('\n');
-#endif
-
 }
 
 /**
@@ -120,7 +119,23 @@ void ui_update_rpm(void)
 
 void ui_update_mppt_measurements(void)
 {
-
+    if (system_flags.no_message_from_MCC19_1 || system_flags.no_message_from_MCC19_2 || system_flags.no_message_from_MCC19_3 || system_flags.no_message_from_MCC19_4)
+        display_send_string(DESCONNECTED_MESSAGE, COL1, LINE1, font_selected);
+    else if 
+        display_send_float((mcc[0].vi*mcc[1].ii/ I_SCALE_FLOAT), COL1, LINE0, font_selected);
+        display_send_float((mcc[1].vi*mcc[2].ii/ I_SCALE_FLOAT), COL1, LINE1, font_selected);
+        display_send_float((mcc[2].vi*mcc[2].ii/ I_SCALE_FLOAT), COL1, LINE2, font_selected);
+        display_send_float((mcc[3].vi*mcc[3].ii/ I_SCALE_FLOAT), COL1, LINE3, font_selected);
+#ifdef VERBOSE_ON_UI
+        usart_send_uint16(mcc[0].vi*mcc[0].ii);
+        usart_send_char('\t');
+        usart_send_uint16(mcc[1].vi*mcc[1].ii);
+        usart_send_char('\t');
+        usart_send_uint16(mcc[2].vi*mcc[2].ii);
+        usart_send_char('\t');
+        usart_send_uint16(mcc[3].vi*mcc[3].ii);
+        usart_send_char('\n');
+#endif
 }
 
 void ui_update(void)
@@ -135,11 +150,11 @@ void ui_update(void)
         break;
 
     case CURRENT:
-        if (screen_toggle == 0b0){
-            ui_update_battery_current();
-        } else {
-            ui_update_mppt_measurements();
-        }
+        ui_update_battery_current();
+        break;
+
+    case MPPT:
+        ui_update_mppt_measurements();
         break;
 
     /*case CURRENT_SMALL:
@@ -162,17 +177,24 @@ void ui_draw_layout(void)
     {
     default:
     case VOLTAGE:
-        display_send_string("T:", COL0, LINE0, font_big);
+        display_send_string("D:", COL0, LINE0, font_selected);
         display_send_string("1:", COL0, LINE1, font_selected);
         display_send_string("2:", COL0, LINE2, font_selected);
         display_send_string("3:", COL0, LINE3, font_selected);
         break;
 
     case CURRENT:
-        display_send_string("<:", COL0, LINE0, font_big);
-        display_send_string(">:", COL0, LINE1, font_selected);
-        display_send_string("A:", COL0, LINE2, font_selected);
-        display_send_string("E:", COL0, LINE3, font_selected);
+        display_send_string("I:", COL0, LINE0, font_selected);
+        display_send_string("O:", COL0, LINE1, font_selected);
+        display_send_string("6:", COL0, LINE2, font_selected);
+        display_send_string("7:", COL0, LINE3, font_selected);
+        break;
+
+    case MPPT:
+        display_send_string("1:", COL0, LINE0, font_selected);
+        display_send_string("2:", COL0, LINE1, font_selected);
+        display_send_string("3:", COL0, LINE2, font_selected);
+        display_send_string("4:", COL0, LINE3, font_selected);
         break;
 
     case CURRENT_SMALL:
