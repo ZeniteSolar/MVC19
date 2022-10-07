@@ -18,9 +18,10 @@
 // CONFIGURACOES DE COMPILACAO
 #define DEBUG_ON
 // #define VERBOSE_ON
-//#define VERBOSE_ON_CAN_APP
+// #define VERBOSE_ON_CAN_APP
 #define VERBOSE_ON_MACHINE
 //#define VERBOSE_ON_ADC
+#define VERBOSE_ON_UI
 #define VERBOSE_ON_INIT
 #define VERBOSE_ON_ERROR
 #define VERBOSE_ON_DISPLAY
@@ -67,7 +68,7 @@
 
 #define VSCALE				                100
 #define VSCALE_FLOAT			            1000.f
-#define I_SCALE_FLOAT                       100.f
+#define I_SCALE_FLOAT                       1000.f
 
 
 // BATTERY INFORMATION
