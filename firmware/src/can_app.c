@@ -1,16 +1,16 @@
 #include "can_app.h"
 
 uint16_t can_app_checks_without_mam_msg;
-uint8_t can_app_checks_without_mic17_msg;
-uint8_t can_app_checks_without_mcs19_msg;
-uint8_t can_app_checks_without_msc19_1_msg;
-uint8_t can_app_checks_without_msc19_2_msg;
-uint8_t can_app_checks_without_msc19_3_msg;
-uint8_t can_app_checks_without_msc19_4_msg;
-uint8_t can_app_checks_without_msc19_5_msg;
-uint8_t can_app_checks_without_mcc19[6];
-uint8_t can_app_checks_without_mt19;
-uint8_t can_app_send_state_clk_div;
+uint16_t can_app_checks_without_mic17_msg;
+uint16_t can_app_checks_without_mcs19_msg;
+uint16_t can_app_checks_without_msc19_1_msg;
+uint16_t can_app_checks_without_msc19_2_msg;
+uint16_t can_app_checks_without_msc19_3_msg;
+uint16_t can_app_checks_without_msc19_4_msg;
+uint16_t can_app_checks_without_msc19_5_msg;
+uint16_t can_app_checks_without_mcc19[6];
+uint16_t can_app_checks_without_mt19;
+uint16_t can_app_send_state_clk_div;
 uint16_t can_app_checks_without_mic17_msg;
 uint16_t can_app_checks_without_mcs19_msg;
 uint16_t can_app_checks_without_msc19_1_msg;
