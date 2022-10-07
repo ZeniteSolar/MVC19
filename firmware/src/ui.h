@@ -40,6 +40,7 @@ typedef enum screen
 {
     VOLTAGE,
     CURRENT,
+    MPPT,
     CURRENT_SMALL,
     LAST_SCREEN,
 }screen_t;
