@@ -46,7 +46,6 @@ typedef enum state_machine{
 
 typedef union system_flags{
     struct{
-        uint8_t none                      :1;
         uint8_t cap_charging              :1;
         uint8_t charge_failed             :1;
         uint8_t boat_on                   :1;
@@ -62,6 +61,8 @@ typedef union system_flags{
         uint8_t no_message_from_MCC19_4   :1;
         uint8_t no_message_from_MCC19_5   :1;
         uint8_t no_message_from_MCC19_6   :1;
+        uint8_t no_message_from_MIC19     :1; //2
+        uint8_t no_message_from_MDE       :1; //14  
     };
     uint16_t   all;
 } system_flags_t;
@@ -73,9 +74,24 @@ typedef union error_flags{
         uint8_t no_communication_with_mam :1;
         uint8_t no_communication_with_mic :1;
         uint8_t no_communication_with_mcc :1;
+        uint8_t no_communication_with_mde :1;
     };
     uint8_t   all;
 }error_flags_t;
+
+typedef struct mcc_measurements
+{
+    uint16_t voltage[4];
+    uint16_t current[4];
+    uint16_t power[4];
+}mcc_measurements_t;
+
+typedef struct steeringbat_measurements
+{
+    uint16_t steeringbat_voltage;
+    uint16_t tail_position;
+    uint16_t steeringbat_current;
+}steeringbat_measurements_t;
 
 typedef struct battery_voltage
 {
@@ -143,6 +159,7 @@ extern volatile uint16_t boat_rpm;
 extern volatile mcc_t mcc[6];
 extern volatile battery_voltage_t battery_voltage;
 extern volatile battery_current_t battery_current;
+extern volatile steeringbat_measurements_t steeringbat_measurements;
 
 extern volatile uint8_t machine_clk;
 extern volatile uint8_t machine_clk_divider;

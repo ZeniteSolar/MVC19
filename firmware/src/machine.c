@@ -4,6 +4,7 @@ volatile undervoltage_t undervoltage;
 volatile uint16_t boat_rpm;
 volatile battery_voltage_t battery_voltage;
 volatile battery_current_t battery_current;
+volatile steeringbat_measurements_t steeringbat_measurements;
 volatile uint8_t machine_clk;
 volatile uint8_t machine_clk_divider;
 volatile uint8_t total_errors;           // Contagem de ERROS
