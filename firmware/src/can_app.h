@@ -53,8 +53,7 @@ void can_app_extractor_mcc19_4_output_voltage(can_t *msg);
 void check_can(void);
 
 #ifdef CAN_ON
-#define CAN_APP_SEND_STATE_CLK_DIV  CAN_APP_SEND_STATE_FREQ
-#define CAN_APP_SEND_ADC_CLK_DIV    CAN_APP_SEND_ADC_FREQ
+#define CAN_APP_SEND_STATE_CLK_DIV  (MACHINE_TIMER_FREQUENCY / CAN_MSG_MVC19_1_STATE_FREQUENCY)
 #else
 #define CAN_APP_SEND_STATE_CLK_DIV  1
 #define CAN_APP_SEND_ADC_CLK_DIV    1
@@ -69,14 +68,14 @@ void check_can(void);
 
 // can_app_checks
 extern uint16_t can_app_checks_without_mam_msg;
-extern uint8_t can_app_checks_without_mic17_msg;
-extern uint8_t can_app_checks_without_mcs19_msg;
-extern uint8_t can_app_checks_without_msc19_1_msg;
-extern uint8_t can_app_checks_without_msc19_2_msg;
-extern uint8_t can_app_checks_without_msc19_3_msg;
-extern uint8_t can_app_checks_without_msc19_4_msg;
-extern uint8_t can_app_checks_without_msc19_5_msg;
-extern uint8_t can_app_checks_without_mt19;
+extern uint16_t can_app_checks_without_mic17_msg;
+extern uint16_t can_app_checks_without_mcs19_msg;
+extern uint16_t can_app_checks_without_msc19_1_msg;
+extern uint16_t can_app_checks_without_msc19_2_msg;
+extern uint16_t can_app_checks_without_msc19_3_msg;
+extern uint16_t can_app_checks_without_msc19_4_msg;
+extern uint16_t can_app_checks_without_msc19_5_msg;
+extern uint16_t can_app_checks_without_mt19;
 
 extern uint8_t can_app_send_state_clk_div;
 

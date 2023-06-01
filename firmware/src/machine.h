@@ -105,7 +105,7 @@ typedef union{
 
 typedef struct{
     uint16_t ii;
-    uint16_t vi
+    uint16_t vi;
 }mcc_t;
 
 // debug functions

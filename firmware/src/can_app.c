@@ -1,16 +1,18 @@
 #include "can_app.h"
 
 uint16_t can_app_checks_without_mam_msg;
-uint8_t can_app_checks_without_mic17_msg;
-uint8_t can_app_checks_without_mcs19_msg;
-uint8_t can_app_checks_without_msc19_1_msg;
-uint8_t can_app_checks_without_msc19_2_msg;
-uint8_t can_app_checks_without_msc19_3_msg;
-uint8_t can_app_checks_without_msc19_4_msg;
-uint8_t can_app_checks_without_msc19_5_msg;
-uint8_t can_app_checks_without_mcc19[6];
-uint8_t can_app_checks_without_mt19;
+uint16_t can_app_checks_without_mic17_msg;
+uint16_t can_app_checks_without_mcs19_msg;
+uint16_t can_app_checks_without_msc19_1_msg;
+uint16_t can_app_checks_without_msc19_2_msg;
+uint16_t can_app_checks_without_msc19_3_msg;
+uint16_t can_app_checks_without_msc19_4_msg;
+uint16_t can_app_checks_without_msc19_5_msg;
+uint16_t can_app_checks_without_mcc19[6];
+uint16_t can_app_checks_without_mt19;
 uint8_t can_app_send_state_clk_div;
+
+void can_app_extractor_mccs(can_t *msg);
 
 /**
  * @brief Prints a can message via usart
@@ -273,15 +275,8 @@ void can_app_extractor_mcs_relay(can_t *msg)
 inline void can_app_msg_extractors_switch(can_t *msg)
 {
 
-    if (msg->data[CAN_MSG_MCC19_1_MEASUREMENTS_ID] ||
-        msg->data[CAN_MSG_MCC19_2_MEASUREMENTS_ID] ||
-        msg->data[CAN_MSG_MCC19_3_MEASUREMENTS_ID] ||
-        msg->data[CAN_MSG_MCC19_4_MEASUREMENTS_ID] ||
-        msg->data[CAN_MSG_MCC19_5_MEASUREMENTS_ID] ||
-        msg->data[CAN_MSG_MCC19_6_MEASUREMENTS_ID])
-    {
-        can_app_extractor_mccs(msg);
-    }
+
+    can_app_extractor_mccs(msg);
 
     if (msg->data[CAN_MSG_GENERIC_STATE_SIGNATURE_BYTE] == CAN_SIGNATURE_MCS19)
     {
